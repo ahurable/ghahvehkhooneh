@@ -7,7 +7,7 @@ const Header = () => {
             <div className="container">
                 <div className="py-4 hidden md:block">
                     <div className="w-full grid grid-cols-12">
-                        <div className="md:col-span-6 flex justify-start">
+                        <div className="md:col-span-6 flex justify-start items-center">
                             تخصصی ترین مرکز قهوه و آموزش باریستایی به صورت آنلاین.
                         </div>
                         <div className="md:col-span-6 flex justify-end items-center">

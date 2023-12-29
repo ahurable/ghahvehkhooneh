@@ -73,10 +73,10 @@ export default function SliderWrapper () {
             })
     }, [])
     
-    console.log(sliders)
     return (
         <main>
             {sliders?.map((slider) => {
+                console.log(slider.image)
                 return (
                     <SliderItem key={slider.id} {...slider} />
                 )
