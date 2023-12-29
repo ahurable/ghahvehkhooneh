@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 from posts.views import *
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/sliders/', SlidersList.as_view(), name='slider_lists')
+    path('api/sliders/', SlidersList.as_view(), name='slider_lists'),
+    path('api/posts/', PostsList.as_view(), name="posts-list-url")
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

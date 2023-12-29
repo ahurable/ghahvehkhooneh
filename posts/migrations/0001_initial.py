@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('youtube', models.BooleanField()),
                 ('aparat', models.BooleanField()),
                 ('readmore', models.BooleanField()),
-                ('image', models.ImageField(upload_to=posts.models.image_path)),
+                ('image', models.ImageField(upload_to=posts.models.slider_image_path)),
             ],
         ),
     ]
