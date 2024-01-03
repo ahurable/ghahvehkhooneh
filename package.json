@@ -15,9 +15,11 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^1.6.3",
+    "flickity": "^2.3.0",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-flickity-component": "^4.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",

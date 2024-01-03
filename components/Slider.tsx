@@ -5,6 +5,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import Loader from "./Loader";
 
 
 
@@ -64,19 +65,20 @@ const SliderItem = (props: SliderItemPropsInterface) => {
 
 export default function SliderWrapper () {
     
+    const [loader, setLoader] = useState(true)
     const [sliders, setSliders] = useState(null)
     useEffect(() => {
         fetch('http://127.0.0.1:8000/api/sliders?format=json')
             .then(res => res.json())
             .then(data => {
                 setSliders(data)
+                setLoader(false)
             })
     }, [])
     
     return (
         <main>
-            {sliders?.map((slider) => {
-                console.log(slider.image)
+            {loader ? <Loader height={500} /> : sliders?.map((slider) => {
                 return (
                     <SliderItem key={slider.id} {...slider} />
                 )

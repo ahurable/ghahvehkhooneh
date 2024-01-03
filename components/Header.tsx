@@ -4,7 +4,7 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 const Header = () => {
     return (
         <>
-            <div className="container">
+            <div className="container relative">
                 <div className="py-4 hidden md:block">
                     <div className="w-full grid grid-cols-12">
                         <div className="md:col-span-6 flex justify-start items-center">
@@ -21,7 +21,9 @@ const Header = () => {
                     </div>
                 </div>
                 <hr className="hidden md:block" />
-                <nav className="grid grid-cols-12 py-4 items-center">
+            </div>
+            <nav className="sticky top-0 z-50 bg-yellow-very-melo shadow-sm">
+                <div className="grid grid-cols-12 py-4 items-center  container">
                     <div className="lg:col-span-2 md:col-span-6 col-span-12 p-4 md:p-0">
                         <span className="text-2xl font-bold">قهوهخونه</span>
                     </div>
@@ -36,8 +38,9 @@ const Header = () => {
                             <a href="" className="btn btn-primary w-max">ثبت نام | احراز هویت</a>
                         </div>
                     </div>
-                </nav>
-            </div>
+                </div>
+                    
+            </nav>
         </>
     )
 }

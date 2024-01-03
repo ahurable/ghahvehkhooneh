@@ -10,7 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         'brown-dark' : '#3F2211 ',
-        'brown-normal': '#502b16'
+        'brown-normal': '#502b16',
+        'pink-melo': '#DB6B7B',
+        'yellow-very-melo': '#fffff5'
       }
     },
     container: {
@@ -18,7 +20,8 @@ const config: Config = {
       screens: {
         sm: '100%',
         md: '720px',
-        lg: '1250px'
+        lg: '1250px',
+        xl: '1300px'
       }
     },
     fontSize: {
