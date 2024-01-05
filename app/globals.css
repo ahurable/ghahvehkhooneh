@@ -52,6 +52,13 @@
         @apply bg-pink-melo text-white p-4 text-center text-lg rounded-xl block;
     }
 
+    .form-wrapper {
+      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center;
+    }
+
+    .form-control {
+      @apply p-4 text-lg outline-blue-500 shadow-sm shadow-gray-700
+    }
 }
 
 .loader {
@@ -201,6 +208,8 @@ https://flickity.metafizzy.co
     height: 60%;
   }
   
+  
+
   /* ---- page dots ---- */
   
   .flickity-page-dots {
