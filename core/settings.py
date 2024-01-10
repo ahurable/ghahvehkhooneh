@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'posts',
+    'users',
     'rest_framework',
     'corsheaders',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
@@ -146,3 +148,5 @@ REST_FRAMEWORK = {
 #CORS
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+AUTH_USER_MODEL = 'users.CustomUser'

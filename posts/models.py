@@ -1,7 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 import os
 # Create your models here.
+
+User = get_user_model()
 
 def slider_image_path(instance, file):
     basename = os.path.basename(file)
