@@ -57,7 +57,7 @@
     }
 
     .form-control {
-      @apply p-4 text-lg outline-blue-500 shadow-sm shadow-gray-700
+      @apply p-4 text-md outline-blue-500 bg-slate-100
     }
 }
 
