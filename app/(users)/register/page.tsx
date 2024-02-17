@@ -12,6 +12,7 @@ const Register = () => {
     // const btnWrapper = useRef(null)
 
     const [step, setStep] = useState(1)
+    const [state, setState] = useState('')
  
     const nextStep = (e) => {
         e.preventDefault()
@@ -26,12 +27,19 @@ const Register = () => {
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
+        
         const response = await fetch('http://127.0.0.1:8000/api/users/create/', {
             method: 'POST',
             body: formData
         })
         const data = await response.json()
-        console.log(data)
+        console.log("username : " + data.username)
+        if(data.username == formData.get('username')){
+            alert("ثبت نام با موفقیت انجام شد")
+        }
+        else {
+            alert("مشکلی پیش آمده است")
+        }
     }
 
     return (
@@ -42,7 +50,7 @@ const Register = () => {
                 <div className="form-wrapper h-mx pb-20 my-4">
                     <div className="flex justify-center">
                         <form onSubmit={onSubmit}>
-                            <div className={step == 1 ? "step-1" : "step-1 hidden"}>
+                            <div className={step == 1 ? "step-1 py-10" : "step-1 hidden"}>
                                 
                                 <span className="font-light text-md">برای ایجاد حساب و احراز هویت ما به نام کاربری و شماره تلفن همراه شما نیاز داریم.</span>
                                 <div className="md:w-[620px] mx-auto">
@@ -60,16 +68,16 @@ const Register = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={step == 2 ? "step-2" : "step-2 hidden"}>
+                            <div className={step == 2 ? "step-2 py-10" : "step-2 hidden"}>
                                 <span className="font-light text-md">ما پسورد شما رو داخل دیتابیس رمزگذاری میکنیم پس مدیران سایت هم نمیتونن به رمز عبورتون دسترسی داشته باشن اما بازم دلیل نمیشه که بخوای رمز ضعیف بذاری</span>
                                 <div className="md:w-[620px] mx-auto">
                                     <div className="md:w-[620px] mt-10 text-start">
                                         <label htmlFor="password" className="text-md my-4">رمز عبور: </label>
-                                        <input type="text" id="password" name="password" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
+                                        <input type="password" id="password" name="password" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
                                     </div>
                                     <div className="md:w-[620px] mt-10 text-start">
                                         <label htmlFor="password2" className="text-md my-4">تکرار رمز عبور: </label>
-                                        <input type="text" id="password2" name="password2" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
+                                        <input type="password" id="password2" name="password2" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
                                     </div>
                                     
                                     <div className={step == 2 ? "mt-10 text-center " : "mt-10 text-center hidden"}>
@@ -83,7 +91,7 @@ const Register = () => {
                 </div>
             </div>
         </main>
-    )
-}
+        )
+    }
 
 export default Register

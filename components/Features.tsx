@@ -18,7 +18,7 @@ const flickityOptions: flickityOptionsType = {
     wrapAround: true,
     pageDots: false,
     autoPlay: true,
-    prevNextButtons: false
+    prevNextButtons: true
 }
 
 type FeaturePropsType = {
@@ -32,9 +32,9 @@ type FeaturePropsType = {
 
 const Feature = (props: FeaturePropsType) => {
     return (
-        <div className="relative lg:w-1/5 md:w-1/4 w-full md:h-64 h-[220px]">
-            <Image src={props.image} width={200} height={200} alt="" className="absolute w-full h-full top-0 left-0 z-10 object-cover" />
-            <div className="bg-black bg-opacity-40 z-20 text-white w-full h-full absolute top-0 left-0 p-2">
+        <div className="relative lg:w-1/5 md:w-1/4 w-full md:h-64 h-[220px] m-4 rounded-xl">
+            <Image src={props.image} width={200} height={200} alt="" className="absolute w-full h-full top-0 left-0 z-10 object-cover rounded-xl" />
+            <div className="bg-black bg-opacity-40 z-20 text-white w-full h-full absolute top-0 left-0 p-2 rounded-xl">
                </div>
             <div className="absolute flex bottom-0 items-center md:top-auto p-2 z-30 w-full">
                 <div className="w-full">
@@ -64,7 +64,7 @@ export default function Features() {
 
     return (
         
-        <main className="w-full">
+        <main className="w-full bg-brown-dark">
             {loader ? <Loader height={300} /> : <Flickity 
             className={"carousel"}
             elementType={"div"}
