@@ -1,4 +1,6 @@
 from django.db import models
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import post_save
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # Create your models here.
@@ -54,3 +56,21 @@ class CustomUser(AbstractBaseUser):
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars')
+    bio = models.CharField(max_length=1000, blank=True)
+
+    def __str__(self) -> str:
+        return self.user.username
+    
+    @receiver(post_save, sender=CustomUser)
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=CustomUser)
+    def save_profile(sender, instance, **kwargs):
+        instance.profile.save()
