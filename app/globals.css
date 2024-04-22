@@ -7,6 +7,7 @@
         @apply bg-yellow-very-melo;
         font-family: 'yekanbakh';
         margin: 0;
+        direction: rtl;
     }
 }
 
@@ -45,7 +46,7 @@
     }
 
     .youtube-button {
-        @apply bg-red-600 text-white rounded-xl px-5 py-3 flex items-center;
+        @apply bg-red-600 text-white rounded-xl px-5 py-3 flex items-center border-b-2 border-b-red-800;
     }
 
     .readmore-button {
@@ -57,7 +58,19 @@
     }
 
     .form-control {
-      @apply p-4 text-md outline-blue-500 bg-slate-100
+      @apply p-4 text-md outline-brown-normal border rounded
+    }
+
+    .btn-blue {
+      @apply  text-white bg-blue-400 hover:bg-blue-400 transition font-bold text-md w-full rounded-xl border-b-4 border-b-blue-700;
+    }
+
+    .btn-green {
+      @apply text-white bg-emerald-400 hover:bg-emerald-500 transition font-bold text-md w-full rounded-xl border-b-4 border-b-emerald-700 ;
+    }
+
+    .btn-red {
+      @apply text-white bg-red-400 hover:bg-red-500 transition font-bold text-md w-full rounded-xl border-b-4 border-b-red-700 ;
     }
 }
 

@@ -1,6 +1,8 @@
+
 import localFont from 'next/font/local'
 import Header from '@/components/Header'
 import '../globals.css'
+import StoreProvider from '@/lib/StoreProvider'
 
 // font declaration
 
@@ -57,6 +59,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    <StoreProvider>
     <html lang="fa" dir="rtl">
       <body className={yekanbakh.className}>
         <Header/>
@@ -64,5 +67,6 @@ export default function RootLayout({
         
       </body>
     </html>
+    </StoreProvider>
   )
 }

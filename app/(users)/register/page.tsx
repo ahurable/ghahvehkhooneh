@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { FormEvent } from "react"
+import { redirect } from "next/navigation"
+import { LOCALHOST } from "@/lib/variebles"
 
 
 const Register = () => {
@@ -28,14 +30,19 @@ const Register = () => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         
-        const response = await fetch('http://127.0.0.1:8000/api/users/create/', {
+        const response = await fetch(LOCALHOST + 'api/users/create/', {
             method: 'POST',
             body: formData
         })
         const data = await response.json()
         console.log("username : " + data.username)
-        if(data.username == formData.get('username')){
+        if(response.status == 201){
             alert("ثبت نام با موفقیت انجام شد")
+            redirect('/')
+        }
+        else if (data.username == "user with this username already exists."){
+            alert("این نام کاربری قبلا ثبت شده است.")
+            location.reload()
         }
         else {
             alert("مشکلی پیش آمده است")
@@ -43,16 +50,16 @@ const Register = () => {
     }
 
     return (
-        <main className="w-full h-full bg-purple-600">
+        <main className="w-full h-full bg-brown-light">
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
-                <h1 className="text-center text-[34px] pt-10 text-white font-bold">قهوه خونه</h1>
-                <h1 className="text-center text-[50px] pb-10 font-black text-white">ایجاد حساب</h1>
+                <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
+                <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">ایجاد حساب</h1>
                 <div className="form-wrapper h-mx pb-20 my-4">
                     <div className="flex justify-center">
                         <form onSubmit={onSubmit}>
                             <div className={step == 1 ? "step-1 py-10" : "step-1 hidden"}>
                                 
-                                <span className="font-light text-md">برای ایجاد حساب و احراز هویت ما به نام کاربری و شماره تلفن همراه شما نیاز داریم.</span>
+                                <span className="font-normal text-md">برای ایجاد حساب و احراز هویت ما به نام کاربری و شماره تلفن همراه شما نیاز داریم.</span>
                                 <div className="md:w-[620px] mx-auto">
                                     <div className="md:w-[620px] mt-10 text-start">
                                         <label htmlFor="username" className="text-md my-4">نام کاربری: </label>
@@ -64,7 +71,7 @@ const Register = () => {
                                     </div>
                                     
                                     <div className={step == 1 ? "mt-10 text-center" : "mt-10 text-center lg:w-[620px] hidden"}>
-                                        <button id="continue" onClick={nextStep} className="btn text-white bg-blue-400 hover:bg-blue-500 transition font-bold text-md w-full rounded-none">ادامه</button>
+                                        <button id="continue" onClick={nextStep} className="btn btn-blue">ادامه</button>
                                     </div>
                                 </div>
                             </div>
@@ -81,8 +88,8 @@ const Register = () => {
                                     </div>
                                     
                                     <div className={step == 2 ? "mt-10 text-center " : "mt-10 text-center hidden"}>
-                                        <button id="back" onClick={prevStep} className="btn text-white mt-3 bg-blue-400 hover:bg-blue-500 transition font-bold text-md w-full rounded-none">قبلی</button>
-                                        <button id="register" type="submit" className="btn text-white mt-3 bg-emerald-400 hover:bg-emerald-500 transition font-bold text-md w-full rounded-none">ثبت نام</button>
+                                        <button id="back" onClick={prevStep} className="btn btn-blue">قبلی</button>
+                                        <button id="register" type="submit" className="btn btn-green">ثبت نام</button>
                                     </div>
                                 </div>
                             </div>
