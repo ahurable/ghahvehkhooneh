@@ -3,12 +3,20 @@ from django.dispatch.dispatcher import receiver
 from django.db.models.signals import post_save
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import os, random
 # Create your models here.
 
+
+def upload_to(instance, file):
+    basename = os.path.basename(file)
+    name, ext = os.path.splitext(basename)
+    newname = random.randint(100000, 999999)
+    return f"avatars/{instance.user.username}/{instance.user.username}-{newname}{ext}"
 
 
 class CustomUserManager(BaseUserManager):
 
+    
     def create_user(self, username, phone_number, password=None, **extra_fields):
         user = self.model(
             username=username,
@@ -24,6 +32,9 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
+    def create(self, username, phone_number, password=None, **extra_fields):
+        user = self.create_user(username=username, phone_number=phone_number, password=password)
+        return user
 
 
 class CustomUser(AbstractBaseUser):
@@ -60,7 +71,9 @@ class CustomUser(AbstractBaseUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='avatars')
+    first_name = models.CharField(max_length=250, null=True, blank=True)
+    last_name = models.CharField(max_length=250, null=True, blank=True)
+    avatar = models.ImageField(upload_to=upload_to, default='users/default.png')
     bio = models.CharField(max_length=1000, blank=True)
 
     def __str__(self) -> str:
@@ -74,3 +87,5 @@ class Profile(models.Model):
     @receiver(post_save, sender=CustomUser)
     def save_profile(sender, instance, **kwargs):
         instance.profile.save()
+
+

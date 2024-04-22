@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from colorama import Fore
+from rest_framework_simplejwt.tokens import Token
 from .models import CustomUser
-
-User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,8 +49,18 @@ class CreateUserSerializer(serializers.ModelSerializer):
             validated_data['phone_number'] = "+98"+validated_data['phone_number']
             print(Fore.GREEN + validated_data['phone_number'] + Fore.WHITE)
         
-        return User.objects.create(
+        return CustomUser.objects.create(
             username=validated_data['username'],
             phone_number=validated_data['phone_number'],
             password=validated_data['password']
         )
+    
+
+class CustomTokenObtainSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['username'] = user.username
+        return token
+    
+

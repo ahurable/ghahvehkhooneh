@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-sov1xer$@+m=$n*s7(=8u1m@b*m+g&l^g&&wq74o2u@3b4d+t3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+FRONTEND_URL = 'http://localhost:3000'
 ALLOWED_HOSTS = ['*']
 
 
@@ -147,6 +149,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
+    'TOKEN_OBTAIN_SERIALIZER': 'users.serializers.CustomTokenObtainSerializer'
 }
 
 

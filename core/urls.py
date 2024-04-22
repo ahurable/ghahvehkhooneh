@@ -30,7 +30,10 @@ urlpatterns = [
     path('api/users/create/', UserCreateView.as_view(), name="user-create-url"),
     # auth urls
     path('api/auth/token/', TokenObtainPairView.as_view(), name="token_pair"),
-    path('api/auth/refresh', TokenRefreshView.as_view(), name='refresh_url')
+    path('api/auth/refresh/', TokenRefreshView.as_view(), name='refresh_url'),
+    path('api/auth/update-profile-info/', SetUpdateFirstNameLastNameBioView.as_view(), name="update-profile-url"),
+    path('api/auth/profile/', ProfileInformation.as_view(), name="profile-url"),
+    path('api/auth/update-avatar/', UpdateAvatarView.as_view(), name="update-avatar-url")
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
