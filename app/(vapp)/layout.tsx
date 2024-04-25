@@ -5,8 +5,8 @@ import localFont from "next/font/local";
 import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
 import { jwtDecode } from "jwt-decode";
-import { redirect } from "next/navigation";
 import { LOCALHOST } from "@/lib/variebles";
+import local from "next/font/local";
 // font declaration
 
 const yekanbakh = localFont({
@@ -60,7 +60,7 @@ const yekanbakh = localFont({
 
 
 const refreshToken = async (refresh:string) => {
-    // console.log(JSON.stringify({refresh: refresh}))
+    // console.log(refresh)
     const res = await fetch(LOCALHOST + 'api/auth/refresh/', {
         method:'POST',
         body: JSON.stringify({refresh: refresh}),
@@ -69,13 +69,12 @@ const refreshToken = async (refresh:string) => {
         }
     })
     const data = await res.json()
-
-    if ('access' in data){
+    if (data.access){
         localStorage.removeItem('access')
-        localStorage.removeItem('refresh')
         localStorage.setItem('access', data.access)
-        localStorage.setItem('refresh', data.refresh)
-    }
+    } else {
+        location.replace('/')
+    } 
 }
 
 type MyProps = {
@@ -88,19 +87,20 @@ export default class RootLayout extends React.Component<MyProps> {
     componentDidMount(): void {
         
 
-        if(localStorage.getItem('access')){
-            let token: string | null = localStorage.getItem('access')
-            let refresh = localStorage.getItem('refresh')
-            if (token !== null && refresh !== null) {
-                let exp = jwtDecode(token).exp
-                if (exp !== undefined){
-                    if(exp < Date.now()/10){
-                        refreshToken(refresh)
-                    }
-                } else {
-                    redirect('/logout')
-                }
-            } else redirect('/logout')
+        if (localStorage.getItem('access') && localStorage.getItem('refresh')) {
+
+            if (localStorage.getItem('access') !== undefined){
+                let token = localStorage.getItem('access')
+                let refresh = localStorage.getItem('refresh')
+                console.log(jwtDecode(token).exp)
+                console.log(Date.now() / 1000)
+                if (jwtDecode(token).exp < (Date.now() / 1000)) {
+                    refreshToken(refresh)
+                } 
+            } else {
+                location.replace('/logout')
+            }
+
         }
 
     }

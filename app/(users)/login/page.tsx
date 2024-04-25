@@ -23,7 +23,7 @@ const Login = () => {
             alert("ورود موفق")
             localStorage.setItem('access', data.access)
             localStorage.setItem('refresh', data.refresh)
-            redirect('/')
+            location.replace('/profile')
         } else if (response.status == 401) {
             window.alert("مشخصات ورود اشتباه است")
         } else {

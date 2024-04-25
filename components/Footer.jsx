@@ -2,6 +2,7 @@
 import { faUser, faUserCircle } from "@fortawesome/free-regular-svg-icons"
 import { faCoffee, faHome, faUsers } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Link from "next/link"
 import React, { useEffect, useRef, useState } from "react"
 
 
@@ -31,9 +32,9 @@ const Footer = () => {
                                 <FontAwesomeIcon icon={faUserCircle}/>
                             </span>
                             <br />
-                            <span className="text-xs">
+                            <Link href='/profile' className="text-xs">
                                 پروفایل
-                            </span>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-span-3 p-3 ">
@@ -42,9 +43,9 @@ const Footer = () => {
                                 <FontAwesomeIcon icon={faCoffee}/>
                             </span>
                             <br />
-                            <span className="text-xs text-brown-dark">
+                            <Link href='/cafe' className="text-xs text-brown-dark">
                                 کافه ها
-                            </span>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-span-3 p-3 ">
