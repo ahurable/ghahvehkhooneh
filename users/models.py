@@ -11,7 +11,7 @@ def upload_to(instance, file):
     basename = os.path.basename(file)
     name, ext = os.path.splitext(basename)
     newname = random.randint(100000, 999999)
-    return f"avatars/{instance.user.username}/{instance.user.username}-{newname}{ext}"
+    return f"users/avatars/{instance.user.username}/{instance.user.username}-{newname}{ext}"
 
 
 class CustomUserManager(BaseUserManager):

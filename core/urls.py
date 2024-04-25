@@ -33,7 +33,7 @@ urlpatterns = [
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='refresh_url'),
     path('api/auth/update-profile-info/', SetUpdateFirstNameLastNameBioView.as_view(), name="update-profile-url"),
     path('api/auth/profile/', ProfileInformation.as_view(), name="profile-url"),
-    path('api/auth/update-avatar/', UpdateAvatarView.as_view(), name="update-avatar-url")
+    path('api/auth/update-avatar/<int:pk>/', UpdateAvatarView.as_view(), name="update-avatar-url")
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

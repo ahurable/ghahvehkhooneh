@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.serializers import ModelSerializer
-from rest_framework.parsers import FileUploadParser
-from .serializers import CreateUserSerializer, CustomUser as User
+from rest_framework.parsers import MultiPartParser, FormParser
+from .serializers import CreateUserSerializer, CustomUser as User, AvatarSerializer
+from rest_framework.generics import UpdateAPIView
 from .models import Profile
 # Create your views here.
 
@@ -54,26 +55,34 @@ class SetUpdateFirstNameLastNameBioView(APIView):
             return Response({'error':"the data is not valid"}, status=400)
         
 
+class UpdateAvatarView(UpdateAPIView):
+    serializer_class = AvatarSerializer
+    queryset = Profile.objects.all()
 
-class UpdateAvatarView(APIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = [FileUploadParser]
+# class UpdateAvatarView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     parser_classes = [FormParser,MultiPartParser]
 
-    class Serializer(ModelSerializer):
-        class Meta:
-            model = Profile
-            fields = ['avatar']
+#     class Serializer(ModelSerializer):
+#         class Meta:
+#             model = Profile
+#             fields = ['avatar', 'user']
 
-    def post(self, request):
-        serializer = self.Serializer(data=request.data)
-        if serializer.is_valid():
-            instance = Profile.objects.get(user__id = request.user.id)
-            instance['avatar'] = serializer.data['avatar']
-            instance.save()
-            return Response({"success":"successful update avatar"}, status=200)
         
 
+        
 
+#     def put(self, request, format=None):
+#         data = request.data
+#         data['user'] = request.user.id
+#         serializer = self.Serializer(data=data)
+#         print(serializer)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({"Something":"someg"})
+
+
+        # return Response({'error': 'error occured'}, status=500)
 
 class ProfileInformation(APIView):
     permission_classes = [IsAuthenticated]

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from colorama import Fore
 from rest_framework_simplejwt.tokens import Token
-from .models import CustomUser
+from .models import CustomUser, Profile
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,3 +64,7 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         return token
     
 
+class AvatarSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Profile
+            fields = ['avatar', ]
