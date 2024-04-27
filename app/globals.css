@@ -58,7 +58,7 @@
     }
 
     .form-control {
-      @apply p-4 text-md outline-brown-normal border rounded
+      @apply p-3 text-md border-t-0 border-r-0 border-l-0 border-b-4 border-b-gray-200 rounded-lg focus:border-b-blue-400 focus:outline-none focus:outline-0
     }
 
     .btn-blue {

@@ -2,8 +2,11 @@
 import { faUser, faUserCircle } from "@fortawesome/free-regular-svg-icons"
 import { faCoffee, faHome, faUsers } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { jwtDecode } from "jwt-decode"
 import Link from "next/link"
+import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
+import { LOCALHOST } from "@/lib/variebles"
 
 
 const Footer = () => {
@@ -24,12 +27,15 @@ const Footer = () => {
 
     return (
         <React.Fragment>
-            <div className="w-full border-t fixed bottom-0 border transition-all" ref={footerRef}>
+            <div className="w-full border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
                     <div className="col-span-3 p-3 ">
                         <div className="w-full text-center">
                             <span className="text-brown-dark">
-                                <FontAwesomeIcon icon={faUserCircle}/>
+                                {
+                                    localStorage.getItem('access') ? <img className="rounded-full w-8 h-8 inline-table" alt="" src={LOCALHOST + jwtDecode(localStorage.getItem('access')).avatar} /> :<FontAwesomeIcon icon={faUserCircle}/>
+                                }
+                                
                             </span>
                             <br />
                             <Link href='/profile' className="text-xs">

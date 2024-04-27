@@ -1,18 +1,41 @@
-import { Metadata } from 'next'
+'use server'
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { LOCALHOST } from '@/lib/variebles'
+import { CafeCard, cafeCard } from '@/components/CafeComponents'
 import Image from 'next/image'
-import marketImage from  '../../../assets/img/market.png' 
 
 
-export const metadata: Metadata = {
-    title: 'قهوهخونه - لیست کافه ها'
-}
+async function getData():Promise<cafeCard[]>  {
+    const res = await fetch(LOCALHOST + 'api/cafes/list/', {
+        method: 'GET',
+        headers: {
+            'Content-Type':'application/json'
+        }
+    })
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch data")
+    }
+
+    return res.json()
+} 
 
 
-const cafe = () => {
+
+
+
+
+export default async function Page() {
+    
+    const data = await getData();
+    
+    console.log(data)
+    
     return (
 
-        <>
-        
+        <React.Fragment>
             <div className="container">
 
 
@@ -24,44 +47,22 @@ const cafe = () => {
                 
                 </div>
 
+                
+                <div className="w-full md:grid grid-cols-12 relative">
+                {  data.map((cafe) => [
+                        <div className="p-4 md:col-span-6">
 
-                <div className="w-full p-4 relative">
-                    <div className="w-full rounded-lg bg-[#3297D9] text-white">
-                        <div className="p-4">
-                            <h1 className='text-md'>انتخاب شهر</h1>
-                            <p>ابتدا شهر محل سکونتت رو انتخاب کن بعد بهترین کافه ها و رو پیدا کن.</p>
+                            <CafeCard cafe={cafe}/>
                         </div>
-                        <form method='get' className='p-4'>
-                            <select className='form-control w-full text-black'> 
-                                <option value='default'>شهر خود را انتخاب کنید</option>
-                                <option value="tehran">تهران</option>
-                            </select>
-                            <h1 className="text-md text-white my-4" >فیلتر ویژگی ها</h1>
-                            <div className='my-4'>
-                                <input type="checkbox" name="smoking" id="smokingCheck" className='me-2' />
-                                <label htmlFor="smoking">امکان سیگار کشیدن</label>
-                            </div>
-                            <div className='my-4'>
-                                <input type="checkbox" name="quitePlace" id="quitePlaceCheck" className='me-2' />
-                                <label htmlFor="quitePlace">محیط آرام</label>
-                            </div>
-                            <div className='my-4'>
-                                <input type="checkbox" name="scum" id="scumCheck" className='me-2' />
-                                <label htmlFor="scum">امکان سیگار کشیدن</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div className="w-full rounded-lg bg-white text-brown-dark shadow-md mt-6">
-                        <div className="p-4">
-                            <h1 className='text-lg'>کافه زیبا</h1>
-                            <p>کافه زیبا مناسب افراد</p>
-                        </div>
-                    </div>
+                    ])
+                }
                 </div>
             </div>
+
+            <a href="/cafe/add" className='btn rounded-full w-16 h-16 text-center text-2xl fixed bottom-24 right-4 bg-brown-normal text-white'>
+                <FontAwesomeIcon icon={faPlus} className='my-2'/>
+            </a>
         
-        </>
+        </React.Fragment>
     )
 }
-
-export default cafe

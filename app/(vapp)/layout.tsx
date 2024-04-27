@@ -5,8 +5,7 @@ import localFont from "next/font/local";
 import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
 import { jwtDecode } from "jwt-decode";
-import { LOCALHOST } from "@/lib/variebles";
-import local from "next/font/local";
+import { refreshToken } from "@/lib/utils";
 // font declaration
 
 const yekanbakh = localFont({
@@ -59,23 +58,7 @@ const yekanbakh = localFont({
 // layout declaration
 
 
-const refreshToken = async (refresh:string) => {
-    // console.log(refresh)
-    const res = await fetch(LOCALHOST + 'api/auth/refresh/', {
-        method:'POST',
-        body: JSON.stringify({refresh: refresh}),
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    const data = await res.json()
-    if (data.access){
-        localStorage.removeItem('access')
-        localStorage.setItem('access', data.access)
-    } else {
-        location.replace('/')
-    } 
-}
+
 
 type MyProps = {
     children: React.ReactNode

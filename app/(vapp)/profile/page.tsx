@@ -17,9 +17,7 @@ const Profile = () => {
     const dispatch = useAppDispatch()
     
     useEffect(() => {
-        if (!localStorage.getItem('access')){
-            redirect('/login')
-        }
+        
         const fetchData = async () => {
             let token = localStorage.getItem('access')
             const res = await fetch(LOCALHOST + 'api/auth/profile/', {
@@ -31,10 +29,18 @@ const Profile = () => {
             const data = await res.json()
             setData(data)
         }
-        fetchData()
+        try{
+            fetchData()
+        } catch {
+
+        }
+
+
     }, [])
 
     return (
+        <>
+        { localStorage.getItem('access') ?
         <>
             <div className="w-full">
                 <div className=" text-center border-b">
@@ -72,8 +78,17 @@ const Profile = () => {
                 lastName: data.last_name,
                 bio: data.bio
             }}/>
-            <ChangeAvatarModal/>
-            
+            <ChangeAvatarModal/> </> :
+            <div className="w-full">
+                <div className="my-44 w-full p-4 text-center">
+                    <span>برای استفاده از امکانات بیشتر وارد برنامه شوید</span>
+                    <a href="/login" className="btn btn-red block w-full my-4">ورود به حساب</a>
+                    <span>یا اگر حساب کاربری ندارید یکی بسازید.</span>
+                    <a href="/login" className="btn btn-blue block w-full my-4">ایجاد حساب</a>
+
+                </div>
+            </div>
+        }
         </>
     )
 }

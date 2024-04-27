@@ -1,5 +1,6 @@
 import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
+import { refreshToken } from "@/lib/utils"
 import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react"
 import { jwtDecode } from "jwt-decode"
@@ -39,6 +40,7 @@ const ChangeAvatarModal = () => {
             })
             if (response.status == 200) {
                 alert('تصویر پروفایل شما با موفقیت ثبت شد')
+                refreshToken(localStorage.getItem('refresh'))
                 location.reload()
             } else {
                 alert("مشکلی در بروزرسانی پروفایل شما رخ داد")
@@ -65,7 +67,7 @@ const ChangeAvatarModal = () => {
                     <input type="file" name="avatar"/>
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn btn-green" type="submit">ثبت تصویر جدید</button>
+                    <button className="btn btn-blue" type="submit">ثبت تصویر جدید</button>
                 </ModalFooter>
                 </form>
             </Modal>

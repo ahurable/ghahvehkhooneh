@@ -48,15 +48,15 @@ const ProfileModal = ({ profile } : { profile: props }) => {
                 <ModalBody>
                     <div className="w-full my-2">
                         <label htmlFor="nameInput">نام:</label>
-                        <input type="text" id="nameInput" name="first_name" value={profile.firstName == "" ? null : profile.firstName} placeholder='نام خود را وارد کنید' className="form-input rounded-full outline-brown-dark w-full" />
+                        <input type="text" id="nameInput" name="first_name" value={profile.firstName == "" ? null : profile.firstName} placeholder='نام خود را وارد کنید' className="form-control w-full" />
                     </div>
                     <div className="w-full my-2">
                         <label htmlFor="lastnameInput">نام خانوادگی:</label>
-                        <input type="text" id="lastnameInput" name="last_name"  value={profile.lastName == "" ? null : profile.lastName} placeholder='نام خانوادگی خود را وارد کنید' className="form-input rounded-full outline-brown-dark w-full" />
+                        <input type="text" id="lastnameInput" name="last_name"  value={profile.lastName == "" ? null : profile.lastName} placeholder='نام خانوادگی خود را وارد کنید' className="form-control w-full" />
                     </div>
                     <div className="w-full my-2">
                         <label htmlFor="bioInput">بیوگرافی:</label>
-                        <textarea id="bioInput" name="bio" defaultValue={ profile.bio == "" ? null : profile.bio } placeholder='بیوگرافی خود را وارد کنید' className="form-input rounded-2xl outline-brown-dark w-full" ></textarea>
+                        <textarea id="bioInput" name="bio" defaultValue={ profile.bio == "" ? null : profile.bio } placeholder='بیوگرافی خود را وارد کنید' className="form-control w-full" ></textarea>
                     </div>
                 </ModalBody>
                 <ModalFooter>

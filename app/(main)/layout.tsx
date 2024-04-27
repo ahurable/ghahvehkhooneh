@@ -3,8 +3,12 @@ import localFont from 'next/font/local'
 import Header from '@/components/Header'
 import '../globals.css'
 import StoreProvider from '@/lib/StoreProvider'
-
+import { Metadata } from 'next'
 // font declaration
+
+export const metadata: Metadata = {
+  manifest: '/manifest.json'
+}
 
 const yekanbakh = localFont({
   src: [
