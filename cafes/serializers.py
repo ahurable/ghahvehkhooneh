@@ -5,7 +5,7 @@ from .models import Cafe, Event, MenuItem
 class CafeSerializer(ModelSerializer):
     class Meta:
         model = Cafe
-        fields = '__all__'
+        fields = ['id', 'name', 'about', 'picture']
 
 
 class EventSerializer(ModelSerializer):

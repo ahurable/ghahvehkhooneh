@@ -70,7 +70,7 @@ class CustomUser(AbstractBaseUser):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=250, null=True, blank=True)
     last_name = models.CharField(max_length=250, null=True, blank=True)
     avatar = models.ImageField(upload_to=upload_to, default='users/default.png')

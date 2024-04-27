@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from cafes.views import AddCafeView, CafeListView, CafeView
 from posts.views import *
 from users.views import *
 
@@ -33,7 +34,10 @@ urlpatterns = [
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='refresh_url'),
     path('api/auth/update-profile-info/', SetUpdateFirstNameLastNameBioView.as_view(), name="update-profile-url"),
     path('api/auth/profile/', ProfileInformation.as_view(), name="profile-url"),
-    path('api/auth/update-avatar/<int:pk>/', UpdateAvatarView.as_view(), name="update-avatar-url")
+    path('api/auth/update-avatar/<int:pk>/', UpdateAvatarView.as_view(), name="update-avatar-url"),
+    # cafe urls
+    path('api/cafes/add/', AddCafeView.as_view(), name="add-cafe-url"),
+    path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url")
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

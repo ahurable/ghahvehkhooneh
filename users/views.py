@@ -11,17 +11,6 @@ from .models import Profile
 # Create your views here.
 
 
-# class UserCreateView(APIView):
-    
-#     def post(self, request):
-#         serializer = CreateUserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({'Success':'User has been created successfully'}, status=200)
-
-#         else:
-#             return Response({'error':'Something bad happened'}, status=200)
-
 
 class UserCreateView(CreateAPIView):
     queryset = User.objects.all()
@@ -57,32 +46,9 @@ class SetUpdateFirstNameLastNameBioView(APIView):
 
 class UpdateAvatarView(UpdateAPIView):
     serializer_class = AvatarSerializer
+    permission_classes = [IsAuthenticated]
     queryset = Profile.objects.all()
 
-# class UpdateAvatarView(APIView):
-#     permission_classes = [IsAuthenticated]
-#     parser_classes = [FormParser,MultiPartParser]
-
-#     class Serializer(ModelSerializer):
-#         class Meta:
-#             model = Profile
-#             fields = ['avatar', 'user']
-
-        
-
-        
-
-#     def put(self, request, format=None):
-#         data = request.data
-#         data['user'] = request.user.id
-#         serializer = self.Serializer(data=data)
-#         print(serializer)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({"Something":"someg"})
-
-
-        # return Response({'error': 'error occured'}, status=500)
 
 class ProfileInformation(APIView):
     permission_classes = [IsAuthenticated]
