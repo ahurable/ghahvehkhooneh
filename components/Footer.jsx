@@ -17,6 +17,7 @@ const Footer = () => {
         window.addEventListener('scroll', () => {
             if (window.scrollY > sy) {
                 footerRef.current.style.marginBottom = "-100px"
+
                 setSy(window.scrollY)
             } else if (window.scrollY < sy) {
                 footerRef.current.style.marginBottom = "0px"
@@ -27,7 +28,12 @@ const Footer = () => {
 
     return (
         <React.Fragment>
-            <div className="w-full border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
+            
+
+
+            
+            
+            <div className="w-full z-20 border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
                     <div className="col-span-3 p-3 ">
                         <div className="w-full text-center">
@@ -56,13 +62,15 @@ const Footer = () => {
                     </div>
                     <div className="col-span-3 p-3 ">
                         <div className="w-full text-center">
-                            <span className="text-brown-dark">
-                                <FontAwesomeIcon icon={faUsers}/>
-                            </span>
-                            <br />
-                            <span className="text-xs text-brown-dark">
-                                قهوهخونه
-                            </span>
+                            <a href="/users">
+                                <span className="text-brown-dark">
+                                    <FontAwesomeIcon icon={faUsers}/>
+                                </span>
+                                <br />
+                                <span className="text-xs text-brown-dark">
+                                    قهوهخونه
+                                </span>
+                            </a>
                         </div>
                     </div>
                     <div className="col-span-3 p-3 ">

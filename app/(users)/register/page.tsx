@@ -8,11 +8,6 @@ import { LOCALHOST } from "@/lib/variebles"
 
 const Register = () => {
 
-    // const firstStep = useRef(null)
-    // const secondStep = useRef(null)
-    // const conButton = useRef(null)
-    // const btnWrapper = useRef(null)
-
     const [step, setStep] = useState(1)
     const [state, setState] = useState('')
  

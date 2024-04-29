@@ -8,6 +8,8 @@ import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
 import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import ChangeAvatarModal from "@/components/ChangeAvatarModal"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
 
 
 const Profile = () => {
@@ -49,12 +51,19 @@ const Profile = () => {
                 <div className="p-4">
                     <div className="container mt-4">
                         <div className="mt-8">
-                            <div className="relative grid grid-cols-12 p-4 rounded-lg shadow justify-center items-center">
-                                <button className="col-span-3 border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
-                                    <img className="rounded-full w-20 h-20 mx-3 bg-brown-dark" src={LOCALHOST + data.avatar} />
+                            <div className="relative border-b grid grid-cols-12 p-4 md:rounded-lg md:shadow justify-center items-center">
+                                
+                                
+                                <button className="col-span-12 md:col-span-3 justify-center border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
+                                    <img className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + data.avatar} />
                                 </button>
-                                <div className="col-span-9">
-                                    <div className="ms-4">
+                                <div className="p-4">
+                                    <a href="/logout" className="text-brown-dark text-lg">
+                                        <FontAwesomeIcon icon={faDoorOpen}/>
+                                    </a>
+                                </div>
+                                <div className="md:col-span-9 col-span-12">
+                                    <div className="ms-4 text-center md:text-right ">
                                         <h1 className="text-lg">
                                             { data.first_name == '' ? 
                                                 localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "نام کاربری" 

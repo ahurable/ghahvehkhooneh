@@ -9,6 +9,10 @@
         margin: 0;
         direction: rtl;
     }
+    
+    *:focus {
+      outline: none !important
+    }
 }
 
 @layer components {
@@ -57,6 +61,7 @@
       @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center;
     }
 
+    
     .form-control {
       @apply p-3 text-md border-t-0 border-r-0 border-l-0 border-b-4 border-b-gray-200 rounded-lg focus:border-b-blue-400 focus:outline-none focus:outline-0
     }
@@ -67,6 +72,10 @@
 
     .btn-green {
       @apply text-white bg-emerald-400 hover:bg-emerald-500 transition font-bold text-md w-full rounded-xl border-b-4 border-b-emerald-700 ;
+    }
+
+    .btn-brown {
+      @apply text-brown-normal bg-yellow-very-melo border border-brown-dark transition font-bold text-md w-full rounded-xl border-b-4 border-b-brown-dark ;
     }
 
     .btn-red {

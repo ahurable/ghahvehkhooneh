@@ -1,10 +1,9 @@
 'use server'
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { LOCALHOST } from '@/lib/variebles'
 import { CafeCard, cafeCard } from '@/components/CafeComponents'
 import Image from 'next/image'
+import { InviteButton } from '@/components/Invite'
 
 
 async function getData():Promise<cafeCard[]>  {
@@ -50,7 +49,7 @@ export default async function Page() {
                 
                 <div className="w-full md:grid grid-cols-12 relative">
                 {  data.map((cafe) => [
-                        <div className="p-4 md:col-span-6">
+                        <div className="md:col-span-6 p-3">
 
                             <CafeCard cafe={cafe}/>
                         </div>
@@ -59,9 +58,7 @@ export default async function Page() {
                 </div>
             </div>
 
-            <a href="/cafe/add" className='btn rounded-full w-16 h-16 text-center text-2xl fixed bottom-24 right-4 bg-brown-normal text-white'>
-                <FontAwesomeIcon icon={faPlus} className='my-2'/>
-            </a>
+            <InviteButton/>
         
         </React.Fragment>
     )

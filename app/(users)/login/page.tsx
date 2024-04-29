@@ -41,7 +41,8 @@ const Login = () => {
                         <form onSubmit={onSubmit}>
                             <div className="py-10">
                                 
-                                <span className="font-light text-md">با ورود به حساب خود از امکانات برنامه استفاده کنید.</span>
+                                <span className="font-light text-md">با ورود به حساب خود از امکانات برنامه استفاده کنید.</span><br />
+                                <span className="font-light text-md">اگر حساب کاربری ندارید <a className="text-blue-400" href="/register">یکی ایجاد کنید.</a></span>
                                 <div className="md:w-[620px] mx-auto">
                                     <div className="md:w-[620px] mt-10 text-start">
                                         <label htmlFor="phone_number" className="text-md my-4">نام کاربری: </label>
