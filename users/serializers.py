@@ -11,6 +11,32 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class GetAnyProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'avatar']
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+
+class GetUserCommentSerializer(serializers.ModelSerializer):
+    profile = GetAnyProfileSerializer()
+    class Meta:
+        model = CustomUser
+        fields = ['profile']
+
+
+class GetAllUsersInAreaSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'profile']
+
+
 class CreateUserSerializer(serializers.ModelSerializer):
     phone_number = serializers.CharField()
     password = serializers.CharField(write_only=True)

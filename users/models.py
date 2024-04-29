@@ -37,6 +37,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
+
 class CustomUser(AbstractBaseUser):
 
     username = models.CharField(max_length=50 ,unique=True)
@@ -69,12 +70,16 @@ class CustomUser(AbstractBaseUser):
         verbose_name_plural = 'users'
 
 
+
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=250, null=True, blank=True)
     last_name = models.CharField(max_length=250, null=True, blank=True)
     avatar = models.ImageField(upload_to=upload_to, default='users/default.png')
     bio = models.CharField(max_length=1000, blank=True)
+    followers = models.ManyToManyField(CustomUser, related_name='followers')
+    following = models.ManyToManyField(CustomUser, related_name='following')
 
     def __str__(self) -> str:
         return self.user.username

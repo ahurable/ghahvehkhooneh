@@ -35,9 +35,16 @@ urlpatterns = [
     path('api/auth/update-profile-info/', SetUpdateFirstNameLastNameBioView.as_view(), name="update-profile-url"),
     path('api/auth/profile/', ProfileInformation.as_view(), name="profile-url"),
     path('api/auth/update-avatar/<int:pk>/', UpdateAvatarView.as_view(), name="update-avatar-url"),
+    # users
+    path('api/users/all-in-area/', GetAllUsers.as_view(), name='get-all-users-area-url'),
+    path('api/users/follow/<int:id>/', FollowRequestView.as_view(), name='follow-request-url'),
     # cafe urls
     path('api/cafes/add/', AddCafeView.as_view(), name="add-cafe-url"),
-    path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url")
+    path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url"),
+    path('api/cafes/detail/<int:id>/', CafeView.as_view(), name="cafe-detail-url"),
+
+    # hooks
+    path('hook/users/get-profile/<int:id>/', GetAnyProfileInformation.as_view(), name="get-profile-hook")
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

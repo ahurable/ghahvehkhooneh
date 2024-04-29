@@ -5,8 +5,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.serializers import ModelSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import CreateUserSerializer, CustomUser as User, AvatarSerializer
+from .serializers import CreateUserSerializer, CustomUser as User, AvatarSerializer, GetUserCommentSerializer, GetAllUsersInAreaSerializer
 from rest_framework.generics import UpdateAPIView
+from django.shortcuts import get_object_or_404
 from .models import Profile
 # Create your views here.
 
@@ -65,3 +66,32 @@ class ProfileInformation(APIView):
         return Response(serializer.data, status=200)
     
 
+# hooks 
+
+class GetAnyProfileInformation(APIView):
+
+
+    def get(self, request, id):
+        instance = get_object_or_404(User, id=id)
+        serializer = GetUserCommentSerializer(instance)
+        
+        return Response(serializer.data, status=200)
+
+
+class GetAllUsers(APIView):
+
+    def get(self, request):
+        instance = User.objects.all()
+        serializer = GetAllUsersInAreaSerializer(instance, many=True)
+        return Response(serializer.data, status=200)
+    
+
+class FollowRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id):
+        instance = User.objects.get(id=id)
+        profile = Profile.objects.get(user__id=request.user.id)
+        profile.following.add(instance)
+        Profile.objects.get(user=instance).following.add(instance)
+
+        return Response({'success':'u added a user successfully to your followings'}, status=200)

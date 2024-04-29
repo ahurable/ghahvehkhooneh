@@ -23,6 +23,8 @@ def event_image_upload(instance, file):
     new_path = f'cafes/{instance.cafe.id}/event/{name}{ext}'
     return new_path
 
+
+
 class Cafe(models.Model):
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=100, blank=True, null=True)
@@ -34,6 +36,20 @@ class Cafe(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+
+class Rating(models.Model):
+    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField(null=True, blank=True)
+    rating = models.PositiveIntegerField(choices=((1, '1 star'), (2, '2 stars'), (3, '3 stars'), (4, '4 stars'), (5, '5 stars')))
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('cafe', 'user')
+
+    def __str__(self) -> str:
+        return f"{self.user} rating {self.rating} stars for {self.cafe}"
     
 
 class MenuItem(models.Model) :

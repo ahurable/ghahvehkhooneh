@@ -7,3 +7,4 @@ from .models import *
 admin.site.register(Cafe)
 admin.site.register(Event)
 admin.site.register(MenuItem)
+admin.site.register(Rating)
