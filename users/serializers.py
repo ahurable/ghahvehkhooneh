@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from colorama import Fore
 from rest_framework_simplejwt.tokens import Token
-from .models import CustomUser, Profile
+from .models import CustomUser, Profile, Hobby, Food, Personality
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,7 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class GetUserCommentSerializer(serializers.ModelSerializer):
+class GetUserWithAnyProfileSerializer(serializers.ModelSerializer):
     profile = GetAnyProfileSerializer()
     class Meta:
         model = CustomUser
@@ -82,6 +82,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         )
     
 
+
 class CustomTokenObtainSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -95,3 +96,16 @@ class AvatarSerializer(serializers.ModelSerializer):
         class Meta:
             model = Profile
             fields = ['avatar', ]
+
+
+
+class HobbySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hobby
+        fields = '__all__'
+
+
+class PersonalitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Personality
+        fields = '__all__'

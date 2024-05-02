@@ -5,10 +5,11 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.serializers import ModelSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import CreateUserSerializer, CustomUser as User, AvatarSerializer, GetUserCommentSerializer, GetAllUsersInAreaSerializer
+from .serializers import CreateUserSerializer, CustomUser as User, AvatarSerializer, GetUserWithAnyProfileSerializer, GetAllUsersInAreaSerializer, HobbySerializer
 from rest_framework.generics import UpdateAPIView
 from django.shortcuts import get_object_or_404
-from .models import Profile
+from rest_framework.decorators import api_view, permission_classes
+from .models import Profile, Hobby, Personality
 # Create your views here.
 
 
@@ -73,7 +74,7 @@ class GetAnyProfileInformation(APIView):
 
     def get(self, request, id):
         instance = get_object_or_404(User, id=id)
-        serializer = GetUserCommentSerializer(instance)
+        serializer = GetUserWithAnyProfileSerializer(instance)
         
         return Response(serializer.data, status=200)
 
@@ -81,7 +82,10 @@ class GetAnyProfileInformation(APIView):
 class GetAllUsers(APIView):
 
     def get(self, request):
-        instance = User.objects.all()
+        try:
+            instance = User.objects.all().filter(profile__city = request.user.profile.city) 
+        except:
+            instance = User.objects.all() 
         serializer = GetAllUsersInAreaSerializer(instance, many=True)
         return Response(serializer.data, status=200)
     
@@ -95,3 +99,28 @@ class FollowRequestView(APIView):
         Profile.objects.get(user=instance).following.add(instance)
 
         return Response({'success':'u added a user successfully to your followings'}, status=200)
+    
+
+
+class OfferHobbyHook(APIView):
+    def post(self, request):
+        serializer = HobbySerializer(data=request.data)
+        if serializer.is_valid():
+            print(serializer.data['name'])
+            instance = Hobby.objects.all().filter(name__contains=serializer.data['name'])
+            serialized_response = HobbySerializer(instance, many=True)
+            return Response(serialized_response.data)
+        
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addHobbyHook(request):
+    print(request.data)
+    serializer = HobbySerializer(data= request.data)
+    validated_data = serializer.is_valid(raise_exception=True)
+    print(validated_data)
+    hobby_instance = Hobby.objects.get_or_create(name=validated_data['name'])
+    personality_instance = Personality.objects.get(user__id=request.user.id)
+    personality_instance.hobbies.add(hobby_instance)
+    return Response({'success':'u added hobby with successfully'}, status=200)

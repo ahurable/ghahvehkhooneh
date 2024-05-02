@@ -6,7 +6,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 import os, random
 # Create your models here.
 
+class City(models.Model):
+    city = models.CharField(max_length=120)
 
+    def __str__(self) -> str:
+        return self.city
+    
 def upload_to(instance, file):
     basename = os.path.basename(file)
     name, ext = os.path.splitext(basename)
@@ -80,6 +85,7 @@ class Profile(models.Model):
     bio = models.CharField(max_length=1000, blank=True)
     followers = models.ManyToManyField(CustomUser, related_name='followers')
     following = models.ManyToManyField(CustomUser, related_name='following')
+    city = models.ManyToManyField(City, related_name='profiles', null=True, blank=True)
 
     def __str__(self) -> str:
         return self.user.username
@@ -94,3 +100,32 @@ class Profile(models.Model):
         instance.profile.save()
 
 
+
+
+class Hobby(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self) -> str:
+        return self.name
+    
+
+
+class Food(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self) -> str:
+        return self.name
+    
+
+
+class Personality(models.Model):
+    music_taste = models.CharField(max_length=100, null=True, blank=True)
+    hobbies = models.ManyToManyField(Hobby, related_name='hobbies', null=True, blank=True)
+    favourite_foods = models.ManyToManyField(Food, related_name='favourite_foods', null=True, blank=True)
+    social_twitter = models.CharField(max_length=1000, null=True, blank=True)
+    social_instagram = models.CharField(max_length=1000, null=True, blank=True)
+    job = models.CharField(max_length=100, null=True, blank=True)
+    user = models.OneToOneField(CustomUser, related_name='personality', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.user.username

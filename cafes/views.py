@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.generics import CreateAPIView
-from .serializers import CafeSerializer, CafeListSerializer
-from .models import Cafe
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from .serializers import CafeSerializer, CafeListSerializer, AllFieldsClubSerializer, DetialedMembersClubSerializer
+from .models import Cafe, Club
 # Create your views here.
 
 
@@ -29,3 +29,18 @@ class AddCafeView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
         
 
+class GetAllClubsView(ListAPIView):
+
+    serializer_class = AllFieldsClubSerializer
+
+    def get_queryset(self):
+        try:
+            qs = Club.objects.all().filter(city__city=self.request.user.city)
+        except:
+            qs = Club.objects.all()
+        return qs
+    
+class GetClubInformationView(RetrieveAPIView):
+    serializer_class = DetialedMembersClubSerializer
+    queryset = Club.objects.all()
+    

@@ -2,7 +2,9 @@ from django.db import models
 from users.models import CustomUser as User
 import os
 import random
+from users.models import City
 # Create your models here.
+
 
 
 def menu_image_upload(instance, file):
@@ -23,6 +25,11 @@ def event_image_upload(instance, file):
     new_path = f'cafes/{instance.cafe.id}/event/{name}{ext}'
     return new_path
 
+def event_image_upload(instance, file):
+    basename = os.path.basename(file)
+    name, ext = os.path.splitext(basename)
+    new_path = f'clubs/{instance.cafe.id}/event/{name}{ext}'
+    return new_path
 
 
 class Cafe(models.Model):
@@ -33,6 +40,7 @@ class Cafe(models.Model):
     picture = models.ImageField(upload_to=cafe_image_upload, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
     admin = models.ManyToManyField(User)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -73,4 +81,13 @@ class Event(models.Model):
         return self.name
     
 
-# class City(models.Model):
+class Club(models.Model):
+    name = models.CharField(max_length=120)
+    description = models.TextField()
+    club_avatar = models.ImageField()
+    cafe = models.OneToOneField(Cafe, on_delete=models.CASCADE, related_name='club')
+    members = models.ManyToManyField(User, related_name='clubs')
+
+    def __str__(self) -> str:
+        return f'{self.cafe.name} {self.name}'
+    

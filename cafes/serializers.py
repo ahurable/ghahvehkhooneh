@@ -1,9 +1,22 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Cafe, Event, MenuItem, Rating
-from users.serializers import GetUserCommentSerializer
+from .models import Cafe, Event, MenuItem, Rating, Club
+from users.serializers import GetUserWithAnyProfileSerializer
+
+class AllFieldsClubSerializer(ModelSerializer):
+    class Meta:
+        model = Club
+        fields = '__all__'
+
+
+class DetialedMembersClubSerializer(ModelSerializer):
+    members = GetUserWithAnyProfileSerializer(many=True)
+    class Meta:
+        model = Club
+        fields = '__all__'
+
 
 class RatingSerializer(ModelSerializer):
-    user = GetUserCommentSerializer()
+    user = GetUserWithAnyProfileSerializer()
     class Meta: 
         model = Rating
         fields = '__all__'
@@ -14,13 +27,19 @@ class MenuItemSerializer(ModelSerializer):
         model = MenuItem
         fields = '__all__'
 
+
+
+
 class CafeSerializer(ModelSerializer):
     ratings = RatingSerializer(many=True)
     menu_item = MenuItemSerializer(many=True)
+    club = AllFieldsClubSerializer()
 
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'menu_item']
+        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'menu_item', 'club']
+
+
 
 
 class CafeListSerializer(ModelSerializer):
@@ -37,4 +56,3 @@ class EventSerializer(ModelSerializer):
         fields = '__all__'
 
 
-    
