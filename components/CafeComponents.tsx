@@ -4,6 +4,7 @@ import { LOCALHOST } from "@/lib/variebles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { Rating } from "flowbite-react"
+import { clubsType } from "./tabs/SocialTabs"
 
 
 export interface cafeCard {
@@ -30,7 +31,8 @@ export interface cafeInformation {
     about: string,
     picture: string,
     ratings: rating[],
-    menu_item: menuItem[]
+    menu_item: menuItem[],
+    club: clubsType,
 }
 
 
@@ -87,7 +89,7 @@ export const CafeCard = ({cafe}) => {
     
     return (
         <>
-            <div className="w-full rounded-lg bg-white text-brown-dark shadow border-gray-200 p-3">
+            <div className="w-full rounded-lg text-brown-dark shadow border-gray-200 p-3">
                 <div className="w-full flex">
                     <div className="">
                         <div className="w-20 h-20 rounded-lg bg-gray-400">
@@ -194,13 +196,13 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
     const toggleMenu = (buttonName:string) => {
         switch (buttonName) {
             case 'menu':
-                menu.current.classList.add('bg-white')
+                // menu.current.classList.add('bg-white')
                 menu.current.classList.add('shadow')
 
-                ratingsButton.current.classList.remove('bg-white')
+                // ratingsButton.current.classList.remove('bg-white')
                 ratingsButton.current.classList.remove('shadow')
 
-                events.current.classList.remove('bg-white')
+                // events.current.classList.remove('bg-white')
                 events.current.classList.remove('shadow')
 
                 setTab('menu')
@@ -209,13 +211,13 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
 
 
             case 'ratings':
-                menu.current.classList.remove('bg-white')
+                // menu.current.classList.remove('bg-white')
                 menu.current.classList.remove('shadow')
 
-                ratingsButton.current.classList.add('bg-white')
+                // ratingsButton.current.classList.add('bg-white')
                 ratingsButton.current.classList.add('shadow')
 
-                events.current.classList.remove('bg-white')
+                // events.current.classList.remove('bg-white')
                 events.current.classList.remove('shadow')
 
                 setTab('ratings')
@@ -224,13 +226,13 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
 
 
             case 'events': 
-                menu.current.classList.remove('bg-white')
+                // menu.current.classList.remove('bg-white')
                 menu.current.classList.remove('shadow')
 
-                ratingsButton.current.classList.remove('bg-white')
+                // ratingsButton.current.classList.remove('bg-white')
                 ratingsButton.current.classList.remove('shadow')
 
-                events.current.classList.add('bg-white')
+                // events.current.classList.add('bg-white')
                 events.current.classList.add('shadow')
 
                 setTab('events')
@@ -243,7 +245,7 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
         <>
             <div className="w-full grid grid-cols-12">
                 <div className="col-span-4 p-4">
-                    <button ref={menu} className="w-full block p-3 rounded-lg bg-white shadow" onClick={() => toggleMenu('menu')}>منو</button>
+                    <button ref={menu} className="w-full block p-3 rounded-lg shadow" onClick={() => toggleMenu('menu')}>منو</button>
                 </div>
                 <div  className="col-span-4 p-4">
                     <button ref={ratingsButton} className="w-full block p-3 rounded-lg" onClick={() => toggleMenu('ratings')}>بازخوردها</button>

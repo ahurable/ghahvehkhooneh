@@ -21,6 +21,7 @@ async function fetchData (id:number):Promise<cafeInformation> {
 const Page = async ({params}: {params: {id:number}}) => {
 
     const data = await fetchData(params.id)
+    // console.log(data)
 
     return (
         <>
@@ -41,6 +42,26 @@ const Page = async ({params}: {params: {id:number}}) => {
                                     دعوت دوستان <FontAwesomeIcon icon={faCoffee}/>
                                 </button>
                             </div>
+                            { data.club != null && 
+                                <div className="w-full p-4">
+                                    <h1 className="text-lg">باشگاه مشتریان</h1>
+                                    <div className="py-4 w-full flex items-center">
+                                        <div className="img-container">
+                                            <img src={ LOCALHOST + data.club.club_avatar } className='rounded-full w-20 h-20 object-cover' alt="" />
+                                        </div>
+                                        <div className="ps-4">
+                                            <span className="text-lg font-bold">{data.club.name}</span>
+                                            <br />
+                                            <span>{data.club.description}</span>
+                                            <br />
+                                            <span>تعداد اعضا:‌ {data.club.members.length} نفر</span>
+                                        </div>
+                                    </div>
+                                    <div className="">
+                                        <button className="btn-green w-full p-4">بازدید از پاتوق</button>
+                                    </div>
+                                </div>
+                            }
                             <BackButton/>
                         </div>
                         

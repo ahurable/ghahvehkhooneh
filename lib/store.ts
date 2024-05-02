@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { profileModalReducer } from './features/profileModalSlice'
 import { menuReducer } from './features/menuMobileSlice'
 import { avatarModalReducer } from './features/avatarModalSlice'
+import { hobbyModalReducer } from './features/hobbyModalSlice'
 
 
 export const makeStore = () => {
@@ -10,6 +11,7 @@ export const makeStore = () => {
         profilemodal: profileModalReducer,
         menumobile: menuReducer,
         avatarmodal: avatarModalReducer,
+        hobbymodal: hobbyModalReducer,
     }
   })
 }

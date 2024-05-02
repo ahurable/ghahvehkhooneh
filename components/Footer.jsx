@@ -62,13 +62,13 @@ const Footer = () => {
                     </div>
                     <div className="col-span-3 p-3 ">
                         <div className="w-full text-center">
-                            <a href="/users">
+                            <a href="/social">
                                 <span className="text-brown-dark">
                                     <FontAwesomeIcon icon={faUsers}/>
                                 </span>
                                 <br />
                                 <span className="text-xs text-brown-dark">
-                                    قهوهخونه
+                                    اجتماعی
                                 </span>
                             </a>
                         </div>

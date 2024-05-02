@@ -57,11 +57,6 @@ const Profile = () => {
                                 <button className="col-span-12 md:col-span-3 justify-center border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
                                     <img className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + data.avatar} />
                                 </button>
-                                <div className="p-4">
-                                    <a href="/logout" className="text-brown-dark text-lg">
-                                        <FontAwesomeIcon icon={faDoorOpen}/>
-                                    </a>
-                                </div>
                                 <div className="md:col-span-9 col-span-12">
                                     <div className="ms-4 text-center md:text-right ">
                                         <h1 className="text-lg">
@@ -76,6 +71,23 @@ const Profile = () => {
                                 </div>
                                 <div className="col-span-12 p-4">
                                     <button className="btn btn-green" onClick={() => dispatch(setProfileModalState(true))}>ویرایش پروفایل</button>
+                                </div>
+                            </div>
+                            <div className="p-4">
+                                <div className="container mt-4">
+                                    <div className="w-full">
+                                        <div className="text-center">
+                                            <h1 className="text-lg font-semibold">راهنما:</h1>
+                                            <p>
+                                                با افزودن اطلاعاتی مانند سلیقه موسیقی - خواننده های مورد علاقه - فیلم های مورد علاقه و یا
+                                                کار هایی که به انجام دادن آنها علاقه دارید میتوانید خود را بهتر معرفی کنید و در قسمت اجتماعی
+                                                کاربرانی که شبیه به شما هستند را راحت تر پیدا کنید. با این کار درخواست دعوت شما راحت تر توسط
+                                                دیگران پذیرفته میشود.
+                                            </p>
+                                        </div>
+
+                                        <a href="/profile/personality" className="btn btn-blue block text-center w-full p-4 mt-4">کامل کردن علاقه مندی ها</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
