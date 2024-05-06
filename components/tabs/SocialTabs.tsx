@@ -1,65 +1,85 @@
 'use client'
-import { useEffect, useRef, useState } from "react"
-import { SendFollowButton } from "../Buttons"
+import { MutableRefObject, useEffect, useRef, useState } from "react"
+import { SendFollowButton, SendUnfollowButton } from "../Buttons"
 import { LOCALHOST } from "@/lib/variebles"
-
-interface profileType {
-    first_name: string,
-    last_name: string,
-    avatar: string ,
-    bio: string
-}
-interface userType {
-    id: number,
-    username: string,
-    profile: profileType,
-}
-
-export interface clubsType {
-    id: number,
-    name: string,
-    description: string,
-    club_avatar: string,
-    cafe: number,
-    members: number[],
-}
+import { fetchAllUsersInArea, sendFollowReq, sendUnfollowReq } from "@/lib/fetchs"
+import { userType, clubsType } from "@/lib/types"
+import { jwtDecode } from "jwt-decode"
 
 
 
-const UsersWrapper = ({users}:{users:userType[]}) => {
+const UsersWrapper = () => {
+
+    const [loading, setLoading] = useState(true)
+    const [users, setUsers] = useState<userType[]>()
+    const client = jwtDecode(localStorage?.getItem('access'))
+    const [followed, setFollowed] = useState(false)
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const _users = await fetchAllUsersInArea()
+            setUsers(_users)
+            setLoading(false)
+        }
+        fetchUsers()
+        console.log(client.user_id)
+    }, [UsersWrapper])
 
     return (
         <>
         <div className="grid grid-cols-12 p-4">
-                {
+                {   
+                    loading ?
+
+                    <div className="w-full text-center col-span-12">
+                        <h1 className="text-lg font-bold py-4 w-full text-center">
+                            درحال بارگزاری...
+                        </h1>
+                    </div> :
+
                     users.map(user => [
                         <>
-                        { user.profile.first_name && user.profile.last_name != null && 
-                        <div key={user.id} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
-                            <div className="w-full flex items-center">
-                                <div className="py-4 w-3/12">
-                                    <img src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
+                        { client.username == user.username ? "" :
+                            user.profile.followers.some(e => e == client.user_id) ? "" : (user.profile.first_name != null && user.profile.last_name != null) && 
+                            <div key={user.id} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
+                                <div className="w-full flex items-center">
+                                    <div className="py-4 w-3/12">
+                                        <img src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
+                                    </div>
+                                    <div className="py-4 pe-4 w-6/12">
+                                        <span className="text-lg">
+                                            {user.profile.first_name} {user.profile.last_name}
+                                        </span>
+                                        <br />
+                                        <span className="text-justify">
+                                            {user.profile.bio.length > 20 ? user.profile.bio.substring(0, 20) + '...' : user.profile.bio }
+                                        </span>
+                                    </div>
+                                    <div className="p-4 w-3/12">
+                                        {
+                                        !followed &&    
+                                        <SendFollowButton onClick={async (e) => {
+                                            await sendFollowReq(user.id)
+                                            setFollowed(true)
+                                        }} />
+
+                                        }
+                                        {
+                                            followed &&
+                                            <SendUnfollowButton onClick={async (e) => {
+                                                await sendUnfollowReq(user.id)
+                                                setFollowed(false)
+                                            }} /> 
+                                        }
+                                    </div>
                                 </div>
-                                <div className="py-4 pe-4 w-6/12">
-                                    <span className="text-lg">
-                                        {user.profile.first_name} {user.profile.last_name}
-                                    </span>
-                                    <br />
-                                    <span className="text-justify">
-                                        {user.profile.bio.length > 20 ? user.profile.bio.substring(0, 20) + '...' : user.profile.bio }
-                                    </span>
-                                </div>
-                                <div className="p-4 w-3/12">
-                                    <SendFollowButton userId={user.id} />
+                                <div className="w-full">
+                                
                                 </div>
                             </div>
-                            <div className="w-full">
-                            
-                            </div>
-                        </div>
                         }
                         </>
-                    ])
+                    ]) 
                 }
             </div>
         </>
@@ -99,16 +119,20 @@ const ClubsWrapper = () => {
             setLoading(false)
         }
         getClubs()
-    })
+    }, [ClubsWrapper])
 
     return (
         <>
         {
-            loading ? <span className="mt-10 w-full text-center">درحال بارگزاری</span> :
+            loading ? <div className="w-full text-center col-span-12">
+            <h1 className="text-lg font-bold py-4 w-full text-center">
+                درحال بارگزاری...
+            </h1>
+        </div>:
             clbs.map(
                 club => [
                     <div key={club.id} className="p-4 mt-4">
-                        <div className='w-full rounded-lg shadow p-3'>
+                        <div className='w-full rounded-3xl shadow p-3'>
                             <div className="p-4 w-full flex items-center">
                                 <div className="img-container">
                                     <img src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover' alt="" />
@@ -136,7 +160,7 @@ const ClubsWrapper = () => {
 
 
 
-export const SocialTabsWrapper = ({usersObject}:{usersObject: userType[]}) => {
+export const SocialTabsWrapper = () => {
 
     const users = useRef()
     const clubs = useRef()
@@ -174,15 +198,15 @@ export const SocialTabsWrapper = ({usersObject}:{usersObject: userType[]}) => {
         <>
             <div className="w-full grid grid-cols-12 border-b">
                 <div className="col-span-6 p-4">
-                    <button ref={users} className="w-full block p-3 rounded-lg shadow" onClick={() => toggleTabs('users')}>کاربران</button>
+                    <button ref={users} className="w-full block p-3 rounded-2xl shadow" onClick={() => toggleTabs('users')}>کاربران</button>
                 </div>
                 <div  className="col-span-6 p-4">
-                    <button ref={clubs} className="w-full block p-3 rounded-lg" onClick={() => toggleTabs('clubs')}>پاتوق ها</button>
+                    <button ref={clubs} className="w-full block p-3 rounded-2xl" onClick={() => toggleTabs('clubs')}>پاتوق ها</button>
                 </div>
             </div>
 
             <div className="w-full md:container">
-                { tab == "users" && <UsersWrapper users={usersObject} /> }
+                { tab == "users" && <UsersWrapper /> }
                 
                 { tab == "clubs" && <ClubsWrapper /> }
                 

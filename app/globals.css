@@ -67,15 +67,19 @@
     }
 
     .btn-blue {
-      @apply  text-white bg-blue-400 hover:bg-blue-400 transition font-bold text-md w-full rounded-xl border-b-4 border-b-blue-700;
+      @apply  text-white bg-blue-400 hover:bg-blue-400 transition font-bold text-md w-full rounded-3xl border-b-4 border-b-blue-700;
+    }
+
+    .btn-circle-slate {
+      @apply text-brown-normal rounded-full bg-slate-100;
     }
 
     .btn-green {
-      @apply text-white bg-emerald-400 hover:bg-emerald-500 transition font-bold text-md w-full rounded-xl border-b-4 border-b-emerald-700 ;
+      @apply text-white bg-emerald-400 hover:bg-emerald-500 transition font-bold text-md w-full rounded-3xl border-b-4 border-b-emerald-700 ;
     }
 
     .btn-brown {
-      @apply text-brown-normal bg-yellow-very-melo border border-brown-dark transition font-bold text-md w-full rounded-xl border-b-4 border-b-brown-dark ;
+      @apply text-brown-normal bg-yellow-very-melo border border-brown-dark transition font-bold text-md w-full rounded-3xl border-b-4 border-b-brown-dark ;
     }
 
     .btn-red {

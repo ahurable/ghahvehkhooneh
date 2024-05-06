@@ -6,9 +6,11 @@ import { FormEvent } from "react"
 import { cookies } from 'next/headers'
 import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
+import { SuccessModal } from "@/layouts/Modals/MessageModals"
 
 const Login = () => {
 
+    const [success, setSuccess] = useState(false)
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -20,10 +22,9 @@ const Login = () => {
         const data = await response.json()
         // window.alert(data)
         if (response.status == 200) {
-            alert("ورود موفق")
+            setSuccess(true)
             localStorage.setItem('access', data.access)
             localStorage.setItem('refresh', data.refresh)
-            location.replace('/profile')
         } else if (response.status == 401) {
             window.alert("مشخصات ورود اشتباه است")
         } else {
@@ -31,6 +32,7 @@ const Login = () => {
         }
     }
 
+ 
     return (
         <main className="w-full h-full bg-brown-light">
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
@@ -62,6 +64,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            <SuccessModal title="موفق" description="شما با موفقیت وارد حساب کاربری خود شدید" redirectPath="/main" state={success} />
         </main>
         )
     }

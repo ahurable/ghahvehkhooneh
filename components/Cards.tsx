@@ -18,7 +18,7 @@ export const PersonalityCard = ({iconName, altText, onClick}:{iconName: IconDefi
                             { altText }
                         </span>
                     </div>
-                    <span className="absolute h-full left-0 top-0 opacity-35 text-brown-normal z-10 overflow-hidden">
+                    <span className="absolute h-full left-2 top-0 opacity-35 text-brown-normal z-10 overflow-hidden">
                         <FontAwesomeIcon icon={iconName} className="text-[90px]" />
                     </span>
                 </div>

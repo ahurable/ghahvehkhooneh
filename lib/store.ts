@@ -3,6 +3,8 @@ import { profileModalReducer } from './features/profileModalSlice'
 import { menuReducer } from './features/menuMobileSlice'
 import { avatarModalReducer } from './features/avatarModalSlice'
 import { hobbyModalReducer } from './features/hobbyModalSlice'
+import { jobModalReducer } from './features/jobModalSlice'
+import { musicGenreModalReducer } from './features/mgenreModalSlice'
 
 
 export const makeStore = () => {
@@ -12,6 +14,8 @@ export const makeStore = () => {
         menumobile: menuReducer,
         avatarmodal: avatarModalReducer,
         hobbymodal: hobbyModalReducer,
+        jobmodal: jobModalReducer,
+        mgenremodal: musicGenreModalReducer,
     }
   })
 }

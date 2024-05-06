@@ -1,8 +1,4 @@
-import { SendFollowButton } from "@/components/Buttons"
 import { LOCALHOST } from "@/lib/variebles"
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { jwtDecode } from "jwt-decode"
 import { SocialTabsWrapper } from "@/components/tabs/SocialTabs"
 
 export interface userInArea {
@@ -31,14 +27,12 @@ const fetchUsers = async ():Promise<userInArea[]> => {
 const Page = async () => {
 
 
-    const users = await fetchUsers()
-
     return (
         <div className="w-full">
             <div className=" text-center border-b">
                 <h1 className="title-wrapper text-lg text-brown-dark p-5"> اجتماعی </h1>
             </div>
-            <SocialTabsWrapper usersObject={users} />
+            <SocialTabsWrapper />
         </div>
     )
 

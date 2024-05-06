@@ -35,7 +35,7 @@ const Footer = () => {
             
             <div className="w-full z-20 border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
-                    <div className="col-span-3 p-3 ">
+                    <div className="col-span-4 p-3 ">
                         <div className="w-full text-center">
                             <span className="text-brown-dark">
                                 {
@@ -49,7 +49,20 @@ const Footer = () => {
                             </Link>
                         </div>
                     </div>
-                    <div className="col-span-3 p-3 ">
+                    <div className="col-span-4 p-3 ">
+                        <a href="/main">
+                            <div className="w-full text-center">
+                                <span className="text-brown-dark">
+                                    <FontAwesomeIcon icon={faHome}/>
+                                </span>
+                                <br />
+                                <span className="text-xs text-brown-dark">
+                                    خانه
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                    <div className="col-span-4 p-3 ">
                         <div className="w-full text-center">
                             <span className="text-brown-dark">
                                 <FontAwesomeIcon icon={faCoffee}/>
@@ -58,30 +71,6 @@ const Footer = () => {
                             <Link href='/cafe' className="text-xs text-brown-dark">
                                 کافه ها
                             </Link>
-                        </div>
-                    </div>
-                    <div className="col-span-3 p-3 ">
-                        <div className="w-full text-center">
-                            <a href="/social">
-                                <span className="text-brown-dark">
-                                    <FontAwesomeIcon icon={faUsers}/>
-                                </span>
-                                <br />
-                                <span className="text-xs text-brown-dark">
-                                    اجتماعی
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div className="col-span-3 p-3 ">
-                        <div className="w-full text-center">
-                            <span className="text-brown-dark">
-                                <FontAwesomeIcon icon={faHome}/>
-                            </span>
-                            <br />
-                            <span className="text-xs text-brown-dark">
-                                خانه
-                            </span>
                         </div>
                     </div>
                 </div>

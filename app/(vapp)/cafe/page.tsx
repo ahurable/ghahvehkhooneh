@@ -3,7 +3,6 @@ import React from 'react'
 import { LOCALHOST } from '@/lib/variebles'
 import { CafeCard, cafeCard } from '@/components/CafeComponents'
 import Image from 'next/image'
-import { InviteButton } from '@/components/Invite'
 
 
 async function getData():Promise<cafeCard[]>  {
@@ -57,8 +56,6 @@ export default async function Page() {
                 }
                 </div>
             </div>
-
-            <InviteButton/>
         
         </React.Fragment>
     )

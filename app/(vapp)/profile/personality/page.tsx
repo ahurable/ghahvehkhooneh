@@ -3,9 +3,11 @@ import Image from "next/image"
 import image from "@/assets/img/personality.jpeg"
 import { PersonalityCard } from "@/components/Cards"
 import { faFilm, faGamepad, faMusic } from "@fortawesome/free-solid-svg-icons"
-import { HobbyModal } from "@/layouts/Modals/PersonalityModals"
+import { HobbyModal, JobModal, MusicModal } from "@/layouts/Modals/PersonalityModals"
 import { useAppDispatch } from "@/lib/hook"
 import { setHobbyModalState } from "@/lib/features/hobbyModalSlice"
+import { setJobModalState } from "@/lib/features/jobModalSlice"
+import { setMGenreModalState } from "@/lib/features/mgenreModalSlice"
 
 const Personality = () => {
 
@@ -32,7 +34,7 @@ const Personality = () => {
                     </div>
                     <div className="p-4 pt-0">
                         <PersonalityCard iconName={faGamepad} altText="افزودن سرگرمی مورد علاقه" onClick={() => {dispatch(setHobbyModalState(true))}}/>
-                        <PersonalityCard iconName={faMusic} altText="افزودن موسیقی مورد علاقه" onClick={() => {}} />
+                        <PersonalityCard iconName={faMusic} altText="افزودن موسیقی مورد علاقه" onClick={() => {dispatch(setMGenreModalState(true))}} />
                         <PersonalityCard iconName={faFilm} altText="افزودن فیلم های مورد علاقه" onClick={() => {}}/>
                     </div>
                     
@@ -41,6 +43,7 @@ const Personality = () => {
                 
             </div>
             <HobbyModal/>
+            <MusicModal/>
         
         </>
     )
