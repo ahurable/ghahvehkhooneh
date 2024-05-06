@@ -118,13 +118,31 @@ class Food(models.Model):
     
 
 
+
+class MusicGenre(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+
+
+class Job(models.Model):
+    name = models.CharField(max_length=200)
+    def __str__(self) -> str:
+        return self.name
+    
+
+
+
 class Personality(models.Model):
-    music_taste = models.CharField(max_length=100, null=True, blank=True)
-    hobbies = models.ManyToManyField(Hobby, related_name='hobbies', null=True, blank=True)
-    favourite_foods = models.ManyToManyField(Food, related_name='favourite_foods', null=True, blank=True)
+    music_taste = models.ManyToManyField(MusicGenre, related_name='personalities', null=True, blank=True)
+    hobbies = models.ManyToManyField(Hobby, related_name='personalities', null=True, blank=True)
+    favourite_foods = models.ManyToManyField(Food, related_name='personalities', null=True, blank=True)
+    job = models.ManyToManyField(Job, related_name="personalities", null=True, blank=True)
     social_twitter = models.CharField(max_length=1000, null=True, blank=True)
     social_instagram = models.CharField(max_length=1000, null=True, blank=True)
-    job = models.CharField(max_length=100, null=True, blank=True)
     user = models.OneToOneField(CustomUser, related_name='personality', on_delete=models.CASCADE)
 
     def __str__(self) -> str:

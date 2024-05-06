@@ -8,6 +8,11 @@ class AllFieldsClubSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class SmallDetailedClubSerializer(ModelSerializer):
+    class Meta:
+        model = Club
+        fields = ['id', 'name']
+
 class DetialedMembersClubSerializer(ModelSerializer):
     members = GetUserWithAnyProfileSerializer(many=True)
     class Meta:
@@ -50,7 +55,26 @@ class CafeListSerializer(ModelSerializer):
         fields = ['id', 'name', 'address', 'about', 'picture', 'ratings']
 
 
+
 class EventSerializer(ModelSerializer):
+    club = AllFieldsClubSerializer
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+
+class DetailedEventSerializer(ModelSerializer):
+    participations = GetUserWithAnyProfileSerializer
+    invited = GetUserWithAnyProfileSerializer
+    club = AllFieldsClubSerializer
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+
+
+class EventSerializer(ModelSerializer):
+    club = SmallDetailedClubSerializer
     class Meta:
         model = Event
         fields = '__all__'

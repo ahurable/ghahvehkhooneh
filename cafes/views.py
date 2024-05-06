@@ -1,9 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import serializers
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
-from .serializers import CafeSerializer, CafeListSerializer, AllFieldsClubSerializer, DetialedMembersClubSerializer
-from .models import Cafe, Club
+from rest_framework.decorators import api_view, permission_classes
+from django.shortcuts import get_object_or_404
+import datetime
+from .serializers import *
+from .models import *
 # Create your views here.
 
 
@@ -29,6 +33,20 @@ class AddCafeView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
         
 
+
+class AllCafeCardListView(ListAPIView):
+
+    class Serializer(serializers.ModelSerializer):
+        class Meta:
+            model = Cafe
+            fields = ['id', 'name', 'about', 'picture']
+
+    serializer_class = Serializer
+    queryset = Cafe.objects.all().filter(is_approved=True)
+
+
+
+
 class GetAllClubsView(ListAPIView):
 
     serializer_class = AllFieldsClubSerializer
@@ -43,4 +61,55 @@ class GetAllClubsView(ListAPIView):
 class GetClubInformationView(RetrieveAPIView):
     serializer_class = DetialedMembersClubSerializer
     queryset = Club.objects.all()
+    
+
+class CreateEventView(CreateAPIView):
+    serializer_class = EventSerializer
+    queryset = Event.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class ListEventView(ListAPIView):
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+    def get_queryset(self):
+        if (self.request.user.is_authenticated):
+            if (self.user.clubs.length > 0):
+                try:
+                    qs = Event.objects.all().filter(members__in=self.request.user)
+                except:
+                    qs = Event.objects.all()
+            qs = Event.objects.all()
+        qs = Event.objects.all()
+        return qs
+
+            
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def participantInEventView(request, event_id):
+    event_instance = get_object_or_404(Event, id=event_id)
+    event_instance.participents.add(request.user)
+    return Response({'succeed':'you\'ve benn added to the participants of this event'}, status=201)   
+
+
+@api_view(['POST'])
+def offerCafeView(request):
+
+    class CafeNameSeriailzer(serializers.Serializer):
+        name = serializers.CharField()
+
+    class CafeIdNameSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Cafe
+            fields = ['id', 'name']
+
+    serializer = CafeNameSeriailzer(data=request.data)
+
+    if serializer.is_valid():
+        print(serializer.data)
+        cafes = Cafe.objects.all().filter(name__contains=serializer.data['name'])
+        res_serializer = CafeIdNameSerializer(cafes, many=True)
+        return Response(res_serializer.data)
     

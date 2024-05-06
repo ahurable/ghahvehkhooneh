@@ -5,11 +5,11 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.serializers import ModelSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import CreateUserSerializer, CustomUser as User, AvatarSerializer, GetUserWithAnyProfileSerializer, GetAllUsersInAreaSerializer, HobbySerializer
+from .serializers import *
 from rest_framework.generics import UpdateAPIView
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
-from .models import Profile, Hobby, Personality
+from .models import Profile, Hobby, Personality, CustomUser as User
 # Create your views here.
 
 
@@ -96,31 +96,89 @@ class FollowRequestView(APIView):
         instance = User.objects.get(id=id)
         profile = Profile.objects.get(user__id=request.user.id)
         profile.following.add(instance)
-        Profile.objects.get(user=instance).following.add(instance)
+        Profile.objects.get(user=instance).followers.add(request.user)
 
         return Response({'success':'u added a user successfully to your followings'}, status=200)
     
 
 
-class OfferHobbyHook(APIView):
-    def post(self, request):
-        serializer = HobbySerializer(data=request.data)
-        if serializer.is_valid():
-            print(serializer.data['name'])
-            instance = Hobby.objects.all().filter(name__contains=serializer.data['name'])
-            serialized_response = HobbySerializer(instance, many=True)
-            return Response(serialized_response.data)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def unfollowRequestView(request, id):
+    instance = User.objects.get(id=id)
+    profile = Profile.objects.get(user__id=request.user.id)
+    if instance in profile.following.all():
+        profile.following.remove(instance)
+        Profile.objects.get(id=id).followers.remove(request.user)
+        return Response({'success':'user has removed from your followings with successfully'}, status=200)
+
+
+@api_view(['POST'])
+def offerHobbyHook(request):
+    serializer = HobbySerializer(data=request.data)
+    if serializer.is_valid():
+        print(serializer.data['name'])
+        instance = Hobby.objects.all().filter(name__contains=serializer.data['name'])
+        serialized_response = HobbySerializer(instance, many=True)
+        return Response(serialized_response.data)
         
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addHobbyHook(request):
-    print(request.data)
-    serializer = HobbySerializer(data= request.data)
-    validated_data = serializer.is_valid(raise_exception=True)
-    print(validated_data)
-    hobby_instance = Hobby.objects.get_or_create(name=validated_data['name'])
-    personality_instance = Personality.objects.get(user__id=request.user.id)
-    personality_instance.hobbies.add(hobby_instance)
-    return Response({'success':'u added hobby with successfully'}, status=200)
+    serializer = HobbySerializer(data=request.data)
+    if serializer.is_valid():
+        validated_data = serializer.data
+        hobby_instance = Hobby.objects.get_or_create(name=validated_data['name'])
+        personality_instance = Personality.objects.get(user__id=request.user.id)
+        personality_instance.hobbies.add(hobby_instance[0].id)
+        return Response({'success':'u added hobby with successfully'}, status=200)
+    
+
+
+@api_view(['POST'])
+def offerJobHook(request):
+    serializer = JobSerializer(data=request.data)
+    if serializer.is_valid():
+        instance = Job.objects.all().filter(name__contains=serializer.data['name'])
+        serialized_response = JobSerializer(instance, many=True)
+        return Response(serialized_response.data)
+    return Response({'job':'job does not exists'}, status=404)
+        
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addJobHook(request):
+    serializer = JobSerializer(data=request.data)
+    if serializer.is_valid():
+        validated_data = serializer.data
+        job_instance = Job.objects.get_or_create(name=validated_data['name'])
+        personality_instance = Personality.objects.get(user__id=request.user.id)
+        personality_instance.job.add(job_instance[0].id)
+        return Response({'success':'u added hobby with successfully'}, status=200)
+    
+
+
+@api_view(['POST'])
+def offerMusicGenreHook(request):
+    serializer = MusicGenreSerializer(data=request.data)
+    if serializer.is_valid():
+        instance = MusicGenre.objects.all().filter(name__contains=serializer.data['name'])
+        serialized_response = JobSerializer(instance, many=True)
+        return Response(serialized_response.data)
+    # return Response({'job':'job does not exists'}, status=404)
+        
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addMusicGenreHook(request):
+    serializer = MusicGenreSerializer(data=request.data)
+    if serializer.is_valid():
+        validated_data = serializer.data
+        genre_instance = MusicGenre.objects.get_or_create(name=validated_data['name'])
+        personality_instance = Personality.objects.get(user__id=request.user.id)
+        personality_instance.music_taste.add(genre_instance[0].id)
+        return Response({'success':'u added hobby with successfully'}, status=200)

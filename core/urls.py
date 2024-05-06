@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from cafes.views import AddCafeView, CafeListView, CafeView, GetAllClubsView, GetClubInformationView
+from cafes.views import *
 from posts.views import *
 from users.views import *
 
@@ -38,17 +38,28 @@ urlpatterns = [
     # users
     path('api/users/all-in-area/', GetAllUsers.as_view(), name='get-all-users-area-url'),
     path('api/users/follow/<int:id>/', FollowRequestView.as_view(), name='follow-request-url'),
+    path('api/users/unfollow/<int:id>/', unfollowRequestView, name="unfollow-request-url"),
     # cafe urls
     path('api/cafes/add/', AddCafeView.as_view(), name="add-cafe-url"),
     path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url"),
     path('api/cafes/detail/<int:id>/', CafeView.as_view(), name="cafe-detail-url"),
     path('api/cafes/clubs/', GetAllClubsView.as_view(), name='clubs-list-url'),
     path('api/cafes/clubs/<int:pk>/', GetClubInformationView.as_view(), name="club-details-url"),
+    path('api/cafes/list/cards/', AllCafeCardListView.as_view(), name='all-cafe-card-url'),
+    path('api/events/create/', CreateEventView.as_view(), name='create-event-url'),
+    path('api/events/all/', ListEventView.as_view(), name="list-events-url"),
     # hooks
     path('hook/users/get-profile/<int:id>/', GetAnyProfileInformation.as_view(), name="get-profile-hook"),
-    path('hook/offer-hobby/', OfferHobbyHook.as_view(), name='offer-hobby-hook'),
-    path('hook/add-hobby/', addHobbyHook, name='add-hobby-hook')
+    path('hook/offer-hobby/', offerHobbyHook, name='offer-hobby-hook'),
+    path('hook/add-hobby/', addHobbyHook, name='add-hobby-hook'),
+    path('hook/offer-job/', offerJobHook, name='offer-job-hook'),
+    path('hook/add-job/', addJobHook, name='add-job-hook'),
+    path('hook/offer-music-genre/', offerMusicGenreHook, name='offer-music-genre-hook'),
+    path('hook/add-music-genre/', addMusicGenreHook, name='add-music-genre-hook'),
+    path('hook/participant/', participantInEventView, name='participant-url'),
+    path('hook/offer-cafe/', offerCafeView, name='offer-cafe-url'),
 ]
+
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

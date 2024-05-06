@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from colorama import Fore
 from rest_framework_simplejwt.tokens import Token
-from .models import CustomUser, Profile, Hobby, Food, Personality
+from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,6 +103,28 @@ class HobbySerializer(serializers.ModelSerializer):
     class Meta:
         model = Hobby
         fields = '__all__'
+
+
+
+class MusicGenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MusicGenre
+        fields = '__all__'
+
+
+
+class JobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+
+
+class FoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = '__all__'
+
 
 
 class PersonalitySerializer(serializers.ModelSerializer):

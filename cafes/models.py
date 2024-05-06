@@ -70,15 +70,7 @@ class MenuItem(models.Model) :
         return self.item
     
 
-class Event(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    picture = models.ImageField(upload_to=event_image_upload, blank=True, null=True)
-    date = models.DateTimeField()
-    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='events')
 
-    def __str__(self) -> str:
-        return self.name
     
 
 class Club(models.Model):
@@ -86,8 +78,22 @@ class Club(models.Model):
     description = models.TextField()
     club_avatar = models.ImageField()
     cafe = models.OneToOneField(Cafe, on_delete=models.CASCADE, related_name='club')
+    owner = models.ForeignKey(User, related_name="his_clubs", on_delete=models.CASCADE)
     members = models.ManyToManyField(User, related_name='clubs')
 
     def __str__(self) -> str:
         return f'{self.cafe.name} {self.name}'
     
+
+class Event(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    date = models.DateTimeField()
+    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='events')
+    club = models.ForeignKey(Club, related_name="events", on_delete=models.CASCADE)
+    intvited = models.ManyToManyField(User, related_name="suggestions")
+    participents = models.ManyToManyField(User, related_name="participations")
+
+
+    def __str__(self) -> str:
+        return self.name
