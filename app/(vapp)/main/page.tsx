@@ -1,5 +1,7 @@
+
 import logo from "@/assets/img/logo72x72.png"
 import { AddButton } from "@/components/Buttons"
+import EventWrapper from "@/components/Events"
 import { CafeCardListSliderWrapper, CardWrapper } from "@/components/main/slider"
 import { faPeopleGroup } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,9 +10,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 
 const Page = () => {
+
     return (
         <>
-        <AddButton url={"/add/event"} />
+        <AddButton url={"/add"} />
             <div className="w-full relative">
                 <div className=" text-center shadow flex items-center justify-center">
                     <div className="w-10 h-10 me-2">
@@ -27,9 +30,23 @@ const Page = () => {
 
             <div className="my-8">
                 <div className="p-4">
+                    <span className="w-4 h-4 rounded-full bg-red-400 p-1 me-4"></span>
                     <span className="text-brown-normal">کافه های محدوده شما</span>
                 </div>
                 <CafeCardListSliderWrapper />
+            </div>
+
+
+            <div className="w-full p-4">
+                <div className="bg-brown-normal text-center py-10 rounded-3xl"><span className="text-yellow-very-melo text-xl">دوستان تو پیدا کن</span></div>
+            </div>
+
+            <div>
+                <div className="p-4">
+                    <span className="w-4 h-4 rounded-full bg-green-400 p-1 me-4"></span>
+                    <span className="text-brown-normal">رویداد های فعال</span>
+                </div>
+                <EventWrapper />
             </div>
         </>
     )

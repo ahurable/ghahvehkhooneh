@@ -83,7 +83,7 @@
     }
 
     .btn-red {
-      @apply text-white bg-red-400 hover:bg-red-500 transition font-bold text-md w-full rounded-xl border-b-4 border-b-red-700 ;
+      @apply text-white bg-red-400 hover:bg-red-500 transition font-bold text-md w-full rounded-3xl border-b-4 border-b-red-700 ;
     }
 }
 

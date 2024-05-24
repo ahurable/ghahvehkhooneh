@@ -5,6 +5,8 @@ import { avatarModalReducer } from './features/avatarModalSlice'
 import { hobbyModalReducer } from './features/hobbyModalSlice'
 import { jobModalReducer } from './features/jobModalSlice'
 import { musicGenreModalReducer } from './features/mgenreModalSlice'
+import { eventStepReducer } from './features/eventStep'
+import { adminReducer } from './features/adminModalSlice'
 
 
 export const makeStore = () => {
@@ -16,6 +18,8 @@ export const makeStore = () => {
         hobbymodal: hobbyModalReducer,
         jobmodal: jobModalReducer,
         mgenremodal: musicGenreModalReducer,
+        eventStep: eventStepReducer,
+        admin: adminReducer,
     }
   })
 }

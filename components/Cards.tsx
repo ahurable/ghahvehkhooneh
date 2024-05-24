@@ -4,7 +4,7 @@ import { MouseEvent, MouseEventHandler } from "react"
 
 
 
-export const PersonalityCard = ({iconName, altText, onClick}:{iconName: IconDefinition, altText:string, onClick:MouseEventHandler}) => {
+export const TrimedIconCard = ({iconName, altText, onClick}:{iconName: IconDefinition, altText:string, onClick:MouseEventHandler}) => {
     return (
         <>
         

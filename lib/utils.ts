@@ -11,11 +11,11 @@ const refreshToken = async (refresh:string) => {
         }
     })
     const data = await res.json()
-    if (data.access){
+    if ('access' in data){
         localStorage.removeItem('access')
         localStorage.setItem('access', data.access)
     } else {
-        location.replace('/')
+        location.replace('/logout')
     } 
 }
 

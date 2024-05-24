@@ -1,4 +1,5 @@
 "use client"
+import { SuccessModal } from "@/layouts/Modals/MessageModals"
 import { LOCALHOST } from "@/lib/variebles"
 import { FormEvent, useEffect, useRef, useState } from "react"
 
@@ -18,7 +19,7 @@ export const InputWithLiveFetch = ({inputName, liveFetchAddress, placeholder, la
 }) => {
     
     const [data, setData] = useState<hobbyType[]>()
-
+    const [success, setSuccess] = useState<boolean>(false)
     const fetchKeywords = async (e:FormEvent) => {
         e.preventDefault()
         if(e.currentTarget.value.length == 0) {
@@ -37,7 +38,7 @@ export const InputWithLiveFetch = ({inputName, liveFetchAddress, placeholder, la
         })
         if (!res.ok) {
             throw new Error('failed to fetch data from offer hook!')
-        }
+        } 
         const _data = await res.json()
         setData(_data)
     }
@@ -58,7 +59,10 @@ export const InputWithLiveFetch = ({inputName, liveFetchAddress, placeholder, la
         })
 
         if(res.ok) {
-            console.log(`added to your ${inputName}`)
+            const handleAsync = async () =>{
+                await setSuccess(true)
+            }
+            handleAsync()
         }
     }
 
@@ -85,7 +89,7 @@ export const InputWithLiveFetch = ({inputName, liveFetchAddress, placeholder, la
                     ""
                 }
             </div>
-            
+            <SuccessModal description={'با موفقیت اضافه شد'} state={success} />
         </>
     )
 
