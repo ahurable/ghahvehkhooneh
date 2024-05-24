@@ -97,6 +97,7 @@ export interface eventDetail {
     description: string | null,
     date: string,
     invited: userWithAnyProfileType[],
+    created_by: userWithAnyProfileType,
 }
 
 export interface cafeDetailedType {

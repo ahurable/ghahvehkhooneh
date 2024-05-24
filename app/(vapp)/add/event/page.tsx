@@ -15,9 +15,8 @@ const Page = () => {
                 <h1 className="text-lg">خلق رویداد جدید</h1>
             </div>
             
-            { step == 0 && <SelectCafe />}
-            { step == 1 && <SelectClubs /> }
-            { step == 2 && <CreateEventForm/>}
+            { step == 0 && <SelectClubs /> }
+            { step == 1 && <CreateEventForm/>}
 
         </>
     )

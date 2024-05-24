@@ -41,7 +41,7 @@ interface profileType {
 const Profile = () => {
     const [open, setOpen] = useState(false)
     const [profile, setProfile] = useState<profileType[]>()
-    const [personality, setPersonality] = useState<personalityType | null>()
+    const [personality, setPersonality] = useState<personalityType | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
 
     const dispatch = useAppDispatch()
@@ -59,7 +59,9 @@ const Profile = () => {
                 const data = await res.json()
                 console.log(data)
                 setProfile(data.profile)
-                setPersonality(data.personality)
+                if (data.personality) {
+                    setPersonality(data.personality)
+                }
                 setLoading(false)
             }
             handleAsync()
@@ -94,7 +96,7 @@ const Profile = () => {
                                             { profile.first_name == '' ? 
                                                 localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "نام کاربری" 
                                                 :
-                                                profile.first_name + " " + profile.last_name 
+                                                profile.first_name == null ? "نام خود را تنظیم کنید" : profile.first_name + " " && + profile.last_name == null ? "نام خانوادگی خود را تنظیم کنید" : profile.last_name
                                             }
                                         </h1>
                                         <span>{ profile.bio ? profile.bio : "بیو خود را تنظیم کنید"}</span>
@@ -117,7 +119,7 @@ const Profile = () => {
                             </div>
                             {
                                 personality != null && 
-                                personality.hobbies.length > 0 && <div className="w-full">
+                                personality.hobbies != undefined && personality.hobbies.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
                                         <span className="font-bold text-sm mx-4 my-2 py-2">سرگرمی ها: </span>
                                        { personality.hobbies.map(hobby => [
@@ -128,7 +130,7 @@ const Profile = () => {
                             }
                             {
                                 personality != null && 
-                                personality.favourite_foods.length > 0 && <div className="w-full">
+                                personality.favourite_foods != undefined && personality.favourite_foods.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
                                         <span className="font-bold text-sm mx-4 my-2 py-2">غذاهای مورد علاقه: </span>
                                        { personality.favourite_foods.map(hobby => [
@@ -139,7 +141,7 @@ const Profile = () => {
                             }
                             {
                                 personality != null && 
-                                personality.music_taste.length > 0 && <div className="w-full">
+                                personality.music_taste != undefined && personality.music_taste.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
                                         <span className="font-bold text-sm mx-4 my-2 py-2">سلیقه موسیقی: </span>
                                        { personality.music_taste.map(hobby => [

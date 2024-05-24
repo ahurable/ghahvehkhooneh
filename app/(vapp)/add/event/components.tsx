@@ -10,7 +10,6 @@ import { setEventCafe, setEventClub, setEventStep } from "@/lib/features/eventSt
 export const CreateEventForm = () => {
     const [success, setSuccess] = useState(false)
 
-    const cafe = useAppSelector(state => state.eventStep.cafe)
     const club = useAppSelector(state => state.eventStep.club)
 
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
@@ -28,7 +27,6 @@ export const CreateEventForm = () => {
                 body: JSON.stringify({
                     name: formData.get('name'),
                     description: formData.get('description'),
-                    cafe: cafe,
                     club: club
                 })
             }
@@ -67,7 +65,7 @@ export const SelectClubs = () => {
 
     const [loading, setLoading] = useState(true)
     const [clubs, setClubs] = useState<smallClubType[]>()
-
+    const [ hasClub, setHasClub ] = useState<boolean>(true)
     useEffect(() => {
         const fetchUserClubs = async () => {
             const token = localStorage.getItem('access')
@@ -76,9 +74,11 @@ export const SelectClubs = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            if (!res.ok) {
+            if (res.status == 400) {
+                setHasClub(false)
+            }else if (!res.ok) {
                 throw new Error('cant fetch from user clubs')
-            }
+            } 
             return res.json()
         }
         const asyncHandler = async () => {
@@ -87,7 +87,7 @@ export const SelectClubs = () => {
             setLoading(false)
         }
         asyncHandler()
-    })
+    }, [SelectClubs])
     const dispatch = useAppDispatch()
 
     return (
@@ -98,6 +98,10 @@ export const SelectClubs = () => {
                 {   loading ? 
                     <div className="col-span-12 pt-14">
                         <span className="text-lg font-bold text-center">در حال بارگیری...</span>
+                    </div>
+                    : hasClub == false ? 
+                    <div className="col-span-12 p-4 rounded-3xl shadow">
+                        <span>هیچ باشگاهی برای شما یافت نشد. شما باید توسط باشگاه به عنوان گرداننده شناخته شوید.</span>
                     </div>
                     :
                     clubs?.map(club => [
