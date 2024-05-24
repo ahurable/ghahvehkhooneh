@@ -27,7 +27,7 @@ class GetUserWithAnyProfileSerializer(serializers.ModelSerializer):
     profile = GetAnyProfileSerializer()
     class Meta:
         model = CustomUser
-        fields = ['profile']
+        fields = ['id', 'profile']
 
 
 class GetAllUsersInAreaSerializer(serializers.ModelSerializer):

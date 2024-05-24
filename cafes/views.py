@@ -68,8 +68,10 @@ class CreateEventView(APIView):
 
     permission_classes = [IsAuthenticated]
     def post(self, request):
+        club = Club.objects.get(id=request.data['club'])
+        request.data['cafe'] = club.cafe.id
+        request.data['created_by'] = request.user.id
         serializer = CreateEventSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response({'success':'Event created with successfully'})
@@ -96,12 +98,19 @@ class EventDetailView(RetrieveAPIView):
     queryset = Event.objects.all()
             
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def participantInEventView(request, event_id):
-    event_instance = get_object_or_404(Event, id=event_id)
-    event_instance.participents.add(request.user)
-    return Response({'succeed':'you\'ve benn added to the participants of this event'}, status=201)   
+    try:
+        event_instance = Event.objects.get(id=event_id)
+        print(event_instance)
+        user = User.objects.get(id=request.user.id)
+        event_instance.participents.add(user)
+        return Response({'succeed':'you\'ve benn added to the participants of this event'}, status=201)   
+
+    except Event.DoesNotExist:
+        print('could\'nt find event')
+        return Response({"404":"we could'nt find the event u submitted for"}, status=404)
 
 
 @api_view(['POST'])
@@ -128,7 +137,9 @@ def offerCafeView(request):
 @api_view(['GET'])
 def clubOfferHook(request):
     
-    clubs = Club.objects.all().filter(owner__id=request.user.id)
+    clubs = User.objects.get(id=request.user.id).his_clubs
     serializer = SmallDetailedClubSerializer(clubs, many=True)
+    if len(serializer.data) == 0:
+        return Response({'none':'no club'}, status=400)
     return Response(serializer.data)
 

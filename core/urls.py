@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/users/all-in-area/', GetAllUsers.as_view(), name='get-all-users-area-url'),
     path('api/users/follow/<int:id>/', FollowRequestView.as_view(), name='follow-request-url'),
     path('api/users/unfollow/<int:id>/', unfollowRequestView, name="unfollow-request-url"),
+    path('api/users/profile/<int:id>/', ProfileDetails.as_view()),
     # cafe urls
     path('api/cafes/add/', AddCafeView.as_view(), name="add-cafe-url"),
     path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url"),
@@ -61,7 +62,7 @@ urlpatterns = [
     path('hook/add-job/', addJobHook, name='add-job-hook'),
     path('hook/offer-music-genre/', offerMusicGenreHook, name='offer-music-genre-hook'),
     path('hook/add-music-genre/', addMusicGenreHook, name='add-music-genre-hook'),
-    path('hook/participant/', participantInEventView, name='participant-url'),
+    path('hook/participant/<int:event_id>/', participantInEventView, name='participant-url'),
     path('hook/offer-cafe/', offerCafeView, name='offer-cafe-url'),
     path('hook/user-clubs/', clubOfferHook),
 ]

@@ -75,6 +75,7 @@ class DetailedEventSerializer(ModelSerializer):
     club = AllFieldsClubSerializer()
     cafe = CafeNameSerializer()
     participents = GetUserWithAnyProfileSerializer(many=True)
+    created_by = GetUserWithAnyProfileSerializer()
     class Meta:
         model = Event
         fields = '__all__'
@@ -85,4 +86,5 @@ class DetailedEventSerializer(ModelSerializer):
 class CreateEventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'cafe', 'club']
+        fields = ['name', 'description', 'club', 'cafe', 'created_by']
+

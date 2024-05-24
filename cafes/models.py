@@ -83,6 +83,7 @@ class MenuItem(models.Model) :
     description = models.TextField()
     picture = models.ImageField(upload_to=menu_image_upload, blank=True, null=True)
     category = models.ManyToManyField(CategoryFood, related_name='items')
+    price = models.IntegerField(max_length=999)
     cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='menu_item')
 
     def __str__(self) -> str:
@@ -97,7 +98,7 @@ class Club(models.Model):
     description = models.TextField()
     club_avatar = models.ImageField()
     cafe = models.OneToOneField(Cafe, on_delete=models.CASCADE, related_name='club')
-    owner = models.ForeignKey(User, related_name="his_clubs", on_delete=models.CASCADE)
+    admin = models.ManyToManyField(User, related_name="his_clubs")
     members = models.ManyToManyField(User, related_name='clubs')
 
     def __str__(self) -> str:
@@ -112,6 +113,7 @@ class Event(models.Model):
     club = models.ForeignKey(Club, related_name="events", on_delete=models.CASCADE)
     intvited = models.ManyToManyField(User, related_name="suggestions")
     participents = models.ManyToManyField(User, related_name="participations")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
 
 
     def __str__(self) -> str:

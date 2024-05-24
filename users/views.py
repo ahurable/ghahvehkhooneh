@@ -144,8 +144,8 @@ def addHobbyHook(request):
     if serializer.is_valid():
         validated_data = serializer.data
         hobby_instance = Hobby.objects.get_or_create(name=validated_data['name'])
-        personality_instance = Personality.objects.get(user__id=request.user.id)
-        personality_instance.hobbies.add(hobby_instance[0].id)
+        personality_instance = Personality.objects.get_or_create(user=request.user)
+        personality_instance[0].hobbies.add(hobby_instance[0].id)
         return Response({'success':'u added hobby with successfully'}, status=200)
     
 
@@ -168,8 +168,8 @@ def addJobHook(request):
     if serializer.is_valid():
         validated_data = serializer.data
         job_instance = Job.objects.get_or_create(name=validated_data['name'])
-        personality_instance = Personality.objects.get(user__id=request.user.id)
-        personality_instance.job.add(job_instance[0].id)
+        personality_instance = Personality.objects.get_or_create(user=request.user)
+        personality_instance[0].job.add(job_instance[0].id)
         return Response({'success':'u added hobby with successfully'}, status=200)
     
 
@@ -192,8 +192,8 @@ def addMusicGenreHook(request):
     if serializer.is_valid():
         validated_data = serializer.data
         genre_instance = MusicGenre.objects.get_or_create(name=validated_data['name'])
-        personality_instance = Personality.objects.get(user__id=request.user.id)
-        personality_instance.music_taste.add(genre_instance[0].id)
+        personality_instance = Personality.objects.get_or_create(user=request.user)
+        personality_instance[0].music_taste.add(genre_instance[0].id)
         return Response({'success':'u added hobby with successfully'}, status=200)
     
 
@@ -266,3 +266,16 @@ class AddMenuItem(APIView):
 
             return Response({'success':"menu item added with successfully"}, status=200)
             
+
+
+class ProfileDetails(APIView):
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+            personality = Personality.objects.get(user=user)
+            u_serializer = GetUserWithAnyProfileSerializer(user)
+            p_serializer = PersonalitySerializer(personality)
+            return Response({'user':u_serializer.data, 'personality':p_serializer.data})
+
+        except:
+            return Response({'notfound':'user not found'}, status=404)
