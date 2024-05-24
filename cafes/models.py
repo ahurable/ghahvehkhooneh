@@ -32,6 +32,15 @@ def event_image_upload(instance, file):
     return new_path
 
 
+
+def category_image_upload(instance, file):
+    basename = os.path.basename(file)
+    name, ext = os.path.splitext(basename)
+    new_path = f'menu/{instance.name}/{name}{ext}'
+    return new_path
+
+
+
 class Cafe(models.Model):
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=100, blank=True, null=True)
@@ -39,7 +48,7 @@ class Cafe(models.Model):
     about = models.CharField(max_length=200)
     picture = models.ImageField(upload_to=cafe_image_upload, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
-    admin = models.ManyToManyField(User)
+    admin = models.ManyToManyField(User, related_name='cafes')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
 
     def __str__(self) -> str:
@@ -60,10 +69,20 @@ class Rating(models.Model):
         return f"{self.user} rating {self.rating} stars for {self.cafe}"
     
 
+
+class CategoryFood(models.Model):
+    name = models.CharField(max_length=200)
+    picture = models.ImageField(upload_to=category_image_upload, default=None, blank=True)
+    def __str__(self) -> str:
+        return self.name
+    
+
+
 class MenuItem(models.Model) :
     item = models.CharField(max_length=200)
     description = models.TextField()
     picture = models.ImageField(upload_to=menu_image_upload, blank=True, null=True)
+    category = models.ManyToManyField(CategoryFood, related_name='items')
     cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='menu_item')
 
     def __str__(self) -> str:
@@ -88,7 +107,7 @@ class Club(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='events')
     club = models.ForeignKey(Club, related_name="events", on_delete=models.CASCADE)
     intvited = models.ManyToManyField(User, related_name="suggestions")

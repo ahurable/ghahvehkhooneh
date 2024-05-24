@@ -9,7 +9,10 @@ from .serializers import *
 from rest_framework.generics import UpdateAPIView
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
+from cafes.serializers import *
+from cafes.models import *
 from .models import Profile, Hobby, Personality, CustomUser as User
+from .permissions import IsAdminOfCafe
 # Create your views here.
 
 
@@ -54,17 +57,27 @@ class UpdateAvatarView(UpdateAPIView):
 
 class ProfileInformation(APIView):
     permission_classes = [IsAuthenticated]
-    class Serializer(ModelSerializer):
+    class ProfileSerializer(ModelSerializer):
         class Meta:
             model = Profile
             fields = '__all__'
 
 
+
     def get(self, request):
         
-        profile = Profile.objects.get(user__username=request.user.username)
-        serializer = self.Serializer(profile)
-        return Response(serializer.data, status=200)
+        try:
+            personality = Personality.objects.get(user__id=request.user.id)
+            personality_serializer = PersonalitySerializer(personality)
+            profile = Profile.objects.get(user__username=request.user.username)
+            profile_serializer = self.ProfileSerializer(profile)
+            return Response({'profile':profile_serializer.data, 'personality': personality_serializer.data}, status=200)
+        
+        except Personality.DoesNotExist:
+
+            profile = Profile.objects.get(user__username=request.user.username)
+            profile_serializer = self.ProfileSerializer(profile)
+            return Response({'profile':profile_serializer.data, 'personality': 404}, status=200)
     
 
 # hooks 
@@ -182,3 +195,74 @@ def addMusicGenreHook(request):
         personality_instance = Personality.objects.get(user__id=request.user.id)
         personality_instance.music_taste.add(genre_instance[0].id)
         return Response({'success':'u added hobby with successfully'}, status=200)
+    
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def adminAPIView(request):
+    user = User.objects.get(id=request.user.id)
+    if user.cafes.all().count() == 0:
+        return Response({'denied':'access denied'}, status=404)
+    else:
+        serializer = CafeListSerializer(user.cafes.all(), many=True)
+        return Response(serializer.data)
+    
+
+class AdminGetCafeAPIView(APIView):
+
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+
+    def get(self, request, id):
+        try:
+            cafe = get_object_or_404(Cafe, id=id)
+        
+            cafe_serialzier = CafeSerializer(cafe)
+            return Response(cafe_serialzier.data)
+        except cafe.DoesNotExist:
+            return Response({'error':'object does not exists'}, status=404)
+        
+
+
+class AddMenuItem(APIView):
+
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+    parser_classes = [MultiPartParser]
+    
+    class Serializer(serializers.ModelSerializer):
+        class Meta:
+            model = MenuItem
+            fields = ['item', 'description', 'picture', 'category']
+
+    class CategorySerializer(serializers.ModelSerializer):
+        class Meta:
+            model = CategoryFood
+            fields = ['id', 'name']
+
+
+    def get(self, request, cafeid):
+        food_cats = CategoryFood.objects.all()
+        serializer = self.CategorySerializer(food_cats, many=True)
+        return Response(serializer.data)
+
+
+    def post(self, request, cafeid):
+        cafe = Cafe.objects.get(id=cafeid)
+        
+        serializer = self.Serializer(data=request.data)
+        # print(request.data['picture'])
+        if serializer.is_valid():
+            print(serializer.data)
+            menu_instance = MenuItem()
+            menu_instance.item = serializer.data['item']
+            menu_instance.description = serializer.data['description']
+            menu_instance.picture = request.data['picture']
+            menu_instance.cafe = cafe
+            menu_instance.save()
+            
+            if serializer.data['category'] != 'default':
+                menu_instance.category.set(serializer.data['category'])
+                menu_instance.save()
+
+            return Response({'success':"menu item added with successfully"}, status=200)
+            

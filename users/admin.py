@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Profile, City, Food, Hobby, MusicGenre, Personality 
+from .models import *
 # Register your models here.
 
 

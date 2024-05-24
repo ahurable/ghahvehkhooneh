@@ -128,6 +128,10 @@ class FoodSerializer(serializers.ModelSerializer):
 
 
 class PersonalitySerializer(serializers.ModelSerializer):
+    music_taste = MusicGenreSerializer(many=True)
+    hobbies = HobbySerializer(many=True)
+    favourite_foods = FoodSerializer(many=True)
+    job = JobSerializer(many=True)
     class Meta:
         model = Personality
         fields = '__all__'

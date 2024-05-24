@@ -58,15 +58,21 @@ class GetAllClubsView(ListAPIView):
             qs = Club.objects.all()
         return qs
     
+
 class GetClubInformationView(RetrieveAPIView):
     serializer_class = DetialedMembersClubSerializer
     queryset = Club.objects.all()
     
 
-class CreateEventView(CreateAPIView):
-    serializer_class = EventSerializer
-    queryset = Event.objects.all()
+class CreateEventView(APIView):
+
     permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer = CreateEventSerializer(data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success':'Event created with successfully'})
 
 
 class ListEventView(ListAPIView):
@@ -84,6 +90,10 @@ class ListEventView(ListAPIView):
         qs = Event.objects.all()
         return qs
 
+
+class EventDetailView(RetrieveAPIView):
+    serializer_class = DetailedEventSerializer
+    queryset = Event.objects.all()
             
 
 @api_view(['POST'])
@@ -113,3 +123,12 @@ def offerCafeView(request):
         res_serializer = CafeIdNameSerializer(cafes, many=True)
         return Response(res_serializer.data)
     
+
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def clubOfferHook(request):
+    
+    clubs = Club.objects.all().filter(owner__id=request.user.id)
+    serializer = SmallDetailedClubSerializer(clubs, many=True)
+    return Response(serializer.data)
+

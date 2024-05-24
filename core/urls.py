@@ -48,6 +48,11 @@ urlpatterns = [
     path('api/cafes/list/cards/', AllCafeCardListView.as_view(), name='all-cafe-card-url'),
     path('api/events/create/', CreateEventView.as_view(), name='create-event-url'),
     path('api/events/all/', ListEventView.as_view(), name="list-events-url"),
+    path('api/events/details/<int:pk>/', EventDetailView.as_view()),
+    # admin
+    path('api/admin/', adminAPIView),
+    path('api/admin/cafes/<int:id>/', AdminGetCafeAPIView.as_view()),
+    path('api/admin/add/menu/<int:cafeid>/', AddMenuItem.as_view()),
     # hooks
     path('hook/users/get-profile/<int:id>/', GetAnyProfileInformation.as_view(), name="get-profile-hook"),
     path('hook/offer-hobby/', offerHobbyHook, name='offer-hobby-hook'),
@@ -58,6 +63,7 @@ urlpatterns = [
     path('hook/add-music-genre/', addMusicGenreHook, name='add-music-genre-hook'),
     path('hook/participant/', participantInEventView, name='participant-url'),
     path('hook/offer-cafe/', offerCafeView, name='offer-cafe-url'),
+    path('hook/user-clubs/', clubOfferHook),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
