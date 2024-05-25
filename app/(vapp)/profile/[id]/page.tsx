@@ -11,6 +11,7 @@ import ChangeAvatarModal from "@/components/ChangeAvatarModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
 import { StaticImageData } from "next/image"
+import Loader from "@/components/Loader"
 
 interface interestsType {
     id: number,
@@ -71,12 +72,16 @@ const Profile = ({params}:{params:{id:number}}) => {
     return (
         <>
         { loading ?
-        <span>loading</span>:
+        <>
+            <div className="w-full h-full vertical-center items-center flex justify-center">
+                <div className="m-auto w-20 h-20 absolute top-0 bottom-0 right-0 left-0.5">
+                    <Loader height={100} />
+                </div>
+            </div>
+        </>
+        :
         <>
             <div className="w-full">
-                <div className=" text-center border-b">
-                    <h1 className="title-wrapper text-lg text-brown-dark p-5">پروفایل</h1>
-                </div>
                 <div className="p-4">
                     <div className="container mt-4">
                         <div className="mt-8">
@@ -90,9 +95,9 @@ const Profile = ({params}:{params:{id:number}}) => {
                                     <div className="ms-4 text-center md:text-right ">
                                         <h1 className="text-lg">
                                             { profile.first_name == null ? 
-                                                localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "نام کاربری" 
+                                                localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "" 
                                                 :
-                                                 profile.first_name + " " + profile.last_name == null ? "نام خانوادگی" : profile.last_name
+                                                 profile.first_name + " "} {profile.last_name == null ? "" : profile.last_name 
                                             }
                                         </h1>
                                         <span>{ profile.bio ? profile.bio : ""}</span>

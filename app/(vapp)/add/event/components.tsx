@@ -2,7 +2,7 @@ import { TrimedIconCard } from "@/components/Cards"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
 import { cafeCardType, cafeIdNameType, smallClubType } from "@/lib/types"
 import { LOCALHOST } from "@/lib/variebles"
-import { faTable } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarCheck, faShop, faTable } from "@fortawesome/free-solid-svg-icons"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { setEventCafe, setEventClub, setEventStep } from "@/lib/features/eventStep"
@@ -185,16 +185,15 @@ export const SelectCafe = () => {
 }
 
 
-export const AddEventButton = () => {
+export const AddButtons = () => {
     const dispatch = useAppDispatch()
 
     return (
         <div className="w-full">
             <div className="container">
-                <div className="lg:w- md:w- w-full p-4">
-                    <div className="py-4">
-                        <TrimedIconCard iconName={faTable} altText="ایجاد یک رویداد جدید" onClick={() => {location.replace('/add/event')}} />
-                    </div>
+                <div className="w-full">
+                    <TrimedIconCard iconName={faCalendarCheck} altText="ایجاد یک رویداد جدید" onClick={() => {location.replace('/add/event')}} />
+                    <TrimedIconCard iconName={faShop} altText="درخواست ایجاد پروفایل کافه" onClick={() => {location.replace('/add/cafe')}} />
                 </div>
             </div>
         </div>

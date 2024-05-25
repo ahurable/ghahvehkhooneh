@@ -19,7 +19,7 @@ export const SendUnfollowButton = ({classNames, onClick}:{classNames:string|null
 </button>
 }
 
-export const AddButton = ({url}:{url:string}) => {
+export const AddButton = ({url, show}:{url:string, show:boolean}) => {
 
     const AddButtonRef = useRef()
     const [sy, setSy] = useState(0)
@@ -37,7 +37,7 @@ export const AddButton = ({url}:{url:string}) => {
     })
 
     return (
-        <a href={url} ref={AddButtonRef} className={`btn rounded-full w-16 h-16 transition-all text-center text-2xl fixed bottom-24 right-4 bg-brown-normal text-white`}>
+        <a href={url} ref={AddButtonRef} className={show ? `btn rounded-full w-16 h-16 transition-all text-center text-2xl fixed bottom-24 right-4 bg-brown-normal text-white ` + `block` : `hidden`}>
             <FontAwesomeIcon icon={faPlus} className='my-2'/>
         </a>
     )

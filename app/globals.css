@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*:focus {
+  outline: none !important
+}
+
 @layer base {
     body {
         @apply bg-yellow-very-melo;
@@ -9,11 +13,10 @@
         margin: 0;
         direction: rtl;
     }
-    
     *:focus {
       outline: none !important
-    }
-}
+    }    
+  }
 
 @layer components {
 
@@ -63,9 +66,8 @@
 
     
     .form-control {
-      @apply p-3 text-md border-t-0 border-r-0 border-l-0 border-b-4 border-b-gray-200 rounded-lg focus:border-b-blue-400 focus:outline-none focus:outline-0
+      @apply p-3 text-md border-b-4 border-gray-200 border rounded-3xl focus:border-b-brown-normal focus:ring-0 focus:border-brown-normal text-brown-normal
     }
-
     .btn-blue {
       @apply  text-white bg-blue-400 hover:bg-blue-400 transition font-bold text-md w-full rounded-3xl border-b-4 border-b-blue-700;
     }

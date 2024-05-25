@@ -29,19 +29,22 @@ const CafeCard = ({id, name, about, picture}:cafeCardType) => {
 
     return (
         <>
-                <div className="w-4/12 p-2">
-                    <div className="w-full rounded-2xl p-3 shadow">
-                        <div className="w-full">
-                            <Image src={picture} alt="" className="rounded-xl object-fit w-full h-14 " alt="" width={100} height={100} />
+            <div className="w-28 h-32">
+                <div className="w-full h-full relative pt-6 p-2">
+                    <div className="w-full h-full relative shadow rounded-3xl ">
+                        <div className="w-full h-full absolute rounded-3xl z-10">
+                            <Image src={picture} alt="" width={100} height={100} className="w-full h-full object-cover rounded-3xl" />
                         </div>
-                        <div className="w-full py-2">
-                            <h1 className="text-xs">{name}</h1>
-                        </div>
-                        <div className="w-full ">
-                            <p className="text-xs">{about.substring(0,10)}</p>
+                        <div className="w-full absolute top-[-15px] flex justify-center rounded-3xl z-10">
+                            <div className="bg-green-400 w-5/6 rounded-3xl shadow text-center after:w-2 after:h-2 after:content-[''] after:rotate-45 after:absolute after:bottom-[-4px] after:right-6 after:bg-green-400">
+                                <span className="text-xs text-white brown-normal">
+                                    {name}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </>
     )
 }

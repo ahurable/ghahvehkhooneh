@@ -65,7 +65,8 @@ const Page = ({params}: {params: {id:number}}) => {
                             <p><FontAwesomeIcon icon={faEdit} /> {cafe?.about}</p>
                         </div>
                         <div className="w-full md:flex">
-                            <div className="w-full md:w-3/4 flex pt-4">
+                            {
+                                cafe.club && <div className="w-full md:w-3/4 flex pt-4">
                                 <div className="w-40 h-40">
                                     <img src={LOCALHOST + cafe?.club.club_avatar} className="rounded-2xl" alt="" />
                                 </div>
@@ -75,13 +76,22 @@ const Page = ({params}: {params: {id:number}}) => {
                                     <p>{cafe?.club.description }</p>
                                 </div>
                             </div>
+                            }
                             <div className="w-full md:w-1/4 pt-4">
                                 <button className="btn btn-green w-full p-4 text-center items-center flex gap-2 justify-center">
                                     <FontAwesomeIcon icon={faEdit} /> ویرایش اطلاعات
                                 </button>
-                                <button className="btn btn-red mt-2 w-full p-4 text-center items-center flex gap-2 justify-center">
-                                    <FontAwesomeIcon icon={faUserGroup} /> ویرایش اعضا
-                                </button>
+                                {
+                                    cafe.club == null ?
+                                    <button className="btn btn-blue mt-2 w-full p-4 text-center items-center flex gap-2 justify-center">
+                                        <FontAwesomeIcon icon={faUserGroup} /> ایجاد باشگاه کافه
+                                    </button>
+                                    :
+                                    <button className="btn btn-red mt-2 w-full p-4 text-center items-center flex gap-2 justify-center">
+                                        <FontAwesomeIcon icon={faUserGroup} /> ویرایش اعضا
+                                    </button>
+                                }
+                                <AddEditClub />
                             </div>
                         </div>
                     </div>
@@ -94,6 +104,7 @@ const Page = ({params}: {params: {id:number}}) => {
                     <div className="w-full mt-4">
                         <div className="flex flex-wrap">
                             {
+                                cafe?.menu_item != null &&
                                 cafe?.menu_item.map(item => [
                                     <div key={item.id} className="w-full md:w-1/2 lg:w-1/3 p-2">
                                         <div className="w-full rounded-3xl shadow p-4">
@@ -181,6 +192,10 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
                             <textarea className="form-control w-full" name="description" id="descriptionId" ></textarea>
                         </div>
                         <div className="w-full p-4">
+                            <label htmlFor="priceId">قیمت:‌</label>
+                            <input type="text" className="form-control w-full" name="price" id="priceId" />
+                        </div>
+                        <div className="w-full p-4">
                             <label htmlFor="pictureId">تصویر:</label>
                             <input type="file" className="form-control w-full" name="picture" id="pictureId" />
                         </div>
@@ -206,5 +221,38 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
         </>
     )
 }
+
+
+const AddEditClub = () => {
+
+    return (
+        <>
+
+            <div className="w-full rounded-3xl shadow p-4">
+                <div className="text-center w-full">
+                    <h1 className="font-bold">ایجاد باشگاه مشتریان</h1>
+                </div>
+                <div className="pt-4">
+                    <form>
+                        <div className="w-full">
+                            <label htmlFor="name">نام:</label>
+                            <input type="text" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="name" />
+                        </div>
+                        <div className="w-full">
+                            <label htmlFor="description">درباره باشگاه:</label>
+                            <textarea placeholder="چه چیزی شما را متفاوت میکند؟" className="form-control w-full" name="description" ></textarea>
+                        </div>
+                        <div className="w-full">
+                            <label htmlFor="picture">تصویر نمایه:</label>
+                            <input type="file" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="picture" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+        </>
+    )
+}
+
 
 export default Page

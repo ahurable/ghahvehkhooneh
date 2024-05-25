@@ -89,7 +89,7 @@ export const CafeCard = ({cafe}) => {
     
     return (
         <>
-            <div className="w-full rounded-lg text-brown-dark shadow border-gray-200 p-3">
+            <div className="w-full rounded-3xl text-brown-dark shadow border-gray-200 p-3">
                 <div className="w-full flex">
                     <div className="">
                         <div className="w-20 h-20 rounded-lg bg-gray-400">
@@ -243,7 +243,7 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
 
     return (
         <>
-            <div className="w-full grid grid-cols-12">
+            <div className="container w-full grid grid-cols-12">
                 <div className="col-span-4 p-4">
                     <button ref={menu} className="w-full block p-3 rounded-lg shadow" onClick={() => toggleMenu('menu')}>منو</button>
                 </div>
@@ -255,7 +255,7 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
                 </div>
             </div>
 
-            <div className="w-full">
+            <div className="w-full container">
                 { tab == "menu" && <MenuWrapper menuItems={menuItems} /> }
                 
                 { tab == "ratings" && <RatingsWrapper ratings={ratings} /> }

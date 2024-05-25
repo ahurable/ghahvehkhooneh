@@ -96,7 +96,7 @@ const Profile = () => {
                                             { profile.first_name == '' ? 
                                                 localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "نام کاربری" 
                                                 :
-                                                profile.first_name == null ? "نام خود را تنظیم کنید" : profile.first_name + " " && + profile.last_name == null ? "نام خانوادگی خود را تنظیم کنید" : profile.last_name
+                                                profile.first_name == null ? "نام خود را تنظیم کنید" : profile.first_name + " " }{ profile.last_name == null ? "نام خانوادگی خود را تنظیم کنید" : profile.last_name
                                             }
                                         </h1>
                                         <span>{ profile.bio ? profile.bio : "بیو خود را تنظیم کنید"}</span>

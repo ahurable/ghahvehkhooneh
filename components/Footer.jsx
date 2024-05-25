@@ -7,13 +7,14 @@ import Link from "next/link"
 import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
 import { LOCALHOST } from "@/lib/variebles"
-
+import { AddButton } from "./Buttons"
 
 const Footer = () => {
 
     const footerRef = useRef()
     const [sy, setSy] = useState(0)
     useEffect(() => {
+        console.log(location.pathname == "/main")
         window.addEventListener('scroll', () => {
             if (window.scrollY > sy) {
                 footerRef.current.style.marginBottom = "-100px"
@@ -29,10 +30,12 @@ const Footer = () => {
     return (
         <React.Fragment>
             
-
-
-            
-            
+            {
+                location.pathname == "/main" ?
+                <AddButton url={"/add"} show={true} />
+                :
+                <AddButton url={"/add"} show={false} />
+            }
             <div className="w-full z-20 border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
                     <div className="col-span-4 p-3 ">

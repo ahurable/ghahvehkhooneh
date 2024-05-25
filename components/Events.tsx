@@ -27,30 +27,32 @@ const EventWrapper = () => {
 
     return (
         <>
-            <div className="w-full grid gird-cols-12">
+            <div className="w-full gird-cols-12">
                 {
                     loading ? 
-                    <div className="col-span-12 text-center">
+                    <div className="container text-center">
                         <span className="pt-10 text-lg">
                             در حال بارگیری ...
                         </span>
                     </div> :
-                    events?.map(event => [
-                        <div key={event.id} onClick={() => location.replace('/events/'+event.id)} className="col-span-12 md:col-span-6 lg:col-span-4 p-4">
-                            <div className="w-full rounded-3xl shadow p-4 flex">
-                                <div className="w-1/4">
-                                    <img src={ event.club.club_avatar} className="w-20 h-20 rounded-full" alt="" />
-                                </div>
-                                <div className="ps-4 w-3/4">
-                                    <span className=" text-brown-normal m-0">{event.name}</span>
-                                    <br />
-                                    <span className="text-brown-normal text-sm">میزبان: {event.cafe.name}</span>
-                                    <br />
-                                    <span className="text-brown-normal text-sm">{event.description}</span>
+                    <div className="flex flex-wrap">
+                        {events?.map(event => [
+                            <div key={event.id} onClick={() => location.replace('/events/'+event.id)} className="w-full md:w-1/2 p-4">
+                                <div className="w-full rounded-3xl shadow p-4 flex">
+                                    <div className="w-1/4">
+                                        <img src={ event.club.club_avatar} className="w-20 h-20 rounded-full" alt="" />
+                                    </div>
+                                    <div className="ps-4 w-3/4">
+                                        <span className=" text-brown-normal m-0">{event.name}</span>
+                                        <br />
+                                        <span className="text-brown-normal text-sm">میزبان: {event.cafe.name}</span>
+                                        <br />
+                                        <span className="text-brown-normal text-sm">{event.description}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ])
+                        ])}
+                    </div>
                 }
             </div>
         </>

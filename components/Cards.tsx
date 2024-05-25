@@ -9,7 +9,7 @@ export const TrimedIconCard = ({iconName, altText, onClick}:{iconName: IconDefin
         <>
         
             <div className="w-full relative" onClick={onClick}>
-                <div className="border-brown-normal border relative z-20 rounded-lg p-4 mt-7 object-contain">
+                <div className="border-brown-normal border border-b-4 relative z-20 rounded-3xl p-4 mt-7 object-contain">
                     <div className="w-full flex items-center">
                         <span className="block text-2xl mx-4 text-brown-normal">
                             <FontAwesomeIcon icon={faPlus} />

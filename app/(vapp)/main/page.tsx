@@ -13,7 +13,6 @@ const Page = () => {
 
     return (
         <>
-        <AddButton url={"/add"} />
             <div className="w-full relative">
                 <div className=" text-center shadow flex items-center justify-center">
                     <div className="w-10 h-10 me-2">

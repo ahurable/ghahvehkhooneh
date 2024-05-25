@@ -48,7 +48,7 @@ export default async function Page() {
                 
                 <div className="w-full md:grid grid-cols-12 relative">
                 {  data.map((cafe) => [
-                        <div className="md:col-span-6 p-3">
+                        <div key={cafe.id} className="md:col-span-6 p-3">
 
                             <CafeCard cafe={cafe}/>
                         </div>
