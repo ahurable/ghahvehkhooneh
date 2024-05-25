@@ -27,10 +27,18 @@ class CafeView(APIView):
         return Response(serializer.data, status=200)
     
 
-class AddCafeView(CreateAPIView):
-    queryset = Cafe.objects.all()
-    serializer_class = CafeSerializer
-    permission_classes = (IsAuthenticated,)
+class AddCafeView(APIView):
+    permission_classes = [IsAuthenticated]
+    class Serializer(ModelSerializer):
+        class Meta:
+            model = Cafe
+            fields = ['name', 'about', 'address', 'picture']
+    def post(self, request):
+        serializer = self.Serializer(data=request.data)
+        if serializer.is_valid():
+            instance = serializer.save()
+            Cafe.objects.get(id=instance.id).admin.add(request.user)
+            return Response({'success':'cafe created with successfully'}, status=200)
         
 
 

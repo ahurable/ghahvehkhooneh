@@ -232,7 +232,7 @@ class AddMenuItem(APIView):
     class Serializer(serializers.ModelSerializer):
         class Meta:
             model = MenuItem
-            fields = ['item', 'description', 'picture', 'category']
+            fields = ['item', 'description', 'picture', 'price', 'category']
 
     class CategorySerializer(serializers.ModelSerializer):
         class Meta:
@@ -252,11 +252,12 @@ class AddMenuItem(APIView):
         serializer = self.Serializer(data=request.data)
         # print(request.data['picture'])
         if serializer.is_valid():
-            print(serializer.data)
+            # print(serializer.data)
             menu_instance = MenuItem()
             menu_instance.item = serializer.data['item']
             menu_instance.description = serializer.data['description']
             menu_instance.picture = request.data['picture']
+            menu_instance.price = serializer.data['price']
             menu_instance.cafe = cafe
             menu_instance.save()
             
@@ -270,12 +271,12 @@ class AddMenuItem(APIView):
 
 class ProfileDetails(APIView):
     def get(self, request, id):
-        try:
+        # try:
             user = User.objects.get(id=id)
-            personality = Personality.objects.get(user=user)
+            personality = Personality.objects.get_or_create(user=user)
             u_serializer = GetUserWithAnyProfileSerializer(user)
-            p_serializer = PersonalitySerializer(personality)
+            p_serializer = PersonalitySerializer(personality[0])
             return Response({'user':u_serializer.data, 'personality':p_serializer.data})
 
-        except:
-            return Response({'notfound':'user not found'}, status=404)
+        # except:
+        #     return Response({'notfound':'user not found'}, status=404)
