@@ -1,6 +1,6 @@
 'use client'
-import { Modal, ModalFooter } from "flowbite-react"
-import { ModalHeader, ModalBody } from "flowbite-react"
+import { Modal, ModalFooter } from "@/components/modals/modals"
+import { ModalHeader, ModalBody } from "@/components/modals/modals"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { setProfileModalState } from "@/lib/features/profileModalSlice"
 import { FormEvent } from "react"
@@ -40,8 +40,8 @@ const ProfileModal = ({ profile } : { profile: props }) => {
     }
 
     return (
-        <Modal show={isOpenState} onClose={() => dispatch(setProfileModalState(false))}>
-                <ModalHeader>
+        <Modal show={isOpenState} >
+                <ModalHeader onClose={() => dispatch(setProfileModalState(false))}>
                     <h1>ویرایش اطلاعات پروفایل</h1>
                 </ModalHeader>
                 <form method="post" onSubmit={profileSubmit}>

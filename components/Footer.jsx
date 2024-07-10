@@ -31,7 +31,7 @@ const Footer = () => {
         <React.Fragment>
             
             {
-                location.pathname == "/main" ?
+                location.pathname == "/" ?
                 <AddButton url={"/add"} show={true} />
                 :
                 <AddButton url={"/add"} show={false} />
@@ -53,7 +53,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="col-span-4 p-3 ">
-                        <a href="/main">
+                        <a href="/">
                             <div className="w-full text-center">
                                 <span className="text-brown-dark">
                                     <FontAwesomeIcon icon={faHome}/>

@@ -2,16 +2,17 @@
 
 import { cafeInformation } from "@/components/CafeComponents"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
-import { setAddItemModalState } from "@/lib/features/adminModalSlice"
+import { setAddClubState, setAddItemModalState, setEditBannerState, setEditClubMembers, setQrCodeState } from "@/lib/features/adminModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
-import { cafeDetailedType, categoryFood } from "@/lib/types"
+import { cafeDetailedType, categoryFood, userWithAnyProfileType } from "@/lib/types"
 import { LOCALHOST } from "@/lib/variebles"
 import { faEdit } from "@fortawesome/free-regular-svg-icons"
-import { faFileEdit, faPlusCircle, faUserEdit, faUserGroup } from "@fortawesome/free-solid-svg-icons"
+import { faClose, faFileEdit, faL, faPlusCircle, faQrcode, faRemove, faUserEdit, faUserGroup } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Modal, ModalBody, ModalHeader } from "flowbite-react"
+import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useEffect, useState } from "react"
-
+import QRCode from 'react-qr-code'
+import { useDispatch } from "react-redux"
 
 
 const Page = ({params}: {params: {id:number}}) => {
@@ -53,7 +54,7 @@ const Page = ({params}: {params: {id:number}}) => {
                     <div className="w-full rounded-3xl shadow-lg mb-4 relative">
                         <img src={LOCALHOST + cafe?.picture} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
                         <div className="w-full h-full absolute top-0 bg-black bg-opacity-25 rounded-3xl">
-                            <button className="rounded-full mt-4 mr-4 p-4 bg-white text-black">
+                            <button className="rounded-full mt-4 mr-4 p-4 bg-white text-black" onClick={() => dispatch(setEditBannerState(true))}>
                                 <FontAwesomeIcon icon={faFileEdit}/>
                             </button>
                             <span className="ps-4 text-sm text-white font-bold">تغییر تصویر بنر</span>
@@ -81,17 +82,23 @@ const Page = ({params}: {params: {id:number}}) => {
                                 <button className="btn btn-green w-full p-4 text-center items-center flex gap-2 justify-center">
                                     <FontAwesomeIcon icon={faEdit} /> ویرایش اطلاعات
                                 </button>
+                                <button className="btn btn-blue w-full mt-2 p-4 text-center items-center flex gap-2 justify-center" onClick={() => dispatch(setQrCodeState(true))}>
+                                    <FontAwesomeIcon icon={faQrcode} /> نمایش QR
+                                </button>
                                 {
                                     cafe.club == null ?
-                                    <button className="btn btn-blue mt-2 w-full p-4 text-center items-center flex gap-2 justify-center">
-                                        <FontAwesomeIcon icon={faUserGroup} /> ایجاد باشگاه کافه
-                                    </button>
+                                    <>=
+                                        <button className="btn btn-blue mt-2 w-full p-4 text-center items-center flex gap-2 justify-center" onClick={() => dispatch(setAddClubState(true))}>
+                                            <FontAwesomeIcon icon={faUserGroup} /> ایجاد باشگاه کافه
+                                        </button> 
+                                        <AddClub id={params.id}/>
+                                    </>
                                     :
-                                    <button className="btn btn-red mt-2 w-full p-4 text-center items-center flex gap-2 justify-center">
+                                    <button className="btn btn-red mt-2 w-full p-4 text-center items-center flex gap-2 justify-center" onClick={() => dispatch(setEditClubMembers(true))}>
                                         <FontAwesomeIcon icon={faUserGroup} /> ویرایش اعضا
                                     </button>
+
                                 }
-                                <AddEditClub />
                             </div>
                         </div>
                     </div>
@@ -106,15 +113,19 @@ const Page = ({params}: {params: {id:number}}) => {
                             {
                                 cafe?.menu_item != null &&
                                 cafe?.menu_item.map(item => [
-                                    <div key={item.id} className="w-full md:w-1/2 lg:w-1/3 p-2">
+                                    <div key={item.id} className="w-full md:w-1/2 p-2">
                                         <div className="w-full rounded-3xl shadow p-4">
-                                            <div className="w-full flex">
-                                                <div className="w-1/4">
-                                                    <img src={LOCALHOST + item.picture} alt="" className="w-40 rounded-full object-cover" />
+                                            <div className="w-full grid grid-cols-6 items-center">
+                                                <div className="col-span-1">
+                                                    <img src={LOCALHOST + item.picture} alt="" className="w-16 h-16 rounded-full object-cover" />
                                                 </div>
-                                                <div className="w-3/4 ps-2">
+                                                <div className="col-span-4 ps-2">
                                                     <h1 className="text-lg">{item.item}</h1>
                                                     <p>{item.description}</p>
+                                                </div>
+                                                <div className="col-span-1 flex flex-wrap justify-center">
+                                                    <span className="block h-8 p-2 bg-gray-400 rounded-full text-white"><FontAwesomeIcon icon={faEdit}/></span>
+                                                    <span className="block h-8 p-2 bg-red-400 rounded-full text-white mx-1"><FontAwesomeIcon icon={faClose}/></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,6 +135,9 @@ const Page = ({params}: {params: {id:number}}) => {
                         </div>
                     </div>
                     <AddItemWrapper cafeid={cafe?.id}/>
+                    <QrCodeWrapper cafeid={cafe?.id}/>
+                    <ClubMembersWrapper cafeid={cafe?.id}/>
+                    <ChangeBanner cafeid={cafe?.id} />
                     </>
                 }
             </div>
@@ -168,7 +182,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
             },
             body: formData
         })
-        if (res.ok) {
+        if (res.status == 201) {
             setSuccessState(true)
         }
         
@@ -177,8 +191,9 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
     return (
         <>
 
-            <Modal show={state} onClose={() => dispatch(setAddItemModalState(!state))}>
-                <ModalHeader>
+            <Modal show={state} >
+                <SuccessModal description="با موفقیت ثبت شد" state={successState} />
+                <ModalHeader onClose={() => dispatch(setAddItemModalState(false))}>
                     <h1>افزودن آیتم جدید</h1>
                 </ModalHeader>
                 <ModalBody>
@@ -201,7 +216,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
                         </div>
                         <div className="w-full p-4">
                             <label htmlFor="categoryId">دسته بندی:</label>
-                            <select id="categoryId" name="category">
+                            <select id="categoryId" name="category" className="form-control w-full">
                                 <option value="default">انتخاب دسته بندی</option>
                                 {
                                     cats?.map(category => [
@@ -217,42 +232,211 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
                 </ModalBody>
             </Modal>
 
-            <SuccessModal title="موفق" description="ثبت آیتم با موفقیت انجام شد" redirectPath="" state={successState} />
         </>
     )
 }
 
 
-const AddEditClub = () => {
+const AddClub = ({id}:{id:number}) => {
+
+    const state = useAppSelector(s => s.admin.addClub)
+    const dispatch = useAppDispatch()
+
+    const [success, setSuccess] = useState(false)
+    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const token = localStorage.getItem('access')
+        const formData = new FormData(e.currentTarget)
+        formData.append('cafe', id.toString())
+        const res = await fetch(LOCALHOST + 'api/admin/add/club/' + id + '/', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData
+        })
+        if (res.status == 201) {
+            setSuccess(true)
+            location.reload()
+        }
+        const data = await res.json()
+    }
+        
 
     return (
         <>
-
-            <div className="w-full rounded-3xl shadow p-4">
-                <div className="text-center w-full">
-                    <h1 className="font-bold">ایجاد باشگاه مشتریان</h1>
+        <Modal show={state}>
+            <SuccessModal title="موفق" description="عملیات موفق" state={success}/>
+            <ModalHeader onClose={() => dispatch(setAddClubState(false))}>
+                <h1>افزودن باشگاه</h1>
+            </ModalHeader>
+            <ModalBody>
+                <div className={`w-full rounded-3xl shadow p-4 block`}>
+                    <div className="text-center w-full">
+                        <h1 className="font-bold">ایجاد باشگاه مشتریان</h1>
+                    </div>
+                    <div className="pt-4">
+                        <form onSubmit={handleSubmit}>
+                            <div className="w-full">
+                                <label htmlFor="name">نام:</label>
+                                <input type="text" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="name" />
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="description">درباره باشگاه:</label>
+                                <textarea placeholder="چه چیزی شما را متفاوت میکند؟" className="form-control w-full" name="description" ></textarea>
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="picture">تصویر نمایه:</label>
+                                <input type="file" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="club_avatar" />
+                            </div>
+                            <div className="w-full">
+                                <button type="submit" className="btn btn-green mt-2">ایجاد باشگاه</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div className="pt-4">
-                    <form>
-                        <div className="w-full">
-                            <label htmlFor="name">نام:</label>
-                            <input type="text" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="name" />
-                        </div>
-                        <div className="w-full">
-                            <label htmlFor="description">درباره باشگاه:</label>
-                            <textarea placeholder="چه چیزی شما را متفاوت میکند؟" className="form-control w-full" name="description" ></textarea>
-                        </div>
-                        <div className="w-full">
-                            <label htmlFor="picture">تصویر نمایه:</label>
-                            <input type="file" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="picture" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        
+                </ModalBody>
+            </Modal>
         </>
     )
 }
 
+
+const QrCodeWrapper = ({cafeid}:{cafeid:number}) => {
+    const state = useAppSelector(state => state.admin.showQR)
+    const dispatch = useAppDispatch()
+    return (
+        <Modal show={state} >
+            <ModalHeader onClose={() => dispatch(setQrCodeState(false))}>
+                <h1>QR Code</h1>
+            </ModalHeader>
+            <ModalBody>
+                <div className="w-full">
+                    <div className="flex justify-center">
+                        <div className="p-4 w-full">
+                            <QRCode value={`https://localhost:3000/cafe/${cafeid}`} />
+                        </div>
+                    </div>
+                </div>
+            </ModalBody>
+        </Modal>
+    )
+}
+
+
+const ClubMembersWrapper = ({cafeid}:{cafeid:number}) => {
+    const state = useAppSelector(state => state.admin.editClubMembers)
+    const dispatch = useDispatch()
+    const [users, setUsers] = useState<userWithAnyProfileType[]>()
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const token = localStorage.getItem('access')
+        const fetchData = async () => {
+            const res = await fetch(LOCALHOST + 'api/admin/club/members/' + cafeid + '/', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+
+            })
+            if (!res.ok){
+                
+            }
+            const data = await res.json()
+            setUsers(data)
+            setLoading(false)
+        } 
+        fetchData()
+    }, [ClubMembersWrapper])
+
+    return (
+        <>
+            <Modal show={state}>
+                <ModalHeader onClose={() => dispatch(setEditClubMembers(false))}>
+                    <h1>مشاهده و ویرایش اعضا</h1>
+                </ModalHeader>
+                <ModalBody>
+                    <div className="p-4 w-full">
+                        {
+                            loading ?
+                            <div className="w-full flex justify-center mt-12">
+                                LOADING
+                            </div> :
+                            users?.map(user => [
+                                <div key={user.id} className="w-full border-b">
+                                    <div className="p-4">
+                                        <div className="w-full grid grid-cols-12 items-center">
+                                            <div className="col-span-10 flex">
+                                                <div className="w-[40px] h-[40px]">
+                                                    <img src={LOCALHOST +user.profile.avatar} alt="" className="rounded-full w-full h-full object-cover" />
+                                                </div>
+                                                <span className="block text-xl ms-4">{user.profile.first_name} {user.profile.last_name}</span>
+                                            </div>
+                                            <div className="col-span-2 ">
+                                                <div className="p-2 rounded-full block w-max h-max bg-red-400 text-white">
+                                                    <FontAwesomeIcon icon={faRemove}/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ])
+                        }
+                    </div>
+                </ModalBody>
+            </Modal>
+        </>
+    )
+}
+
+
+const ChangeBanner = ({cafeid}:{cafeid:number}) => {
+    const state = useAppSelector(s => s.admin.showEditBanner)
+    const dispatch = useDispatch()
+    const [success, setSuccess] = useState(false)
+
+    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        formData.append('id', cafeid.toString())
+        let token
+        try {
+            token = localStorage.getItem('access')
+            const res = await fetch(LOCALHOST + 'api/admin/update-cafe-banner/' + cafeid + '/', {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: formData
+            })
+            if (res.ok) {
+                setSuccess(true)
+                location.reload()
+            }
+        }
+        catch {
+            location.replace('/logout')
+        }
+    }
+
+    return (
+        <>
+        <Modal show={state}>
+            <SuccessModal title="موفق" description="تصویر بنر کافه شما با موفقیت تغییر کرد" />
+            <ModalHeader onClose={() => dispatch(setEditBannerState(false))}>
+                <h1>تغییر تصویر بنر کافه</h1>
+            </ModalHeader>
+            <ModalBody>
+                <form onSubmit={handleSubmit}>
+                    <input type="file" name="picture" id="" className="form-control w-full my-4" />
+                    <br />
+                    <input type="submit" value="ثبت تغییر" className="btn-red p-4 w-full" />
+                </form>
+            </ModalBody>
+        </Modal>
+        </>
+    )
+}
 
 export default Page

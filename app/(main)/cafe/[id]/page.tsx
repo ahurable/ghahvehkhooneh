@@ -65,7 +65,7 @@ const Page = async ({params}: {params: {id:number}}) => {
                             <BackButton/>
                         </div>
                         
-                        <TabsWrapper menuItems={data.menu_item} ratings={data.ratings} />
+                        <TabsWrapper menuItems={data.menu_item} ratings={data.ratings} club={data.club} />
                     </div>
                 </div>
             </div>

@@ -64,7 +64,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <SuccessModal title="موفق" description="شما با موفقیت وارد حساب کاربری خود شدید" redirectPath="/main" state={success} />
+            <SuccessModal title="موفق" description="شما با موفقیت وارد حساب کاربری خود شدید" redirectPath="/" state={success} />
         </main>
         )
     }

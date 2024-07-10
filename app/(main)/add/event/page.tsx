@@ -1,6 +1,6 @@
 'use client'
 import { useAppSelector } from "@/lib/hook"
-import { SelectCafe, SelectClubs, CreateEventForm } from "../event/components"
+import { SelectCafe, SelectClubs, CreateEventForm } from "./components"
 
 
 

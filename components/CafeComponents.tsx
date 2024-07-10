@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { Rating } from "flowbite-react"
 import { clubsType } from "./tabs/SocialTabs"
+import { eventDetail, userWithAnyProfileType } from "@/lib/types"
 
 
 export interface cafeCard {
@@ -52,6 +53,12 @@ export interface anyProfile {
         avatar: string ,
         bio: string
     }
+}
+
+interface club {
+    id: number,
+    members: userWithAnyProfileType[],
+    events: eventDetail[]
 }
 
 export const MenuItem = ({menuItem}:{menuItem: menuItem}) => {
@@ -171,8 +178,38 @@ const RatingsWrapper = ({ratings}: {ratings:rating[]})  => {
         </>
     )
 
+
+
+
 }
 
+
+
+function EventsWrapper({events}:{events:eventDetail[] | null}) {
+    useEffect(()=>{
+        console.log(events)
+    })
+    return (
+        <>
+            <div className="w-full">
+                { events ? events.map(event => [
+                    <div key={event.id} className="p-2 w-full">
+                        <div className="p-3 rounded-xl shadow">
+                            <h1 className="text-lg">{event.name}</h1>
+                            <br />
+                            <span className="text-gray">{event.date}</span>
+                            <p>{event.description}</p>
+                        </div>
+                    </div>
+                ]) :
+                <>
+                    <div className="w-full text-center p-4 text-lg">هیچ رویدادی در این کافه وجود ندارد</div>
+                </>
+                }
+            </div>
+        </>
+    )
+}
 
 
 
@@ -186,12 +223,13 @@ export const BackButton = () => {
     )
 }
 
-export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings: rating[]}) => {
+export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], ratings: rating[], club: club}) => {
 
     const menu = useRef()
     const ratingsButton = useRef()
     const events = useRef()
     const [tab, setTab] = useState('menu')
+    
 
     const toggleMenu = (buttonName:string) => {
         switch (buttonName) {
@@ -250,7 +288,7 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
                 <div  className="col-span-4 p-4">
                     <button ref={ratingsButton} className="w-full block p-3 rounded-lg" onClick={() => toggleMenu('ratings')}>بازخوردها</button>
                 </div>
-                <div className="col-span-4 md:hidden p-4">
+                <div className="col-span-4 p-4">
                     <button ref={events} className="w-full block p-3 rounded-lg" onClick={() => toggleMenu('events')}>رویداد ها</button>
                 </div>
             </div>
@@ -260,7 +298,7 @@ export const TabsWrapper = ({menuItems, ratings}:{menuItems: menuItem[], ratings
                 
                 { tab == "ratings" && <RatingsWrapper ratings={ratings} /> }
                 
-                
+                { tab == "events" && <EventsWrapper events={club?.events}/>}
             </div>
         </>
     )

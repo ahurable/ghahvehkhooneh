@@ -38,7 +38,7 @@ export const CreateEventForm = () => {
 
     return (
         <>
-            <SuccessModal title="موفق" description="رویداد شما با موفقیت ایجاد شد" state={success} redirectPath="/main" /> 
+            <SuccessModal title="موفق" description="رویداد شما با موفقیت ایجاد شد" state={success} redirectPath="/" /> 
 
             <div className="w-full">
                 <div className="container w-full p-8 justify-center">

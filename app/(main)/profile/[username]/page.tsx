@@ -13,21 +13,7 @@ import { faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
 import { StaticImageData } from "next/image"
 import Loader from "@/components/Loader"
 
-interface interestsType {
-    id: number,
-    name: string
-}
 
-interface personalityType {
-    favourite_foods: interestsType[],
-    hobbies: interestsType[],
-    id: number,
-    job: interestsType[],
-    music_taste: interestsType[],
-    social_instagram: string | null,
-    social_twitter: string | null,
-    user: number
-}
 
 interface profileType {
     first_name: string,
@@ -39,9 +25,8 @@ interface profileType {
     city: number[]
 }
 
-const Profile = ({params}:{params:{id:number}}) => {
+const Profile = ({params}:{params:{username:string}}) => {
     const [profile, setProfile] = useState<profileType[]>()
-    const [personality, setPersonality] = useState<personalityType | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
 
     const dispatch = useAppDispatch()
@@ -50,15 +35,12 @@ const Profile = ({params}:{params:{id:number}}) => {
         try{
             // const token = localStorage.getItem('access')
             const handleAsync = async () => {
-                const res = await fetch(LOCALHOST + 'api/users/profile/'+params.id+'/', {
+                const res = await fetch(LOCALHOST + 'api/users/profile/'+params.username+'/', {
                     method: "GET"
                 })
                 const data = await res.json()
                 console.log(data)
                 setProfile(data.user.profile)
-                if (data.personality) {
-                    setPersonality(data.personality)
-                }
                 setLoading(false)
             }
             handleAsync()
@@ -107,39 +89,7 @@ const Profile = ({params}:{params:{id:number}}) => {
                                     <button className="btn btn-brown" onClick={() => console.log()}>افزودن به لیست دوستان</button>
                                 </div>
                             </div>
-                            {
-                                personality != null && 
-                                personality.hobbies != undefined && personality.hobbies.length > 0 && <div className="w-full">
-                                    <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
-                                        <span className="font-bold text-sm mx-4 my-2 py-2">سرگرمی ها: </span>
-                                       { personality.hobbies.map(hobby => [
-                                             <span className="p-2 rounded-lg text-brown-normal border m-1" key={hobby.id}>{hobby.name}</span>
-                                        ]) }
-                                    </div>
-                                </div>
-                            }
-                            {
-                                personality != null && 
-                                personality.favourite_foods != undefined && personality.favourite_foods.length > 0 && <div className="w-full">
-                                    <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
-                                        <span className="font-bold text-sm mx-4 my-2 py-2">غذاهای مورد علاقه: </span>
-                                       { personality.favourite_foods.map(hobby => [
-                                             <span className="p-2 rounded-lg text-brown-normal border m-1" key={hobby.id}>{hobby.name}</span>
-                                        ]) }
-                                    </div>
-                                </div>
-                            }
-                            {
-                                personality != null && 
-                                personality.music_taste != undefined && personality.music_taste.length > 0 && <div className="w-full">
-                                    <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
-                                        <span className="font-bold text-sm mx-4 my-2 py-2">سلیقه موسیقی: </span>
-                                       { personality.music_taste.map(hobby => [
-                                             <span className="p-2 rounded-lg text-brown-normal border m-1" key={hobby.id}>{hobby.name}</span>
-                                        ]) }
-                                    </div>
-                                </div>
-                            }
+                            
                         </div>
                     </div>
                 </div>

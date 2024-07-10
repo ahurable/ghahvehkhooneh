@@ -10,19 +10,26 @@ import { jwtDecode } from "jwt-decode"
 
 const UsersWrapper = () => {
 
+
     const [loading, setLoading] = useState(true)
     const [users, setUsers] = useState<userType[]>()
-    const client = jwtDecode(localStorage?.getItem('access'))
+    const [client, setClient] = useState()
+    
     const [followed, setFollowed] = useState(false)
 
     useEffect(() => {
+        try {
+            setClient(jwtDecode(localStorage?.getItem('access')))
+        } catch {
+            location.replace('/login')
+        }
         const fetchUsers = async () => {
             const _users = await fetchAllUsersInArea()
             setUsers(_users)
             setLoading(false)
         }
         fetchUsers()
-        console.log(client.user_id)
+        // console.log(client.user_id)
     }, [UsersWrapper])
 
     return (
@@ -43,10 +50,10 @@ const UsersWrapper = () => {
                             user.profile.followers.some(e => e == client.user_id) ? "" : (user.profile.first_name != null && user.profile.last_name != null) && 
                             <div key={user.id} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
                                 <div className="w-full flex items-center">
-                                    <div className="py-4 w-3/12" onClick={()=> location.replace('/profile/'+user.id)}>
+                                    <div className="py-4 w-3/12" onClick={()=> location.replace('/profile/'+user.username)}>
                                         <img src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
                                     </div>
-                                    <div className="py-4 pe-4 w-6/12" onClick={()=> location.replace('/profile/'+user.id)}>
+                                    <div className="py-4 pe-4 w-6/12" onClick={()=> location.replace('/profile/'+user.username)}>
                                         <span className="text-lg">
                                             {user.profile.first_name ? user.profile.first_name + ' ' + user.profile.last_name && user.profile.last_name : user.username}
                                         </span>

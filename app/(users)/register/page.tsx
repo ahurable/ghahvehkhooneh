@@ -45,11 +45,11 @@ const Register = () => {
     }
 
     return (
-        <main className="w-full h-full bg-brown-light">
+        <main className="w-full h-full fixed overflow-auto top-0 bg-brown-light">
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
                 <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
                 <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">ایجاد حساب</h1>
-                <div className="form-wrapper h-mx pb-20 my-4">
+                <div className="form-wrapper h-mx pb-20 mt-4">
                     <div className="flex justify-center">
                         <form onSubmit={onSubmit}>
                             <div className={step == 1 ? "step-1 py-10" : "step-1 hidden"}>
@@ -84,7 +84,7 @@ const Register = () => {
                                     
                                     <div className={step == 2 ? "mt-10 text-center " : "mt-10 text-center hidden"}>
                                         <button id="back" onClick={prevStep} className="btn btn-blue">قبلی</button>
-                                        <button id="register" type="submit" className="btn btn-green">ثبت نام</button>
+                                        <button id="register" type="submit" className="btn btn-green mt-4">ثبت نام</button>
                                     </div>
                                 </div>
                             </div>

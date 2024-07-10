@@ -1,5 +1,6 @@
 "use client"
 
+import { SelectWithLiveFetch } from "@/components/Inputs"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
 import { LOCALHOST } from "@/lib/variebles"
 import { FormEvent, useState } from "react"
@@ -25,7 +26,7 @@ const Page = () => {
 
     return (
         <>
-        <SuccessModal title="موفق" description="درخواست شما با موفقیت ثبت شد" state={success} redirectPath="/main" />
+        <SuccessModal title="موفق" description="درخواست شما با موفقیت ثبت شد" state={success} redirectPath="/" />
             <div className="w-full">
                 <div className="p-4 shadow text-center">
                     <h1 className="text-lg text-brown-dark">ایجاد پروفایل کافه</h1>
@@ -61,7 +62,7 @@ const Page = () => {
                                     <input type="file" placeholder="تهران - ولی عصر - خیابان جمعوری - کوچه ۴" name="picture" className="form-control bg-yellow-very-melo w-full" />
                                 </div>
 
-
+                                <SelectWithLiveFetch liveFetchAddress="hook/get-cities/" defaultValue='انتخاب شهر' />
 
                                 <div className="w-full mt-4">
                                     <button type="submit" className="btn btn-green w-full p-4">ثبت اطلاعات</button>

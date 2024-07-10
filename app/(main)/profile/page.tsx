@@ -9,24 +9,10 @@ import { LOCALHOST } from "@/lib/variebles"
 import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import ChangeAvatarModal from "@/components/ChangeAvatarModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
+import { faChartBar, faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
 import { StaticImageData } from "next/image"
+import { TrimedIconCard } from "@/components/Cards"
 
-interface interestsType {
-    id: number,
-    name: string
-}
-
-interface personalityType {
-    favourite_foods: interestsType[],
-    hobbies: interestsType[],
-    id: number,
-    job: interestsType[],
-    music_taste: interestsType[],
-    social_instagram: string | null,
-    social_twitter: string | null,
-    user: number
-}
 
 interface profileType {
     first_name: string,
@@ -47,8 +33,20 @@ const Profile = () => {
     const dispatch = useAppDispatch()
     
     useEffect(() => {
+        const loc = navigator.geolocation.getCurrentPosition(success, error)
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+        }
+        function error() {
+            console.log("Unable to retrieve your location");
+          }
+        console.log(loc)
         try{
             const token = localStorage.getItem('access')
+            // const dToken = jwtDecode(token)
+            // console.log(dToken)
             const handleAsync = async () => {
                 const res = await fetch(LOCALHOST + 'api/auth/profile/', {
                     method: "GET",
@@ -66,7 +64,7 @@ const Profile = () => {
             }
             handleAsync()
         } catch {
-            location.replace('/logout')
+            // location.replace('/logout')
         }
 
 
@@ -106,7 +104,28 @@ const Profile = () => {
                                     <button className="btn btn-green" onClick={() => dispatch(setProfileModalState(true))}>ویرایش پروفایل</button>
                                 </div>
                             </div>
-                            <div className="p-4">
+                            <div className="w-full p-4 grid grid-cols-2 mt-4">
+                                <div className="col-span-1 p-2">
+                                    <div className="shadow-lg rounded-3xl p-4 w-full text-center">
+                                        <span className="text-brown-dark">{profile.followers.length}</span>
+                                        <br />
+                                        <span className="text-sm">دنبال کنندگان</span>
+                                    </div>
+                                </div>
+                                <div className="col-span-1 p-2">
+                                    <div className="shadow-lg rounded-3xl p-4 w-full text-center">
+                                        <span className="text-brown-dark">{profile.following.length}</span>
+                                        <br />
+                                        <span className="text-sm">دنبال شوندگان</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full">
+                                <div className="p-4">
+                                    <TrimedIconCard iconName={faChartBar} altText="رفتن به صفحه مدیریت" onClick={() => location.replace('/manage')}/>
+                                </div>
+                            </div>
+                            {/* <div className="p-4">
                                 <div className="container mt-4">
                                     <div className="w-full">
                                         <div className="text-center">
@@ -116,8 +135,8 @@ const Profile = () => {
                                         <a href="/profile/personality" className="btn btn-blue block text-center w-full p-4 mt-4">کامل کردن علاقه مندی ها</a>
                                     </div>
                                 </div>
-                            </div>
-                            {
+                            </div> */}
+                            {/* {
                                 personality != null && 
                                 personality.hobbies != undefined && personality.hobbies.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
@@ -149,7 +168,8 @@ const Profile = () => {
                                         ]) }
                                     </div>
                                 </div>
-                            }
+                            } */}
+
                         </div>
                     </div>
                 </div>

@@ -94,3 +94,41 @@ export const InputWithLiveFetch = ({inputName, liveFetchAddress, placeholder, la
     )
 
 }
+
+
+
+export const SelectWithLiveFetch = ({defaultValue, liveFetchAddress, label}:{
+    defaultValue: string | null,
+    liveFetchAddress: string,
+    label: string | null
+}) => {
+
+    const [data, setData] = useState<[]>()
+
+    useEffect(()=>{
+        const handleFetch = async () => {
+            const res = await fetch(LOCALHOST + liveFetchAddress, {
+                method: 'POST'
+            })
+
+            if (!res.ok) {
+                throw new Error('Failed to fetch data')
+            }
+            const _data = await res.json()
+            setData(_data)
+        }
+        handleFetch()
+    }, [SelectWithLiveFetch])
+
+
+    return (
+        <>
+            <select className="w-full form-control mt-2">
+                <option value="default">{ defaultValue ? defaultValue : "انتخاب کنید" }</option>
+                {data?.map(option => [
+                    <option key={option.id}>{option.name}</option>
+                ])}
+            </select>
+        </>
+    )
+}
