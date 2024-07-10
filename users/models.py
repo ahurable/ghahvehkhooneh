@@ -7,10 +7,10 @@ import os, random
 # Create your models here.
 
 class City(models.Model):
-    city = models.CharField(max_length=120)
+    name = models.CharField(max_length=120)
 
     def __str__(self) -> str:
-        return self.city
+        return self.name
     
 def upload_to(instance, file):
     basename = os.path.basename(file)
@@ -102,58 +102,7 @@ class Profile(models.Model):
 
 
 
-class Hobby(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self) -> str:
-        return self.name
-    
-
-
-class Food(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self) -> str:
-        return self.name
-    
-
-
-
-class MusicGenre(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self) -> str:
-        return self.name
-
-
-
-
-class Job(models.Model):
-    name = models.CharField(max_length=200)
-    def __str__(self) -> str:
-        return self.name
-    
-
-
-
-class Personality(models.Model):
-    music_taste = models.ManyToManyField(MusicGenre, related_name='personalities')
-    hobbies = models.ManyToManyField(Hobby, related_name='personalities')
-    favourite_foods = models.ManyToManyField(Food, related_name='personalities')
-    job = models.ManyToManyField(Job, related_name="personalities")
-    social_twitter = models.CharField(max_length=1000, null=True, blank=True)
-    social_instagram = models.CharField(max_length=1000, null=True, blank=True)
-    user = models.OneToOneField(CustomUser, related_name='personality', on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return self.user.username
-    
-
-    @receiver(post_save, sender=CustomUser)
-    def create_profile(sender, instance, created, **kwargs):
-        if created:
-            Personality.objects.create(user=instance)
-
-    @receiver(post_save, sender=CustomUser)
-    def save_profile(sender, instance, **kwargs):
-        instance.personality.save()
+class Notification(models.Model):
+    title = models.CharField(max_length=150)
+    description = models.TextField()
+    foruser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

@@ -3,11 +3,6 @@ from .models import Cafe, Event, MenuItem, Rating, Club
 from rest_framework import serializers
 from users.serializers import GetUserWithAnyProfileSerializer
 
-class AllFieldsClubSerializer(ModelSerializer):
-    members = GetUserWithAnyProfileSerializer(many=True)
-    class Meta:
-        model = Club
-        fields = '__all__'
 
 
 class SmallDetailedClubSerializer(ModelSerializer):
@@ -37,18 +32,6 @@ class MenuItemSerializer(ModelSerializer):
 
 
 
-class CafeSerializer(ModelSerializer):
-    ratings = RatingSerializer(many=True)
-    menu_item = MenuItemSerializer(many=True)
-    club = AllFieldsClubSerializer()
-
-    class Meta: 
-        model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'menu_item', 'club']
-
-
-
-
 class CafeListSerializer(ModelSerializer):
     ratings = RatingSerializer(many=True)
 
@@ -63,12 +46,37 @@ class CafeNameSerializer(ModelSerializer):
         fields = ['id', 'name']
 
 
+class ClubSerializer(ModelSerializer):
+    members = GetUserWithAnyProfileSerializer(many=True)
+    class Meta:
+        model = Club
+        fields = '__all__'
+
 class EventSerializer(ModelSerializer):
+    club = ClubSerializer()
     cafe = CafeNameSerializer()
-    club = AllFieldsClubSerializer()
     class Meta:
         model = Event
         fields = '__all__'
+
+class AllFieldsClubSerializer(ModelSerializer):
+    members = GetUserWithAnyProfileSerializer(many=True)
+    events = EventSerializer(many=True)
+    class Meta:
+        model = Club
+        fields = '__all__'
+
+
+class CafeSerializer(ModelSerializer):
+    ratings = RatingSerializer(many=True)
+    menu_item = MenuItemSerializer(many=True)
+    club = AllFieldsClubSerializer()
+
+    class Meta: 
+        model = Cafe
+        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'menu_item', 'club']
+
+
 
 
 class DetailedEventSerializer(ModelSerializer):

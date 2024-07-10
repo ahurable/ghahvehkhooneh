@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from colorama import Fore
 from rest_framework_simplejwt.tokens import Token
+from .utls import checkAdmin
 from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
@@ -89,6 +90,7 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['avatar'] = user.profile.avatar.url
+        token['is_admin'] = checkAdmin(user)
         return token
     
 
@@ -96,42 +98,3 @@ class AvatarSerializer(serializers.ModelSerializer):
         class Meta:
             model = Profile
             fields = ['avatar', ]
-
-
-
-class HobbySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Hobby
-        fields = '__all__'
-
-
-
-class MusicGenreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MusicGenre
-        fields = '__all__'
-
-
-
-class JobSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Job
-        fields = '__all__'
-
-
-
-class FoodSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Food
-        fields = '__all__'
-
-
-
-class PersonalitySerializer(serializers.ModelSerializer):
-    music_taste = MusicGenreSerializer(many=True)
-    hobbies = HobbySerializer(many=True)
-    favourite_foods = FoodSerializer(many=True)
-    job = JobSerializer(many=True)
-    class Meta:
-        model = Personality
-        fields = '__all__'

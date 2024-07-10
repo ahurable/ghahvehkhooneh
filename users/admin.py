@@ -11,11 +11,3 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(Profile)
 
 admin.site.register(City)
-
-admin.site.register(Food)
-
-admin.site.register(Hobby)
-
-admin.site.register(MusicGenre)
-
-admin.site.register(Personality)

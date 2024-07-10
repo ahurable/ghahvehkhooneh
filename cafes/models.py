@@ -50,6 +50,7 @@ class Cafe(models.Model):
     is_approved = models.BooleanField(default=False)
     admin = models.ManyToManyField(User, related_name='cafes')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
+    number= models.CharField(max_length=12)
 
     def __str__(self) -> str:
         return self.name

@@ -151,3 +151,4 @@ def clubOfferHook(request):
         return Response({'none':'no club'}, status=400)
     return Response(serializer.data)
 
+
