@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Cafe, Event, MenuItem, Rating, Club
+from .models import Cafe, Event, MenuItem, Rating, Club, CategoryFood
 from rest_framework import serializers
 from users.serializers import GetUserWithAnyProfileSerializer
 
@@ -67,14 +67,20 @@ class AllFieldsClubSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = CategoryFood
+        fields = ['id', 'name']
+
+
 class CafeSerializer(ModelSerializer):
     ratings = RatingSerializer(many=True)
-    menu_item = MenuItemSerializer(many=True)
+    categories = CategorySerializer(many=True)
     club = AllFieldsClubSerializer()
 
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'menu_item', 'club']
+        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'categories', 'club']
 
 
 

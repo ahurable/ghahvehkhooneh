@@ -73,7 +73,7 @@ class Rating(models.Model):
 
 class CategoryFood(models.Model):
     name = models.CharField(max_length=200)
-    picture = models.ImageField(upload_to=category_image_upload, default=None, blank=True)
+    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='categories')
     def __str__(self) -> str:
         return self.name
     
@@ -85,7 +85,6 @@ class MenuItem(models.Model) :
     picture = models.ImageField(upload_to=menu_image_upload, blank=True, null=True)
     category = models.ManyToManyField(CategoryFood, related_name='items')
     price = models.IntegerField(max_length=999)
-    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='menu_item')
 
     def __str__(self) -> str:
         return self.item

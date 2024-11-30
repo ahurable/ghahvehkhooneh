@@ -98,3 +98,27 @@ class AvatarSerializer(serializers.ModelSerializer):
         class Meta:
             model = Profile
             fields = ['avatar', ]
+
+
+class HobbySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hobby
+        fields = ['id','name']
+
+class MusicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Music
+        fields = ['id','name']
+
+class MovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ['id','name']
+
+class PersonalitySerializer(serializers.ModelSerializer):
+    fav_music = MusicSerializer(many=True)
+    watched_movies= MovieSerializer(many=True)
+    hobbies = HobbySerializer(many=True)
+    class Meta:
+        model = Personality
+        fields = '__all__'

@@ -24,7 +24,8 @@ class CafeView(APIView):
     permission_classes = (AllowAny, )
     def get(self, request, id):
         serializer = CafeSerializer(Cafe.objects.get(id=id))
-        return Response(serializer.data, status=200)
+        category_serializer =CategorySerializer(CategoryFood.objects.all(), many=True)
+        return Response({'cafe': serializer.data, 'categories': category_serializer.data}, status=200)
     
 
 class AddCafeView(APIView):
@@ -93,9 +94,9 @@ class ListEventView(ListAPIView):
         if (self.request.user.is_authenticated):
             if (self.user.clubs.length > 0):
                 try:
-                    qs = Event.objects.all().filter(members__in=self.request.user)
+                    qs = Event.objects.all().filter(members__in=self.request.user).order_by('-id')
                 except:
-                    qs = Event.objects.all()
+                    qs = Event.objects.all().order_by('-id')
             qs = Event.objects.all()
         qs = Event.objects.all()
         return qs
@@ -151,4 +152,38 @@ def clubOfferHook(request):
         return Response({'none':'no club'}, status=400)
     return Response(serializer.data)
 
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def check_admin(request):
+    try:
+        user = User.objects.get(id=request.user.id)
+        if Cafe.objects.filter(admin=user).exists():
+            return Response({'true':'the user is a cafe owner'}, status=200)
+        return Response({'false':'the user has no cafe'}, status=400)
+    except:
+        return Response({'error':'the token is expired'})
 
+
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def add_user_to_club(request, club_id):
+    club = Club.objects.get(id=club_id)
+    user = User.objects.get(id=request.user.id)
+    try:
+        club.members.add(user)
+        return Response({}, status=201)
+    except: 
+        print("Some problems happened during the add")
+        return Response({"error": "Some problems happened"}, status=400)
+    
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def check_club_subscribed(request, club_id):
+    # try:
+        user = User.objects.get(id=request.user.id)
+        if (user in Club.objects.get(id=club_id).members.all()): 
+            return Response({}, status=201)
+        return Response({}, status=200)
+    # except:
+    #     print("some problems happened")
+    #     return Response({}, status=500)

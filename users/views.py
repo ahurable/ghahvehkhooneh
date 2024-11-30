@@ -69,8 +69,10 @@ class ProfileInformation(APIView):
         
             
         profile = Profile.objects.get(user__username=request.user.username)
+        personality = Personality.objects.get(user__username=request.user.username)
+        personality_serializer = PersonalitySerializer(personality)
         profile_serializer = self.ProfileSerializer(profile)
-        return Response({'profile':profile_serializer.data}, status=200)
+        return Response({'profile':profile_serializer.data, 'personality': personality_serializer.data}, status=200)
     
 
 # hooks 
@@ -119,75 +121,75 @@ def unfollowRequestView(request, id):
         return Response({'success':'user has removed from your followings with successfully'}, status=200)
 
 
-# @api_view(['POST'])
-# def offerHobbyHook(request):
-#     serializer = HobbySerializer(data=request.data)
-#     if serializer.is_valid():
-#         print(serializer.data['name'])
-#         instance = Hobby.objects.all().filter(name__contains=serializer.data['name'])
-#         serialized_response = HobbySerializer(instance, many=True)
-#         return Response(serialized_response.data)
+@api_view(['POST'])
+def offerHobbyHook(request):
+    serializer = HobbySerializer(data=request.data)
+    if serializer.is_valid():
+        print(serializer.data['name'])
+        instance = Hobby.objects.all().filter(name__contains=serializer.data['name'])
+        serialized_response = HobbySerializer(instance, many=True)
+        return Response(serialized_response.data)
         
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def addHobbyHook(request):
-#     serializer = HobbySerializer(data=request.data)
-#     if serializer.is_valid():
-#         validated_data = serializer.data
-#         hobby_instance = Hobby.objects.get_or_create(name=validated_data['name'])
-#         personality_instance = Personality.objects.get_or_create(user=request.user)
-#         personality_instance[0].hobbies.add(hobby_instance[0].id)
-#         return Response({'success':'u added hobby with successfully'}, status=200)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addHobbyHook(request):
+    serializer = HobbySerializer(data=request.data)
+    if serializer.is_valid():
+        validated_data = serializer.data
+        hobby_instance = Hobby.objects.get_or_create(name=validated_data['name'])
+        personality_instance = Personality.objects.get_or_create(user=request.user)
+        personality_instance[0].hobbies.add(hobby_instance[0].id)
+        return Response({'success':'u added hobby with successfully'}, status=200)
     
 
 
-# @api_view(['POST'])
-# def offerJobHook(request):
-#     serializer = JobSerializer(data=request.data)
-#     if serializer.is_valid():
-#         instance = Job.objects.all().filter(name__contains=serializer.data['name'])
-#         serialized_response = JobSerializer(instance, many=True)
-#         return Response(serialized_response.data)
-#     return Response({'job':'job does not exists'}, status=404)
+@api_view(['POST'])
+def offerJobHook(request):
+    serializer = JobSerializer(data=request.data)
+    if serializer.is_valid():
+        instance = Job.objects.all().filter(name__contains=serializer.data['name'])
+        serialized_response = JobSerializer(instance, many=True)
+        return Response(serialized_response.data)
+    return Response({'job':'job does not exists'}, status=404)
         
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def addJobHook(request):
-#     serializer = JobSerializer(data=request.data)
-#     if serializer.is_valid():
-#         validated_data = serializer.data
-#         job_instance = Job.objects.get_or_create(name=validated_data['name'])
-#         personality_instance = Personality.objects.get_or_create(user=request.user)
-#         personality_instance[0].job.add(job_instance[0].id)
-#         return Response({'success':'u added hobby with successfully'}, status=200)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addJobHook(request):
+    serializer = JobSerializer(data=request.data)
+    if serializer.is_valid():
+        validated_data = serializer.data
+        job_instance = Job.objects.get_or_create(name=validated_data['name'])
+        personality_instance = Personality.objects.get_or_create(user=request.user)
+        personality_instance[0].job.add(job_instance[0].id)
+        return Response({'success':'u added hobby with successfully'}, status=200)
     
 
 
-# @api_view(['POST'])
-# def offerMusicGenreHook(request):
-#     serializer = MusicGenreSerializer(data=request.data)
-#     if serializer.is_valid():
-#         instance = MusicGenre.objects.all().filter(name__contains=serializer.data['name'])
-#         serialized_response = JobSerializer(instance, many=True)
-#         return Response(serialized_response.data)
-#     # return Response({'job':'job does not exists'}, status=404)
+@api_view(['POST'])
+def offerMusicGenreHook(request):
+    serializer = MusicGenreSerializer(data=request.data)
+    if serializer.is_valid():
+        instance = MusicGenre.objects.all().filter(name__contains=serializer.data['name'])
+        serialized_response = JobSerializer(instance, many=True)
+        return Response(serialized_response.data)
+    # return Response({'job':'job does not exists'}, status=404)
         
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def addMusicGenreHook(request):
-#     serializer = MusicGenreSerializer(data=request.data)
-#     if serializer.is_valid():
-#         validated_data = serializer.data
-#         genre_instance = MusicGenre.objects.get_or_create(name=validated_data['name'])
-#         personality_instance = Personality.objects.get_or_create(user=request.user)
-#         personality_instance[0].music_taste.add(genre_instance[0].id)
-#         return Response({'success':'u added hobby with successfully'}, status=200)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addMusicGenreHook(request):
+    serializer = MusicGenreSerializer(data=request.data)
+    if serializer.is_valid():
+        validated_data = serializer.data
+        genre_instance = MusicGenre.objects.get_or_create(name=validated_data['name'])
+        personality_instance = Personality.objects.get_or_create(user=request.user)
+        personality_instance[0].music_taste.add(genre_instance[0].id)
+        return Response({'success':'u added hobby with successfully'}, status=200)
     
 
 
@@ -239,9 +241,9 @@ class AddMenuItem(APIView):
         return Response(serializer.data)
 
 
-    def post(self, request, cafeid):
-        cafe = Cafe.objects.get(id=cafeid)
-        print(request.data)
+    def post(self, request, categoryid):
+        cat = CategoryFood.objects.get(id=categoryid)
+        # print(request.data)
         serializer = self.Serializer(data=request.data)
         # print(request.data['picture'])
         if serializer.is_valid():
@@ -251,7 +253,7 @@ class AddMenuItem(APIView):
             menu_instance.description = serializer.data['description']
             menu_instance.picture = request.data['picture']
             menu_instance.price = serializer.data['price']
-            menu_instance.cafe = cafe
+            menu_instance.category = cat
             menu_instance.save()
             
             if serializer.data['category'] != 'default':
@@ -259,7 +261,9 @@ class AddMenuItem(APIView):
                 menu_instance.save()
 
             return Response({'success':"menu item added with successfully"}, status=201)
-            
+        
+        else:
+            return Response({'error': 'make sure'}, status=400)
 
 
 class ProfileDetails(APIView):
@@ -290,16 +294,44 @@ class AddClubView(CreateAPIView):
     permission_classes = [IsAdminOfCafe]
 
     class Serializer(serializers.ModelSerializer):
+        admin= UserSerializer
         class Meta:
             model = Club
-            fields = ['name', 'description', 'club_avatar', 'cafe']
-
+            fields = ['name', 'description', 'club_avatar', 'cafe', 'admin']
+        def create(self, validated_data):
+            # print(validated_data['admin'][0].id)
+            user_admin = User.objects.get(id=validated_data['admin'][0].id)
+            club = Club(
+                name=validated_data['name'],
+                description=validated_data['description'],
+                club_avatar=validated_data['club_avatar'],
+                cafe=validated_data['cafe']
+            )
+            club.save()
+            club.admin.add(user_admin.id)
+            club.save()
+            return club
+        
     queryset = Club.objects.all()
-    
-    serializer_class = Serializer
 
-    
-    
+    def get_serializer(self, *args, **kwargs):
+        data = self.request.data
+        data['admin'] = self.request.user.id
+        # print(data)
+        serializer = self.Serializer(data=data)
+        return serializer
+
+    # def create(self, request, *args, **kwargs):
+    #     data = request.data
+    #     data['admin'] = request.user.id
+    #     print(data)
+    #     serializer = self.Serializer(data=data)
+    #     serializer.is_valid(raise_exception=True)
+    #     print(serializer)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=201, headers=headers)
+
 
 class AdminMembersClub(APIView):
     permission_classes = [IsAuthenticated, IsAdminOfCafe]
@@ -315,7 +347,61 @@ class UpdateCafeBanner(UpdateAPIView):
         class Meta:
             model = Cafe
             fields = ['picture']
+
     lookup_field = 'id'
     permission_classes = [IsAdminOfCafe]
     serializer_class = Serializer
     queryset = Cafe.objects.all()
+
+
+
+class UpdateCafeDescription(UpdateAPIView):
+
+
+    class Serializer(ModelSerializer):
+        class Meta: 
+            model = Cafe
+            fields = ['about']
+
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+    lookup_field = 'id'
+    serializer_class = Serializer
+    queryset = Cafe.objects.all()
+
+
+class UpdateItem(UpdateAPIView):
+
+    class Serializer(ModelSerializer):
+        class Meta:
+            model = MenuItem
+            fields = ['item', 'description', 'price']
+
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+    lookup_field = 'id'
+    serializer_class = Serializer
+    queryset = MenuItem.objects.all()
+
+class CreateCategoryView(APIView):
+    class Serializer(ModelSerializer):
+        class Meta:
+            model = CategoryFood
+            fields = ['name']
+    permission_classes = [IsAdminOfCafe]
+    def post(self, request, cafeid):
+        cafe = Cafe.objects.get(id=cafeid)
+        print(request.data)
+        serializer = self.Serializer(data=request.data)
+        if serializer.is_valid():
+            cat = CategoryFood(name=serializer.data['name'], cafe=cafe)
+            cat.save()
+            return Response({'name': serializer.data['name']}, status=201)
+        
+
+class DeleteCategoryView(APIView):
+    permission_classes = [IsAdminOfCafe, IsAuthenticated]
+    def delete(self, request, cafeid, category_id):
+        try:
+            CategoryFood.objects.get(id=category_id).delete()
+            return Response({'success':'deleted'}, status=201)
+        except:
+            return Response({'error':'some error happened'}, status=400)

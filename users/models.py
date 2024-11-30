@@ -99,7 +99,41 @@ class Profile(models.Model):
     def save_profile(sender, instance, **kwargs):
         instance.profile.save()
 
+class Hobby(models.Model):
+    name = models.CharField(max_length=300)
 
+    def __str__(self) -> str:
+        return self.name
+
+class Music(models.Model):
+    name = models.CharField(max_length=300)
+
+    def __str__(self) -> str:
+        return self.name
+    
+class Movie(models.Model):
+    name = models.CharField(max_length=300)
+
+    def __str__(self) -> str:
+        return self.name
+
+class Personality(models.Model):
+    fav_music = models.ManyToManyField(Music, related_name='musics', null=True, blank=True)
+    hobbies = models.ManyToManyField(Hobby, related_name='hobbies', null=True, blank=True)
+    watched_movies = models.ManyToManyField(Movie, related_name='movies', null=True, blank=True)
+    social_twitter = models.CharField(max_length=1000, null=True, blank=True)
+    social_instagram = models.CharField(max_length=1000, null=True, blank=True)
+    user = models.OneToOneField(CustomUser, related_name='personality', on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return self.user.username
+    @receiver(post_save, sender=CustomUser)
+    def create_personality(sender, instance, created, **kwargs):
+        if created:
+            Personality.objects.create(user=instance)
+
+    @receiver(post_save, sender=CustomUser)
+    def save_personality(sender, instance, **kwargs):
+        instance.personality.save()
 
 
 class Notification(models.Model):

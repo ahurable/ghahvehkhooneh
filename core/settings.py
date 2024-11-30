@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-sov1xer$@+m=$n*s7(=8u1m@b*m+g&l^g&&wq74o2u@3b4d+t3
 DEBUG = True
 
 
-FRONTEND_URL = 'http://localhost:3000'
+FRONTEND_URL = 'https://d1fd-23-137-200-114.ngrok-free.app'
 ALLOWED_HOSTS = ['*']
 
 
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'posts',
     'users',
     'cafes',
+    'payments',
+    'azbankgateways',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -168,3 +170,24 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
+AZ_IRANIAN_BANK_GATEWAYS = {
+    "GATEWAYS": {
+        "IDPAY": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "METHOD": "POST",  # GET or POST
+            "X_SANDBOX": 0,  # 0 disable, 1 active
+        },
+    },
+    "IS_SAMPLE_FORM_ENABLE": True,  # اختیاری و پیش فرض غیر فعال است
+    "DEFAULT": "IDPAY",
+    "CURRENCY": "IRR",  # اختیاری
+    "TRACKING_CODE_QUERY_PARAM": "tc",  # اختیاری
+    "TRACKING_CODE_LENGTH": 16,  # اختیاری
+    "SETTING_VALUE_READER_CLASS": "azbankgateways.readers.DefaultReader",  # اختیاری
+    "BANK_PRIORITIES": [
+    ],  # اختیاری
+    "IS_SAFE_GET_GATEWAY_PAYMENT": False,  # اختیاری، بهتر است True بزارید.
+    "CUSTOM_APP": None,  # اختیاری
+}
