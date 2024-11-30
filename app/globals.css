@@ -32,6 +32,12 @@
         color: white;
     }
 
+    .btn-light-red {
+      @apply transition-all duration-300;
+      @apply bg-gray-50 text-red-500;
+      @apply border-b-4 border-b-red-500 border-b
+    }
+
     .btn-primary:hover {
         background-color: #502b16;
     }
@@ -61,7 +67,7 @@
     }
 
     .form-wrapper {
-      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center;
+      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center ;
     }
 
     

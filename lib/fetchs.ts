@@ -12,7 +12,7 @@ export const sendFollowReq = async (id:number) => {
     if(!res.ok) {
         throw new Error('Failed to send follow request')
     } else {
-        alert('با موفقیت به لیست فالور های شما اضافه شد')
+        console.log('با موفقیت به لیست فالور های شما اضافه شد')
     }
     const data = await res.json()
     return data

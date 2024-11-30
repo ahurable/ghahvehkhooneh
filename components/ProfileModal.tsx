@@ -2,7 +2,7 @@
 import { Modal, ModalFooter } from "@/components/modals/modals"
 import { ModalHeader, ModalBody } from "@/components/modals/modals"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
-import { setProfileModalState } from "@/lib/features/profileModalSlice"
+import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { FormEvent } from "react"
 import { LOCALHOST } from "@/lib/variebles"
 
@@ -41,7 +41,7 @@ const ProfileModal = ({ profile } : { profile: props }) => {
 
     return (
         <Modal show={isOpenState} >
-                <ModalHeader onClose={() => dispatch(setProfileModalState(false))}>
+                <ModalHeader onClose={() => dispatch(setEditProfileModalState(false))}>
                     <h1>ویرایش اطلاعات پروفایل</h1>
                 </ModalHeader>
                 <form method="post" onSubmit={profileSubmit}>
@@ -60,7 +60,7 @@ const ProfileModal = ({ profile } : { profile: props }) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn btn-red m-2" onClick={() => dispatch(setProfileModalState(false))}>انصراف</button>
+                    <button className="btn btn-red m-2" onClick={() => dispatch(setEditProfileModalState(false))}>انصراف</button>
                     <button type="submit" className="btn btn-blue m-2">ثبت تغییرات </button>
                 </ModalFooter>
                 </form>

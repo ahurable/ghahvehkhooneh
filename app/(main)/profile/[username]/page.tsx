@@ -1,5 +1,5 @@
 "use client"
-import { setProfileModalState } from "@/lib/features/profileModalSlice"
+import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { useAppDispatch } from "@/lib/hook"
 import { jwtDecode } from "jwt-decode"
 import React, { useEffect, useState } from "react"

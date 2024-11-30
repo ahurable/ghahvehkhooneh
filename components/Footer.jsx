@@ -8,12 +8,15 @@ import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
 import { LOCALHOST } from "@/lib/variebles"
 import { AddButton } from "./Buttons"
+import { useAppSelector } from "@/lib/hook"
 
 const Footer = () => {
-
+    const avatar = useAppSelector(s => s.user.avatar)
+    const username = useAppSelector(s => s.user.username)
     const footerRef = useRef()
     const [sy, setSy] = useState(0)
     useEffect(() => {
+        console.log(username)
         console.log(location.pathname == "/main")
         window.addEventListener('scroll', () => {
             if (window.scrollY > sy) {
@@ -42,7 +45,7 @@ const Footer = () => {
                         <div className="w-full text-center">
                             <span className="text-brown-dark">
                                 {
-                                    localStorage.getItem('access') ? <img className="rounded-full w-8 h-8 inline-table" alt="" src={LOCALHOST + jwtDecode(localStorage.getItem('access')).avatar} /> :<FontAwesomeIcon icon={faUserCircle}/>
+                                    localStorage.getItem('access') ? <img className="rounded-full w-8 h-8 inline-table" alt="" src={avatar} /> :<FontAwesomeIcon icon={faUserCircle}/>
                                 }
                                 
                             </span>

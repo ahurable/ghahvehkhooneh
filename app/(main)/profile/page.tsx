@@ -1,5 +1,5 @@
 "use client"
-import { setProfileModalState } from "@/lib/features/profileModalSlice"
+import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { useAppDispatch } from "@/lib/hook"
 import { jwtDecode } from "jwt-decode"
 import React, { useEffect, useState } from "react"
@@ -14,39 +14,51 @@ import { StaticImageData } from "next/image"
 import { TrimedIconCard } from "@/components/Cards"
 
 
+interface idNameType {
+    id: number,
+    name: string
+}
+
+interface personalityType {
+    hobbies :idNameType[],
+    fav_music: idNameType[],
+    watched_movies: idNameType[],
+    social_twitter: string,
+    social_instagram: string,
+    user: number
+}
+
 interface profileType {
     first_name: string,
     last_name: string,
     avatar: StaticImageData | string,
     bio: string,
-    followrs: number[],
-    followings: number[],
-    city: number[]
+    followers: number[],
+    following: number[],
+    city: number[],
 }
 
 const Profile = () => {
     const [open, setOpen] = useState(false)
-    const [profile, setProfile] = useState<profileType[]>()
+    const [profile, setProfile] = useState<profileType>()
     const [personality, setPersonality] = useState<personalityType | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
-
+    const [isAdmin, setIsAdmin] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     
     useEffect(() => {
-        const loc = navigator.geolocation.getCurrentPosition(success, error)
-        function success(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        }
-        function error() {
-            console.log("Unable to retrieve your location");
-          }
-        console.log(loc)
+        // const loc = navigator.geolocation.getCurrentPosition(success, error)
+        // function success(position: any) {
+        //     const latitude = position.coords.latitude;
+        //     const longitude = position.coords.longitude;
+        //     console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+        // }
+        // function error() {
+        //     console.log("Unable to retrieve your location");
+        //   }
+        // console.log(loc)
         try{
             const token = localStorage.getItem('access')
-            // const dToken = jwtDecode(token)
-            // console.log(dToken)
             const handleAsync = async () => {
                 const res = await fetch(LOCALHOST + 'api/auth/profile/', {
                     method: "GET",
@@ -57,18 +69,37 @@ const Profile = () => {
                 const data = await res.json()
                 console.log(data)
                 setProfile(data.profile)
-                if (data.personality) {
-                    setPersonality(data.personality)
-                }
+                setPersonality(data.personality)
                 setLoading(false)
             }
             handleAsync()
         } catch {
-            // location.replace('/logout')
+            location.replace('/logout')
         }
 
-
     }, [])
+
+    useEffect(()=>{
+        try {
+            const handleAsync = async () => {
+                const token = localStorage.getItem('access')
+                const res = await fetch(`${LOCALHOST}api/cafes/check-admin`, 
+                    {
+                        method: "get",
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                )
+                if (res.ok) {
+                    setIsAdmin(true)
+                }
+            }
+            handleAsync()
+        } catch {
+            throw Error('there were error during checking if the user is admins')
+        }
+    },[profile])
 
     return (
         <>
@@ -101,7 +132,7 @@ const Profile = () => {
                                     </div>
                                 </div>
                                 <div className="col-span-12 p-4">
-                                    <button className="btn btn-green" onClick={() => dispatch(setProfileModalState(true))}>ویرایش پروفایل</button>
+                                    <button className="btn btn-green" onClick={() => dispatch(setEditProfileModalState(true))}>ویرایش پروفایل</button>
                                 </div>
                             </div>
                             <div className="w-full p-4 grid grid-cols-2 mt-4">
@@ -122,10 +153,10 @@ const Profile = () => {
                             </div>
                             <div className="w-full">
                                 <div className="p-4">
-                                    <TrimedIconCard iconName={faChartBar} altText="رفتن به صفحه مدیریت" onClick={() => location.replace('/manage')}/>
+                                    { isAdmin ? <TrimedIconCard iconName={faChartBar} altText="رفتن به صفحه مدیریت" onClick={() => location.replace('/manage')}/> : "" }
                                 </div>
                             </div>
-                            {/* <div className="p-4">
+                            <div className="p-4">
                                 <div className="container mt-4">
                                     <div className="w-full">
                                         <div className="text-center">
@@ -135,8 +166,7 @@ const Profile = () => {
                                         <a href="/profile/personality" className="btn btn-blue block text-center w-full p-4 mt-4">کامل کردن علاقه مندی ها</a>
                                     </div>
                                 </div>
-                            </div> */}
-                            {/* {
+                            </div> {
                                 personality != null && 
                                 personality.hobbies != undefined && personality.hobbies.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
@@ -149,10 +179,10 @@ const Profile = () => {
                             }
                             {
                                 personality != null && 
-                                personality.favourite_foods != undefined && personality.favourite_foods.length > 0 && <div className="w-full">
+                                personality.watched_movies != undefined && personality.watched_movies.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
                                         <span className="font-bold text-sm mx-4 my-2 py-2">غذاهای مورد علاقه: </span>
-                                       { personality.favourite_foods.map(hobby => [
+                                       { personality.watched_movies.map(hobby => [
                                              <span className="p-2 rounded-lg text-brown-normal border m-1" key={hobby.id}>{hobby.name}</span>
                                         ]) }
                                     </div>
@@ -160,15 +190,15 @@ const Profile = () => {
                             }
                             {
                                 personality != null && 
-                                personality.music_taste != undefined && personality.music_taste.length > 0 && <div className="w-full">
+                                personality.fav_music != undefined && personality.fav_music.length > 0 && <div className="w-full">
                                     <div className="w-full rounded-3xl shadow p-4 flex flex-wrap mt-4">
                                         <span className="font-bold text-sm mx-4 my-2 py-2">سلیقه موسیقی: </span>
-                                       { personality.music_taste.map(hobby => [
+                                       { personality.fav_music.map(hobby => [
                                              <span className="p-2 rounded-lg text-brown-normal border m-1" key={hobby.id}>{hobby.name}</span>
                                         ]) }
                                     </div>
                                 </div>
-                            } */}
+                            }
 
                         </div>
                     </div>

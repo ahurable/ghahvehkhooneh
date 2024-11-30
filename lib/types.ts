@@ -107,8 +107,11 @@ export interface cafeDetailedType {
     about: string,
     picture: string,
     ratings: rating[],
-    menu_item: menuItem[],
     club: clubsWithMembersType,
+    categories: {
+        id: number,
+        name: string
+    }[]
 }
 
 

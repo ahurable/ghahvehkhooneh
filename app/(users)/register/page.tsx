@@ -4,13 +4,15 @@ import { useState } from "react"
 import { FormEvent } from "react"
 import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
+import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 
 
 const Register = () => {
 
     const [step, setStep] = useState(1)
-    const [state, setState] = useState('')
- 
+    const [successState, setSuccessState] = useState(false)
+    const [errorState, setErrorState] = useState(false)
+    const [errorDesc, setErrorDesc] = useState('')
     const nextStep = (e) => {
         e.preventDefault()
         setStep(2)
@@ -25,6 +27,7 @@ const Register = () => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         
+       try {
         const response = await fetch(LOCALHOST + 'api/users/create/', {
             method: 'POST',
             body: formData
@@ -32,20 +35,30 @@ const Register = () => {
         const data = await response.json()
         console.log("username : " + data.username)
         if(response.status == 201){
-            alert("ثبت نام با موفقیت انجام شد")
-            redirect('/')
+            setSuccessState(true)
         }
-        else if (data.username == "user with this username already exists."){
-            alert("این نام کاربری قبلا ثبت شده است.")
-            location.reload()
+        if(response.status == 500) {
+            setErrorDesc('خطایی هنگام پردازش اطلاعات رخ داد')
+            setErrorState(true)
+        }
+        if (data.username == "user with this username already exists."){
+            setErrorDesc('حساب کاربری با این نام کاربری قبلا وجود دارد')
+            setErrorState(true)
         }
         else {
-            alert("مشکلی پیش آمده است")
+            setErrorDesc('خطایی هنگام پردازش اطلاعات رخ داد')
+            setErrorState(true)
         }
+       } catch {
+            setErrorDesc('کاربری با شماره تلفن همراه وارد شده وجود دارد')
+            setErrorState(true)
+       }
     }
 
     return (
         <main className="w-full h-full fixed overflow-auto top-0 bg-brown-light">
+            <SuccessModal state={successState} title={''} description={'حساب کاربری شما با موفقیت ایجاد شد'} redirectPath={'/profile'} />
+            <ErrorModal state={errorState} title={''} description={errorDesc} redirectPath={null} />
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
                 <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
                 <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">ایجاد حساب</h1>

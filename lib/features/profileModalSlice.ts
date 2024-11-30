@@ -2,22 +2,36 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface OpenModalState {
-    isOpen: boolean
+    isOpen: boolean,
+    isCityModal: boolean,
+    city: number
 }
 
 const initialState: OpenModalState = {
-    isOpen: false
+    isOpen: false,
+    isCityModal: false,
+    city: 1
 }
 
 export const profileModalSlice = createSlice({
     name: 'profilemodal',
     initialState,
     reducers: {
-        setProfileModalState: (state, action: PayloadAction<boolean>) => {
+        setEditProfileModalState: (state, action: PayloadAction<boolean>) => {
             state.isOpen = action.payload;
+        },
+        setSelectCity: (state, action: PayloadAction<boolean>) => {
+            state.isCityModal = action.payload;
+        },
+        setCity: (state, action: PayloadAction<number>) => {
+            state.city = action.payload
         }
     }
 })
 
-export const { setProfileModalState } = profileModalSlice.actions
+export const { 
+    setEditProfileModalState,
+    setSelectCity,
+    setCity
+} = profileModalSlice.actions
 export const profileModalReducer = profileModalSlice.reducer

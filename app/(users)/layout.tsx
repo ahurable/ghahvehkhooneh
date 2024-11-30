@@ -1,6 +1,7 @@
 import React from "react";
 import localFont from "next/font/local";
 import '../globals.css'
+import StoreProvider from "@/lib/StoreProvider";
 
 
 
@@ -64,10 +65,12 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="fa" dir="rtl">
-            <body className={yekanbakh.className}>
-                {children}
-            </body>
-        </html>
+        <StoreProvider>
+            <html lang="fa" dir="rtl">
+                <body className={yekanbakh.className}>
+                    {children}
+                </body>
+            </html>
+        </StoreProvider>
     )
 }

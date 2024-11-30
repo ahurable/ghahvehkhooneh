@@ -10,16 +10,18 @@ const Page = () => {
 
     return (
         <>
-            <InfoContentWrapper img={img}>
-                <div className="container mt-80">
-                    <div className="w-full p-4">
-                        <div className="text-center w-full">
-                            <h1 className="text-brown-dark">شروع کنید به ایجاد یک رخداد یا به عنوان صاحب کافه میتوانید درخواست ایجاد پروفایل کافتون رو اینجا برای ما ارسال کنید..</h1>
+            <div className="absolute bottom-8 w-full">
+                <InfoContentWrapper img={img}>
+                    <div className="container mt-32">
+                        <div className="w-full p-4">
+                            <div className="text-center w-full">
+                                <h1 className="text-brown-dark">شروع کنید به ایجاد یک رخداد یا به عنوان صاحب کافه میتوانید درخواست ایجاد پروفایل کافتون رو اینجا برای ما ارسال کنید..</h1>
+                            </div>
+                                <AddButtons/>
                         </div>
-                            <AddButtons/>
                     </div>
-                </div>
-            </InfoContentWrapper>
+                </InfoContentWrapper>
+            </div>
         </>
     )
 }

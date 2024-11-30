@@ -7,6 +7,7 @@ import { jobModalReducer } from './features/jobModalSlice'
 import { musicGenreModalReducer } from './features/mgenreModalSlice'
 import { eventStepReducer } from './features/eventStep'
 import { adminReducer } from './features/adminModalSlice'
+import { userReducer } from './features/userSlice'
 
 
 export const makeStore = () => {
@@ -20,6 +21,7 @@ export const makeStore = () => {
         mgenremodal: musicGenreModalReducer,
         eventStep: eventStepReducer,
         admin: adminReducer,
+        user: userReducer
     }
   })
 }

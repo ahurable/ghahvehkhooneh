@@ -1,6 +1,6 @@
 'use client'
 import { MutableRefObject, useEffect, useRef, useState } from "react"
-import { SendFollowButton, SendUnfollowButton } from "../Buttons"
+import { SendFollowButton, SendUnfollowButton, SubscribeButton } from "../Buttons"
 import { LOCALHOST } from "@/lib/variebles"
 import { fetchAllUsersInArea, sendFollowReq, sendUnfollowReq } from "@/lib/fetchs"
 import { userType, clubsType } from "@/lib/types"
@@ -64,12 +64,11 @@ const UsersWrapper = () => {
                                     </div>
                                     <div className="p-4 w-3/12">
                                         {
-                                        !followed &&    
-                                        <SendFollowButton onClick={async (e) => {
-                                            await sendFollowReq(user.id)
-                                            setFollowed(true)
-                                        }} />
-
+                                            !followed &&    
+                                            <SendFollowButton onClick={async (e) => {
+                                                await sendFollowReq(user.id)
+                                                setFollowed(true)
+                                            }} />
                                         }
                                         {
                                             followed &&
@@ -96,7 +95,6 @@ const UsersWrapper = () => {
 const ClubsWrapper = () => {
     const [loading, setLoading] = useState(true)
     const [clbs, setClubs] = useState<clubsType[]>()
-
     const fetchClubs = async () => {
         try {
             const token = localStorage.getItem('access')
@@ -119,6 +117,8 @@ const ClubsWrapper = () => {
         }
     }
 
+    
+
     useEffect(() => {
         const getClubs  = async () => {
             const allClubs = await fetchClubs()
@@ -139,7 +139,7 @@ const ClubsWrapper = () => {
             clbs.map(
                 club => [
                     <div key={club.id} className="p-4 mt-4">
-                        <div className='w-full rounded-3xl shadow p-3'>
+                        <div className='w-full rounded-3xl md:flex md:items-center shadow p-3'>
                             <div className="p-4 w-full flex items-center">
                                 <div className="img-container">
                                     <img src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover' alt="" />
@@ -153,11 +153,10 @@ const ClubsWrapper = () => {
                                 </div>
                             </div>
                             <div className="px-4 pb-4">
-                                <button className="btn-green w-full p-4">بازدید از پاتوق</button>
+                                <SubscribeButton clubId={club.id}/>     
                             </div>
                         </div>
                     </div>
-                    
                 ]
             )
         }

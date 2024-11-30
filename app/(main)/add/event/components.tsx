@@ -47,7 +47,7 @@ export const CreateEventForm = () => {
 
                             <input type="text" name="name" className="w-full md:w-3/5 form-control block my-3" placeholder="نام رویداد" />
 
-                            <textarea name="description" className="w-full md:w-3/5 form-control block my-3" placeholder="درباره این رویداد توضیح بدهید" id="" cols="30" rows="10"></textarea>
+                            <textarea name="description" className="w-full md:w-3/5 form-control block my-3" placeholder="درباره این رویداد توضیح بدهید" id="" cols={30} rows={10}></textarea>
 
                             <button type="submit" className="btn btn-green w-full p-4 mt-4">ایجاد رویداد</button>
                         </form>
@@ -77,7 +77,7 @@ export const SelectClubs = () => {
             if (res.status == 400) {
                 setHasClub(false)
             }else if (!res.ok) {
-                throw new Error('cant fetch from user clubs')
+                setHasClub(false)
             } 
             return res.json()
         }
@@ -167,7 +167,7 @@ export const SelectCafe = () => {
                                 }}>
                                     <div className="w-full bg-brown-normal text-white rounded-3xl shadow p-4">
                                         <div className="w-full">
-                                            <img src={LOCALHOST + cafe.picture} alt="" srcset="" className="rounded-2xl object-cover w-full h-32" />
+                                            <img src={LOCALHOST + cafe.picture} alt="" className="rounded-2xl object-cover w-full h-32" />
                                         </div>
                                         <div className="w-full pt-2">
                                             <span className="font-normal text-lg block">{cafe.name}</span>

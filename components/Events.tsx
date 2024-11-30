@@ -39,11 +39,11 @@ const EventWrapper = () => {
                         {events?.map(event => [
                             <div key={event.id} onClick={() => location.replace('/events/'+event.id)} className="w-full md:w-1/2 p-4">
                                 <div className="w-full rounded-3xl shadow p-4 flex">
-                                    <div className="w-1/4">
+                                    <div className="w-1/4 flex justify-center items-center">
                                         <img src={ event.club.club_avatar} className="w-20 h-20 rounded-full" alt="" />
                                     </div>
                                     <div className="ps-4 w-3/4">
-                                        <span className=" text-brown-normal m-0">{event.name}</span>
+                                        <span className=" text-brown-normal m-0 font-bold">{event.name}</span>
                                         <br />
                                         <span className="text-brown-normal text-sm">میزبان: {event.cafe.name}</span>
                                         <br />

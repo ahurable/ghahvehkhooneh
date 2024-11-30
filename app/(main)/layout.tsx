@@ -73,13 +73,15 @@ export default class RootLayout extends React.Component<MyProps> {
         if (localStorage.getItem('access') && localStorage.getItem('refresh')) {
 
             if (localStorage.getItem('access') !== undefined){
-                let token = localStorage.getItem('access')
+                let token: any = localStorage.getItem('access')
                 let refresh = localStorage.getItem('refresh')
-                console.log(jwtDecode(token).exp)
-                console.log(Date.now() / 1000)
-                if (jwtDecode(token).exp < (Date.now() / 1000)) {
-                    refreshToken(refresh)
-                } 
+                if (token && token != null) {
+                    console.log(jwtDecode(token).exp)
+                    console.log(Date.now() / 1000)
+                    if (jwtDecode(token).exp < (Date.now() / 1000)) {
+                        refreshToken(refresh)
+                    } 
+                }
             } else {
                 location.replace('/logout')
             }

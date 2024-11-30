@@ -5,6 +5,7 @@ import '../globals.css'
 import StoreProvider from '@/lib/StoreProvider'
 import { Metadata } from 'next'
 import { useEffect } from 'react'
+import { ManagedUserContext } from '@/lib/context/user'
 // font declaration
 
 
@@ -63,8 +64,8 @@ export default function RootLayout({
 
   useEffect(() => {
     if (localStorage.getItem('access')){
-      if (localStorage.getItem('access') != undefined || localStorage.getItem('access') != null) {
-        if (localStorage.getItem('access').length == 0)
+      if (localStorage.getItem('access') != undefined) {
+        if (localStorage.getItem('access') && localStorage.getItem('access').length == 0)
           location.replace('/logout') 
       }
       else {
@@ -79,8 +80,7 @@ export default function RootLayout({
     <StoreProvider>
     <html lang="fa" dir="rtl">
       <body className={yekanbakh.className}>
-        {children}
-        
+          {children}
       </body>
     </html>
     </StoreProvider>

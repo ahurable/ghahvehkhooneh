@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { Rating } from "flowbite-react"
 import { clubsType } from "./tabs/SocialTabs"
-import { eventDetail, userWithAnyProfileType } from "@/lib/types"
+import { categoryFood, eventDetail, userWithAnyProfileType } from "@/lib/types"
 
 
 export interface cafeCard {
@@ -22,18 +22,22 @@ export interface menuItem {
     item: string,
     description: string,
     picture: string,
+    price: string,
     cafe: number
 }
 
 export interface cafeInformation {
-    id: number,
-    name: string,
-    address: string,
-    about: string,
-    picture: string,
-    ratings: rating[],
-    menu_item: menuItem[],
-    club: clubsType,
+    cafe: {
+        id: number,
+        name: string,
+        address: string,
+        about: string,
+        picture: string,
+        ratings: rating[],
+        menu_item: menuItem[],
+        club: clubsType,
+    },
+    categories: categoryFood[]
 }
 
 
@@ -66,12 +70,19 @@ export const MenuItem = ({menuItem}:{menuItem: menuItem}) => {
         <div className="w-full">
             <div className="">
                 <div className="w-full rounded-lg p-3 flex items-center">
-                    <div className="col-span-3 p-2">
+                    <div className="w-3/12 p-2">
                         <img src={LOCALHOST + menuItem.picture} alt="" className="w-20 h-20 rounded-lg object-cover" />
                     </div>
-                    <div className=" p-2">
+                    <div className="w-5/12 p-2">
                         <span className="text-lg">{menuItem.item}</span><br />
                         <span className="text-gray-600">{menuItem.description}</span>
+                    </div>
+                    <div className="w-3/12">
+                        <span className="float-end">
+                            <span className="text-xl">{menuItem.price}</span>
+                            <span className="text-sm">تومان</span>
+                        </span> 
+                        
                     </div>
                 </div>
             </div>
@@ -118,73 +129,6 @@ export const CafeCard = ({cafe}) => {
 
 
 
-const RatingBox = ({rating}: {rating:rating}) => {
-
-    useEffect(()=>{
-        // console.log(rating.user)
-    })
-    
-
-    return (
-        <>
-             <div className="w-full flex items-center">
-                <div className="p-4">
-                    <img src={LOCALHOST + rating.user.profile.avatar} className="w-20 h-20 rounded-full object-cover" alt="" />
-                </div>
-                <div className="p-4">
-                    <span className="text-lg">{rating.user.profile.first_name} { rating.user.profile.last_name }</span> <br />
-                    <span>{ rating.rating }</span>
-                    <br />
-                    <span>{rating.description}</span>
-                </div>
-            </div> 
-        </>
-    )
-
-}
-
-
-
-const RatingsWrapper = ({ratings}: {ratings:rating[]})  => {
-    
-
-
-    return (
-        <>
-        
-            <div className="w-full">
-                <div className="w-full p-4">
-                    <form>
-                        <textarea name="comment" id="commentId" placeholder="دیدگاهی بگذارید" className="form-control w-full"></textarea>
-                        <button className="w-full btn-green mt-3 p-4 text-center">ثبت دیدگاه</button>
-                    </form>
-                </div>
-
-                { ratings.length > 0 ?
-                    ratings.map(rating => [
-                        <RatingBox key={rating.id} rating={rating} />
-                    ])
-                    : 
-                    <div className="w-full flex mt-10">
-                        <div className="w-full text-center">
-                            <span>داده ای برای نمایش وجود ندارد</span>
-                        </div>
-                    </div>
-                }
-                
-            </div>
-
-
-        </>
-    )
-
-
-
-
-}
-
-
-
 function EventsWrapper({events}:{events:eventDetail[] | null}) {
     useEffect(()=>{
         console.log(events)
@@ -223,11 +167,11 @@ export const BackButton = () => {
     )
 }
 
-export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], ratings: rating[], club: club}) => {
+export const TabsWrapper = ({menuItems, club, categories}:{menuItems: menuItem[], club: club, categories: categoryFood[]}) => {
 
-    const menu = useRef()
-    const ratingsButton = useRef()
-    const events = useRef()
+    const menu = useRef<HTMLButtonElement>()
+    // const ratingsButton = useRef()
+    const events = useRef<HTMLButtonElement>()
     const [tab, setTab] = useState('menu')
     
 
@@ -238,7 +182,7 @@ export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], r
                 menu.current.classList.add('shadow')
 
                 // ratingsButton.current.classList.remove('bg-white')
-                ratingsButton.current.classList.remove('shadow')
+                // ratingsButton.current.classList.remove('shadow')
 
                 // events.current.classList.remove('bg-white')
                 events.current.classList.remove('shadow')
@@ -248,19 +192,19 @@ export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], r
                 break
 
 
-            case 'ratings':
-                // menu.current.classList.remove('bg-white')
-                menu.current.classList.remove('shadow')
+            // case 'ratings':
+            //     // menu.current.classList.remove('bg-white')
+            //     menu.current.classList.remove('shadow')
 
-                // ratingsButton.current.classList.add('bg-white')
-                ratingsButton.current.classList.add('shadow')
+            //     // ratingsButton.current.classList.add('bg-white')
+            //     ratingsButton.current.classList.add('shadow')
 
-                // events.current.classList.remove('bg-white')
-                events.current.classList.remove('shadow')
+            //     // events.current.classList.remove('bg-white')
+            //     events.current.classList.remove('shadow')
 
-                setTab('ratings')
+            //     setTab('ratings')
 
-                break
+            //     break
 
 
             case 'events': 
@@ -268,7 +212,7 @@ export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], r
                 menu.current.classList.remove('shadow')
 
                 // ratingsButton.current.classList.remove('bg-white')
-                ratingsButton.current.classList.remove('shadow')
+                // ratingsButton.current.classList.remove('shadow')
 
                 // events.current.classList.add('bg-white')
                 events.current.classList.add('shadow')
@@ -282,13 +226,10 @@ export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], r
     return (
         <>
             <div className="container w-full grid grid-cols-12">
-                <div className="col-span-4 p-4">
+                <div className="col-span-6 p-4">
                     <button ref={menu} className="w-full block p-3 rounded-lg shadow" onClick={() => toggleMenu('menu')}>منو</button>
                 </div>
-                <div  className="col-span-4 p-4">
-                    <button ref={ratingsButton} className="w-full block p-3 rounded-lg" onClick={() => toggleMenu('ratings')}>بازخوردها</button>
-                </div>
-                <div className="col-span-4 p-4">
+                <div className="col-span-6 p-4">
                     <button ref={events} className="w-full block p-3 rounded-lg" onClick={() => toggleMenu('events')}>رویداد ها</button>
                 </div>
             </div>
@@ -296,7 +237,7 @@ export const TabsWrapper = ({menuItems, ratings, club}:{menuItems: menuItem[], r
             <div className="w-full container">
                 { tab == "menu" && <MenuWrapper menuItems={menuItems} /> }
                 
-                { tab == "ratings" && <RatingsWrapper ratings={ratings} /> }
+                {/* { tab == "ratings" && <RatingsWrapper ratings={ratings} /> } */}
                 
                 { tab == "events" && <EventsWrapper events={club?.events}/>}
             </div>
