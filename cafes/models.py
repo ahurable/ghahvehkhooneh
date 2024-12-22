@@ -10,7 +10,7 @@ from users.models import City
 def menu_image_upload(instance, file):
     basename = os.path.basename(file)
     name, ext = os.path.splitext(basename)
-    new_path = f'cafes/{instance.cafe.id}/menu/{instance.item}{ext}'
+    new_path = f'cafes/{instance.category.id}/menu/{instance.item}{ext}'
     return new_path
 
 def cafe_image_upload(instance, file):
@@ -81,13 +81,14 @@ class CategoryFood(models.Model):
 
 class MenuItem(models.Model) :
     item = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(default="")
     picture = models.ImageField(upload_to=menu_image_upload, blank=True, null=True)
-    category = models.ManyToManyField(CategoryFood, related_name='items')
+    category = models.ForeignKey(CategoryFood, related_name='items', on_delete=models.CASCADE, null=True, blank=True)
     price = models.IntegerField(max_length=999)
 
     def __str__(self) -> str:
         return self.item
+    
     
 
 

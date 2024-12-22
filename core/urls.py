@@ -55,11 +55,12 @@ urlpatterns = [
     path('api/events/all/', ListEventView.as_view(), name="list-events-url"),
     path('api/events/details/<int:pk>/', EventDetailView.as_view()),
     path('api/cafes/add/category/<int:cafeid>/', CreateCategoryView.as_view()),
+    path('api/cafes/categories/<int:cafeid>/<int:categoryid>/', GetCategoryView.as_view()),
     path('api/cafes/delete/category/<int:cafeid>/<int:category_id>/', DeleteCategoryView.as_view()),
     # admin
     path('api/admin/', adminAPIView),
     path('api/admin/cafes/<int:id>/', AdminGetCafeAPIView.as_view()),
-    path('api/admin/add/menu/<int:cafeid>/', AddMenuItem.as_view()),
+    path('api/admin/add/menu/<int:cafeid>/<int:categoryid>/', AddMenuItem.as_view()),
     path('api/admin/add/club/<int:cafeid>/', AddClubView.as_view()),
     path('api/admin/club/members/<int:cafeid>/', AdminMembersClub.as_view()),
     path('api/admin/cafe/update/banner/<int:id>/', UpdateCafeBanner.as_view()),

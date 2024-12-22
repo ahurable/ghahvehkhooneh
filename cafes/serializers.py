@@ -68,9 +68,10 @@ class AllFieldsClubSerializer(ModelSerializer):
 
 
 class CategorySerializer(ModelSerializer):
+    items = MenuItemSerializer(many=True)
     class Meta:
         model = CategoryFood
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'items']
 
 
 class CafeSerializer(ModelSerializer):

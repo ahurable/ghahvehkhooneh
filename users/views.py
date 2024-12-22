@@ -228,7 +228,7 @@ class AddMenuItem(APIView):
         class Meta:
             model = MenuItem
             fields = ['item', 'description', 'picture', 'price', 'category']
-
+       
     class CategorySerializer(serializers.ModelSerializer):
         class Meta:
             model = CategoryFood
@@ -241,25 +241,13 @@ class AddMenuItem(APIView):
         return Response(serializer.data)
 
 
-    def post(self, request, categoryid):
+    def post(self, request, categoryid, cafeid):
         cat = CategoryFood.objects.get(id=categoryid)
-        # print(request.data)
+        request.data['category'] = categoryid
         serializer = self.Serializer(data=request.data)
         # print(request.data['picture'])
         if serializer.is_valid():
-            # print(serializer.data)
-            menu_instance = MenuItem()
-            menu_instance.item = serializer.data['item']
-            menu_instance.description = serializer.data['description']
-            menu_instance.picture = request.data['picture']
-            menu_instance.price = serializer.data['price']
-            menu_instance.category = cat
-            menu_instance.save()
-            
-            if serializer.data['category'] != 'default':
-                menu_instance.category.set(serializer.data['category'])
-                menu_instance.save()
-
+            serializer.save()
             return Response({'success':"menu item added with successfully"}, status=201)
         
         else:
@@ -396,6 +384,13 @@ class CreateCategoryView(APIView):
             cat.save()
             return Response({'name': serializer.data['name']}, status=201)
         
+
+class GetCategoryView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+    def get(self, request, categoryid, cafeid):
+        category = CategoryFood.objects.get(id=categoryid)
+        c_serializer = CategorySerializer(category)
+        return Response(c_serializer.data)
 
 class DeleteCategoryView(APIView):
     permission_classes = [IsAdminOfCafe, IsAuthenticated]
