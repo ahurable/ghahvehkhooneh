@@ -5,7 +5,14 @@ import { PayloadAction } from "@reduxjs/toolkit";
 const initialState: {
     showEditBanner: boolean,
     editDescription: boolean,
-    additem: boolean,
+    additem: {
+        show: boolean,
+        categoryId: number
+    },
+    editCategory: {
+        show: boolean,
+        id: number,
+    }
     addClub: boolean,
     editItem: {id:number, title?:string, description?:string, price?: string, state: boolean},
     showQR: boolean,
@@ -14,7 +21,14 @@ const initialState: {
 } = {
     showEditBanner: false,
     editDescription: false,
-    additem: false,
+    additem: {
+        show: false,
+        categoryId: 0
+    },
+    editCategory: {
+        show: false,
+        id: 0,
+    },
     addClub: false,
     editItem: {id: 0, title: "", description: "", price: "", state: false},
     showQR: false,
@@ -32,10 +46,13 @@ const adminSlice = createSlice({
         setEditDescription : (state, action: PayloadAction<boolean>) => {
             state.editDescription = action.payload
         },
-        setAddItemModalState: (state, action: PayloadAction<boolean>) => {
-
+        setAddItemModalState: (state, action: PayloadAction<{categoryId: number, show:boolean}>) => {
+            console.log(action.payload)
             state.additem = action.payload
     
+        },
+        setEditCategoryState: (state, action: PayloadAction<{id: number, show: boolean}>) => {
+            state.editCategory = action.payload
         },
         setAddClubState: (state, action:PayloadAction<boolean>) => {
             state.addClub = action.payload
@@ -63,5 +80,6 @@ export const { setQrCodeState } = adminSlice.actions
 export const { setEditItem } = adminSlice.actions
 export const { setEditClubMembers } = adminSlice.actions
 export const { setShowAddCategory } = adminSlice.actions
+export const { setEditCategoryState } = adminSlice.actions 
 
 export const adminReducer = adminSlice.reducer

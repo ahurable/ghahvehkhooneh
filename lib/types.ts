@@ -114,8 +114,16 @@ export interface cafeDetailedType {
     }[]
 }
 
+export interface MenuItem {
+    id?: number,
+    item?: string,
+    description?: string,
+    picture?: string,
+    price?: string
+}
 
 export interface categoryFood {
     id: number,
     name: string,
+    items: MenuItem[]
 }

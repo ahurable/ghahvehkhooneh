@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { Rating } from "flowbite-react"
 import { clubsType } from "./tabs/SocialTabs"
-import { categoryFood, eventDetail, userWithAnyProfileType } from "@/lib/types"
+import { categoryFood, eventDetail, MenuItem, userWithAnyProfileType } from "@/lib/types"
 
 
 export interface cafeCard {
@@ -90,14 +90,58 @@ export const MenuItem = ({menuItem}:{menuItem: menuItem}) => {
     )
 }
 
-export const MenuWrapper = ({menuItems}: {menuItems: menuItem[]}) => {
+export const MenuWrapper = ({categories}: {categories: categoryFood[]}) => {
 
+    const [menu, setMenu] = useState<MenuItem[]>([
+        {id: undefined,
+        item: undefined,
+        picture: "",
+        price:"",}
+    ])
 
+    useEffect(() => {
+        console.log(menu)
+    }, [menu])
     return (
         <div className="">
-            { menuItems.map(menuItem => [
-                <MenuItem key={menuItem.id} menuItem={menuItem} />
-            ])}
+            <div className="container w-full flex overflow-auto scrollbar">
+                {
+                    categories.map((cat)=> [
+                        <div key={cat.id} className="w-[300px] p-4">
+                            <button className="w-[150px] block p-3 rounded-lg shadow" onClick={() => setMenu(cat.items)} >{cat.name}</button>
+                        </div>
+                    ])
+                }
+            </div>
+            
+            {
+                    menu.length < 1 ?
+                    categories[0].items.map(item => [
+                    <div key={item.id} className="w-full p-2">
+                        <div className="w-full rounded-2xl shadow p-4">
+                            <div className="w-full flex items-center">
+                                <div className="w-[40px] h-[40px]"></div>
+                                <div className="w-full">
+                                    <h1>{item.item}</h1>
+                                </div>
+                            </div>
+                        </div>
+                     </div> 
+                    ])
+                    :
+                    menu.map(item => [
+                    <div key={item.id} className="w-full p-2">
+                        <div className="w-full rounded-2xl shadow-lg p-4">
+                            <div className="w-full flex items-center">
+                                <div className="w-[40px] h-[40px]"></div>
+                                <div className="w-full">
+                                    <h1>{item.item}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    ])
+            }
         </div>
     )
 }
@@ -234,8 +278,10 @@ export const TabsWrapper = ({menuItems, club, categories}:{menuItems: menuItem[]
                 </div>
             </div>
 
+            
+
             <div className="w-full container">
-                { tab == "menu" && <MenuWrapper menuItems={menuItems} /> }
+                { tab == "menu" && <MenuWrapper categories={categories} /> }
                 
                 {/* { tab == "ratings" && <RatingsWrapper ratings={ratings} /> } */}
                 

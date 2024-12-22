@@ -1,11 +1,12 @@
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
-import { setShowAddCategory } from "@/lib/features/adminModalSlice"
+import { setAddItemModalState, setEditCategoryState, setShowAddCategory } from "@/lib/features/adminModalSlice"
 import { LOCALHOST } from "@/lib/variebles"
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import DeleteEnsurance from "./DeleteEnsurance"
+import { EditCategory } from "../modals/EditCategory"
 
 
 export default function Category ({cafeId, categories}:{cafeId:number, categories: {id:number, name:string}[]}) {
@@ -29,7 +30,11 @@ export default function Category ({cafeId, categories}:{cafeId:number, categorie
                                     {category.name}
                                 </span>
                                 <div className="w-max">
-                                    <button className="btn bg-green-400 text-white border-b border-b-4 border-b-green-500 mx-4">
+                                    <button 
+                                    className="btn bg-green-400 text-white border-b 
+                                    border-b-4 border-b-green-500 mx-4"
+                                    onClick={() => dispatch(setEditCategoryState({id:category.id, show:true}))}
+                                    >
                                          <FontAwesomeIcon icon={faEdit}/>
                                     </button>
                                     <button className="btn btn-light-red" onClick={() => setShowDelete({
@@ -44,7 +49,7 @@ export default function Category ({cafeId, categories}:{cafeId:number, categorie
                         </div>
                     ))
                 }
-                
+                <EditCategory cafeId={cafeId} />
                 <DeleteEnsurance {...showDelete} />
             </div>
         </div>

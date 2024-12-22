@@ -6,11 +6,12 @@ import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useEffect, useState } from "react"
 import { setAddItemModalState } from "@/lib/features/adminModalSlice"
 
-const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
+const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
 
-    const state = useAppSelector(state => state.admin.additem)
+    const state = useAppSelector(s=>s.admin.additem.show)
+    const categoryId = useAppSelector(s=>s.admin.additem.categoryId)
     const dispatch = useAppDispatch()
-    const [successState, setSuccessState] = useState(false)
+    const [ ok, setOk ] = useState(false)
     const [errorState, setErrorState] = useState(false)
     const [cats, setCats] = useState<categoryFood[]>()
 
@@ -18,7 +19,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
         () => {
             const asyncHandler = async () => {
                 const token = localStorage.getItem('access')
-                const res = await fetch(LOCALHOST+'api/admin/add/menu/'+cafeid+'/', {
+                const res = await fetch(LOCALHOST+'api/admin/add/menu/' + cafeid +'/' +categoryId+'/', {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -27,6 +28,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
                 if (res.ok){
                     const data = await res.json()
                     setCats(data)
+                    setOk(true)
                 }
                 else {
                     setErrorState(true)
@@ -40,7 +42,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         const token = localStorage.getItem('access')
-        const res = await fetch(LOCALHOST + 'api/admin/add/menu/' + cafeid + '/', {
+        const res = await fetch(LOCALHOST + 'api/admin/add/menu/' + cafeid + '/' + categoryId + '/', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -48,7 +50,8 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
             body: formData
         })
         if (res.status == 201) {
-            setSuccessState(true)
+            setOk(true)
+            setTimeout(()=>setOk(false),1000)
         }
         
     }
@@ -57,9 +60,9 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
         <>
 
             <Modal show={state} >
-                <SuccessModal title={""} description="با موفقیت ثبت شد" state={successState} />
+                <SuccessModal title={""} description="با موفقیت ثبت شد" state={ok} />
                 <ErrorModal description={"خطایی رخ داد. لطفا اطلاعات را کامل وارد کنید"} state={errorState} redirectPath={null} title={null} />
-                <ModalHeader onClose={() => dispatch(setAddItemModalState(false))}>
+                <ModalHeader onClose={() => dispatch(setAddItemModalState({categoryId, show:false}))}>
                     <h1>افزودن آیتم جدید</h1>
                 </ModalHeader>
                 <ModalBody>
@@ -79,17 +82,6 @@ const AddItemWrapper = ({cafeid}:{cafeid:number|undefined}) => {
                         <div className="w-full p-4">
                             <label htmlFor="pictureId">تصویر:</label>
                             <input type="file" className="form-control w-full" name="picture" id="pictureId" />
-                        </div>
-                        <div className="w-full p-4">
-                            <label htmlFor="categoryId">دسته بندی:</label>
-                            <select id="categoryId" name="category" className="form-control w-full">
-                                <option value="default">انتخاب دسته بندی</option>
-                                {
-                                    cats?.map(category => [
-                                        <option key={category.id} value={category.id}>{category.name}</option>
-                                    ])
-                                }
-                            </select>
                         </div>
                         <div className="w-full p-4">
                             <button className="btn btn-green w-full p-4">افزودن</button>

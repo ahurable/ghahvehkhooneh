@@ -27,8 +27,10 @@ const AddCategory = ({cafeId}: {cafeId: number}) => {
                     body: formData
                 }
             )
-            if (res.status == 201)
+            if (res.status == 201){
                 setOk(true)
+                setTimeout(() => setOk(false), 1000)
+            }
         }
     }
     return (
