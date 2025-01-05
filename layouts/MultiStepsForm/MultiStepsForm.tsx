@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { FormEvent } from "react"
 import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
@@ -17,6 +17,7 @@ type MultiStepsFormProps = {
             placeholder: string;
             name: string;
             id: string;
+            multiple?: boolean;
             classNames: string | null;
         };
         helpText: string;
@@ -35,11 +36,21 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
 
     const [wstep, setStep] = useState(1)
     const [successState, setSuccessState] = useState(false)
+    const [pictures, setPictures] = useState<File[]>([])
     const [errorState, setErrorState] = useState(false)
+
     const nextStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setStep(wstep+1)
+                                                
     }
+
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+          const files = Array.from(event.target.files); // Convert FileList to an array
+          setPictures(files);
+        }
+      };
 
     const prevStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -49,8 +60,14 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
+            
             const formData = new FormData(e.currentTarget)
             const token = localStorage.getItem('access')
+            if (pictures.length > 0) {
+                pictures.forEach((picture, index) => {
+                    formData.append(`pictures`, picture); // You can name them as needed
+                });
+            }
             const response = await fetch(props.fetchUrl, {
                 method: 'POST',
                 headers: {
@@ -90,8 +107,17 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                         
                                         <div className="md:w-[620px] mt-14 text-start">
                                             <label htmlFor="username" className="text-md my-4">{step.label}</label>
-                                            <input type={step.input.type} id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} />
-                                        </div>
+                                            {  
+                                                step.input.type == "textarea" ?
+                                                <textarea rows={3} id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} ></textarea>
+                                                : step.input.multiple && step.input.multiple == true ? 
+                                                    <input type={step.input.type} accept="images/*" onChange={handleFileChange} multiple id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} />
+                                                    :
+                                                    <input type={step.input.type} id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} />
+                                            
+                                                    
+                                            }
+                                            </div>
 
                                         {
                                             step.isLastStep == false && step.idx ==1 && <div className={wstep == step.idx ? "mt-10 text-center lg:w-[620px]" : "hidden"}>

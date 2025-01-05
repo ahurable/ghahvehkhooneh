@@ -90,6 +90,7 @@ type Steps = {
         placeholder: string;
         name: string;
         id: string;
+        multiple?: boolean;
         classNames: string | null;
     };
     helpText: string;
@@ -116,7 +117,7 @@ const steps: Steps = [
         idx: 2,
         label: "توضیحات",
         input: {
-            type: "text",
+            type: "textarea",
             placeholder: "توضیحات کافه را وارد کنید",
             name: "about",
             id: "about",
@@ -130,7 +131,7 @@ const steps: Steps = [
         idx: 3,
         label: "آدرس کافه",
         input: {
-            type: "text",
+            type: "textarea",
             placeholder: "آدرس کافه را وارد کنید",
             name: "address",
             id: "description",
@@ -146,9 +147,10 @@ const steps: Steps = [
         input: {
             type: "file",
             placeholder: "تصویرپروفایل کافه را وارد کنید",
-            name: "picture",
-            id: "picture",
+            name: "pictures",
+            id: "pictures",
             classNames: null,
+            multiple: true,
         },
         helpText: "تصویر پروفایل کمک میکند که کافه شما بهتر دیده شود",
         isLastStep: true,

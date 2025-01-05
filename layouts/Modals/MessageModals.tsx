@@ -38,7 +38,7 @@ export const SuccessModal = ({title, description, state, redirectPath}:{title:st
 
 }
 
-export const ErrorModal = ({title, description, state, redirectPath}:{title:string | null, description:string | null, state:boolean, redirectPath:string | null}) => {
+export const ErrorModal = ({title, description, state, redirectPath}:{title:string | null, description:string | null, state:boolean, redirectPath?:string | null}) => {
 
     const [show, setShow] = useState<boolean>()
     useEffect(()=>{

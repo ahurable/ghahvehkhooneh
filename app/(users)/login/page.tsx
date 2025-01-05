@@ -47,8 +47,8 @@ const Login = () => {
 
  
     return (
-        <main className="w-full h-full bg-brown-light">
-            <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
+        <main className="w-full h-full bg-brown-light absolute">
+            <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto absolute right-0 left-0 h-full">
                 <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
                 <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">ورود به حساب</h1>
                 <div className="form-wrapper h-mx pb-20">

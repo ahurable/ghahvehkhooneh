@@ -53,7 +53,7 @@ export interface cafeCardType {
     id: number,
     name: string,
     about: string,
-    picture: string | StaticImageData,
+    pictures?: StaticImageData[],
 }
 
 export interface cafeIdNameType {
@@ -100,12 +100,17 @@ export interface eventDetail {
     created_by: userWithAnyProfileType,
 }
 
+export interface Picture {
+    picture: string | StaticImageData;
+    cafe: number;
+}
+
 export interface cafeDetailedType {
     id: number,
     name: string,
     address: string,
     about: string,
-    picture: string,
+    pictures: Picture[],
     ratings: rating[],
     club: clubsWithMembersType,
     categories: {

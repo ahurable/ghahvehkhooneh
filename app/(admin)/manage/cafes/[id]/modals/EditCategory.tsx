@@ -82,7 +82,7 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
                                         <div className="w-full p-6" key={item.id}>
                                             <div className="w-2/3 flex items-center">
                                                 <div className="w-24 h-24">
-                                                    <Image src={item.picture} alt="picture of the item" width={100} height={100} className="w-full h-full" />
+                                                    <img src={LOCALHOST + item.picture} alt="picture of the item" width={100} height={100} className="w-full h-full" />
                                                 </div>
                                                 <div className="w-full">
                                                     <span className="text-xl font-bold">{item.item}</span>

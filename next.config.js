@@ -37,24 +37,6 @@ module.exports = {
           port: '8000',
           pathname: '/media/**',
         },
-        {
-          protocol: 'http',
-          hostname: '192.168.43.213',
-          port: '8000',
-          pathname: '/media/**',
-        },
-        {
-          protocol: 'http',
-          hostname: '192.168.125.138',
-          port: '8001',
-          pathname: '/media/**',
-        },
-        {
-          protocol: 'http',
-          hostname: 'localhost',
-          port: '8001',
-          pathname: '/media/**',
-        },
       ],
     },
   }

@@ -90,7 +90,7 @@
     }
 
     .form-wrapper {
-      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center ;
+      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center absolute bottom-0 lg:h-[80vh];
     }
 
     

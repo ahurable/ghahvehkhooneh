@@ -36,7 +36,7 @@ const Page = ({params}: {params: {id:number}}) => {
                 location.replace('/manage')
             }
             const data = await res.json()
-            // console.log(data)
+            console.log(data)
             setCafe(data)
             setLoading(false)
         }
@@ -55,7 +55,7 @@ const Page = ({params}: {params: {id:number}}) => {
                     :
                     <>
                     <div className="w-full rounded-3xl shadow-lg mb-4 relative">
-                        <img src={LOCALHOST + cafe?.picture} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
+                        <img src={LOCALHOST + cafe?.pictures[0]} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
                         <div className="w-full h-full absolute top-0 bg-black bg-opacity-25 rounded-3xl">
                             <button className="rounded-full mt-4 mr-4 p-4 bg-white text-black" onClick={() => dispatch(setEditBannerState(true))}>
                                 <FontAwesomeIcon icon={faFileEdit}/>
