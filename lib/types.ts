@@ -53,8 +53,12 @@ export interface cafeCardType {
     id: number,
     name: string,
     about: string,
-    pictures?: StaticImageData[],
+    pictures: {
+        picture: StaticImageData | string,
+        is_featured: boolean
+    }[],
 }
+
 
 export interface cafeIdNameType {
     id: number,

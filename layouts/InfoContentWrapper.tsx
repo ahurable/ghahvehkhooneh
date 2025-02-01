@@ -29,7 +29,7 @@ const InfoContentWrapper = (props:info) => {
                 <div className="w-full">
                     {
                         props.img &&
-                        <Image src={props.img} width={1000} height={1000} className="w-full fixed top-0 z-0" alt=""/>
+                        <Image src={props.img} width={1000} height={1000} className="w-full h-[350px] object-cover" alt=""/>
                     }
                 </div>
                 <div className="relative z-10 bg-yellow-very-melo py-24 rounded-lg">

@@ -56,24 +56,26 @@ const Register = () => {
     }
 
     return (
-        <main className="w-full h-full fixed overflow-auto top-0 bg-brown-light">
+        <main className="w-full h-full fixed overflow-auto top-0 bg-[url(/cafe-pattern.jpg)]">
+            <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
+
             <SuccessModal state={successState} title={''} description={'حساب کاربری شما با موفقیت ایجاد شد'} redirectPath={'/profile'} />
             <ErrorModal state={errorState} title={''} description={errorDesc} redirectPath={null} />
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
-                <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
-                <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">ایجاد حساب</h1>
-                <div className="form-wrapper h-mx pb-20 mt-4">
+                <h1 className="text-center text-[34px] pt-10 text-white font-bold relative z-20">قهوه خونه</h1>
+                <h1 className="text-center text-[50px] pb-10 font-black text-white relative z-20">ایجاد حساب</h1>
+                <div className="form-wrapper z-20 h-mx pb-20 mt-4">
                     <div className="flex justify-center">
                         <form onSubmit={onSubmit}>
-                            <div className={step == 1 ? "step-1 py-10" : "step-1 hidden"}>
+                            <div className={step == 1 ? "step-1 lg:py-10" : "step-1 hidden"}>
                                 
                                 <span className="font-normal text-md">برای ایجاد حساب و احراز هویت ما به نام کاربری و شماره تلفن همراه شما نیاز داریم.</span>
                                 <div className="md:w-[620px] mx-auto">
-                                    <div className="md:w-[620px] mt-10 text-start">
+                                    <div className="md:w-[620px] mt-5 text-start">
                                         <label htmlFor="username" className="text-md my-4">نام کاربری: </label>
                                         <input type="text" id="username" name="username" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
                                     </div>
-                                    <div className="md:w-[620px] mt-10 text-start">
+                                    <div className="md:w-[620px] mt-5 text-start">
                                         <label htmlFor="phone_number" className="text-md my-4">شماره موبایل: </label>
                                         <input type="text" id="phone_number" name="phone_number" className="form-control md:w-[620px] w-full" placeholder="شماره تماس همراه موبایل خود  را وارد کنید" />
                                     </div>
@@ -83,14 +85,14 @@ const Register = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={step == 2 ? "step-2 py-10" : "step-2 hidden"}>
+                            <div className={step == 2 ? "step-2 lg:py-10" : "step-2 hidden"}>
                                 <span className="font-light text-md">ما پسورد شما رو داخل دیتابیس رمزگذاری میکنیم پس مدیران سایت هم نمیتونن به رمز عبورتون دسترسی داشته باشن اما بازم دلیل نمیشه که بخوای رمز ضعیف بذاری</span>
                                 <div className="md:w-[620px] mx-auto">
-                                    <div className="md:w-[620px] mt-10 text-start">
+                                    <div className="md:w-[620px] lg:mt-5 text-start">
                                         <label htmlFor="password" className="text-md my-4">رمز عبور: </label>
                                         <input type="password" id="password" name="password" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
                                     </div>
-                                    <div className="md:w-[620px] mt-10 text-start">
+                                    <div className="md:w-[620px] mt-5 text-start">
                                         <label htmlFor="password2" className="text-md my-4">تکرار رمز عبور: </label>
                                         <input type="password" id="password2" name="password2" className="form-control md:w-[620px] w-full" placeholder="نام کاربری خود  را بنویسید" />
                                     </div>

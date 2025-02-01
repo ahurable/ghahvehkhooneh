@@ -79,20 +79,28 @@ const Page = ({params}:{params:{id:number}}) => {
         <>
 
             <div className="w-full p-4">
-                <div className="grid grid-cols-12 w-full">
-                    <div className="col-span-12 md:col-span-6 lg:col-span-8">
-                        <div className="w-full shadow rounded-3xl p-4 mt-8">
-                            <div className="w-full flex items-center">
-                                <div className="w-1/4 flex">
-                                    <img src={data?.club.club_avatar} width={100} height={100} className="w-20 h-20 rounded-full object-cover" alt="" />
-                                </div>
-                                <div className="w-3/4 ps-4">
-                                    <div className="items-center flex">
-                                        <span className="text-brown-normal text-md">{data?.name}</span>
+                <div className="w-full">
+                    <div className="w-full ">
+                        <div className="w-full relative rounded-xl">
+                            <div className="bg-[url('/cafe-pattern.jpg')] py-20 bg-[length:130px_130px] w-full h-full z-10 relative rounded-xl"></div>
+                            <div className="w-full h-full absolute z-20 top-0 bg-brown-normal bg-opacity-40 rounded-xl">
+                                <div className="title-wrapper h-full relative text-center p-5 ">
+                                    <div className="w-full flex items-center">
+                                        <div className="block">
+                                            <img src={data?.club.club_avatar} width={100} height={100} className="w-20 h-20 rounded-full object-cover" alt="" />
+                                        </div>
+                                        <div className="ps-4">
+                                            <div className="block w-max">
+                                                <span className="text-brown-normal text-xl font-black text-white block text-start">{data?.name}</span>
+                                                <span className="text-lg font-semibold text-white block text-start">میزبان:‌{data?.cafe.name}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span className="text-sm">میزبان:‌{data?.cafe.name}</span>
                                 </div>
                             </div>
+                        </div>
+                        <div className="w-full shadow rounded-3xl p-4 mt-8">
+                            
                             <div className="pt-4">
                                 <p className="text-brown-normal">{data?.description}</p>
                             </div>

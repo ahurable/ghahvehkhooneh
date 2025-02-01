@@ -20,20 +20,19 @@ const flickityOptions: flickityOptionsType = {
 }
 
 type Pictures = {
-    pictures : {
-        picture: string
-    }[]
-}
+    picture: string,
+    is_featured:boolean
+}[]
 
-const Slider = (pictures:Pictures) => {
+const Slider = ({pictures, classNames}:{pictures:Pictures, classNames:string}) => {
     return (
         <>
         {
-            pictures.pictures ? pictures.pictures.length > 0 && 
+            pictures ? pictures.length > 0 && 
             <Flickity options={flickityOptions} elementType="div">
                 {
-                    pictures.pictures.map((p, idx) => [
-                        <img key={idx} src={LOCALHOST + p.picture} alt="" className="w-full h-60 object-cover" />
+                    pictures.map((p, idx) => [
+                        <img key={idx} src={LOCALHOST + p.picture} alt="" className={`w-full object-cover ${classNames}`} />
                     ])
                 }
             </Flickity>

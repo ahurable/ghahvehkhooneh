@@ -50,8 +50,9 @@ export const fetchAllCafeCards = async () => {
     if (!res.ok) {
         throw new Error('Failed to fetch data from cafe list cards')
     }
-
-    return res.json()
+    const data = await res.json()
+    console.log(data)
+    return data
 }
 
 

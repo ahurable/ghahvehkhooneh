@@ -38,9 +38,13 @@ export default async function Page() {
 
 
                 <div className="w-full relative border-b">
-
-                    <div className="title-wrapper text-center p-5 ">
-                        <h1 className=' text-lg'>کافه گردی</h1>
+                    <div className="w-full h-[150px] relative">
+                         <div className="bg-[url('/cafe-pattern.jpg')] bg-[length:130px_130px] w-full h-full z-10 relative"></div>
+                         <div className="w-full h-full absolute z-20 top-0 bg-brown-normal bg-opacity-40">
+                            <div className="title-wrapper h-full relative text-center p-5 ">
+                                <h1 className='text-[2rem] text-white font-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>کافه گردی</h1>
+                            </div>
+                         </div>
                     </div>
                 
                 </div>

@@ -13,11 +13,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brown-dark' : '#3F2211 ',
-        'brown-normal': '#502b16',
-        'brown-light':'#f7e2c1',
+        'brown-dark' : '#472C1B ',
+        'brown-normal': '#7D451B',
+        'brown-light':'#EDC79B',
         'pink-melo': '#DB6B7B',
-        'yellow-very-melo': '#fffff5'
+        'yellow-very-melo': '#fffff5',
+        'greenny':'#7CFFC4',
+        'greenny-dark':'#63A475',
       }
     },
     container: {
@@ -25,8 +27,8 @@ const config: Config = {
       screens: {
         sm: '620px',
         md: '720px',
-        lg: '890px',
-        xl: '1000px'
+        lg: '1290px',
+        xl: '1350px'
       }
     },
     fontSize: {

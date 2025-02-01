@@ -90,7 +90,7 @@
     }
 
     .form-wrapper {
-      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center absolute bottom-0 lg:h-[80vh];
+      @apply rounded-t-2xl shadow-lg w-full h-max p-4 bg-white flex justify-center text-center absolute bottom-0 lg:h-[80vh] h-max;
     }
 
     
@@ -106,7 +106,7 @@
     }
 
     .btn-green {
-      @apply text-white bg-emerald-400 hover:bg-emerald-500 transition font-bold text-md w-full rounded-3xl border-b-4 border-b-emerald-700 ;
+      @apply text-white bg-greenny-dark transition font-bold text-md w-full rounded-3xl border-b-4 border-b-emerald-700 ;
     }
 
     .btn-brown {
@@ -167,13 +167,7 @@ https://flickity.metafizzy.co
     position: relative;
     height: 100%;
   }
-  
-  .flickity-slider {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-  
+ 
   /* draggable */
   
   .flickity-enabled.is-draggable {

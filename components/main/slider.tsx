@@ -29,7 +29,7 @@ const flickityOptions: flickityOptionsType = {
 const CafeCard = ({id, name, about, pictures}:cafeCardType) => {
 
     useEffect(()=>{
-        console.log(pictures)
+        console.log(pictures?.filter(picture => picture.is_featured))
     })
 
     if (pictures!=undefined)
@@ -42,7 +42,7 @@ const CafeCard = ({id, name, about, pictures}:cafeCardType) => {
                         <div className="w-full h-full relative pt-6 p-2">
                             <div className="w-full h-full relative shadow rounded-3xl ">
                                 <div className="w-full h-full absolute rounded-3xl z-10">
-                                    <Image src={pictures[0].src} alt="" width={100} height={100} className="w-full h-full object-cover rounded-3xl" />
+                                    <Image src={pictures?.filter(picture => picture.is_featured).length > 0 ? pictures?.filter(picture => picture.is_featured)[0].picture : pictures[0].picture} alt="" width={100} height={100} className="w-full h-full object-cover rounded-3xl" />
                                     
                                 </div>
                                 <div className="w-full absolute top-[-15px] flex justify-center rounded-3xl z-10">
@@ -72,6 +72,7 @@ export const CafeCardListSliderWrapper = () => {
             setCafes(_cafes)
             setLoading(false)
         }
+        
         runFetch()
     }, [CafeCardListSliderWrapper])
     

@@ -140,9 +140,9 @@ const ClubsWrapper = () => {
                 club => [
                     <div key={club.id} className="p-4 mt-4">
                         <div className='w-full rounded-3xl md:flex md:items-center shadow p-3'>
-                            <div className="p-4 w-full flex items-center">
-                                <div className="img-container">
-                                    <img src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover' alt="" />
+                            <div className="p-4 w-full flex flex-wrap items-center">
+                                <div className="img-container block">
+                                    <img src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover block' alt="" />
                                 </div>
                                 <div className="ps-4">
                                     <span className="text-lg">{club.name}</span>

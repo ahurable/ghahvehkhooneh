@@ -95,7 +95,14 @@ export default class RootLayout extends React.Component<MyProps> {
             <StoreProvider>
             <html lang="fa" dir="rtl">
                 <body className={yekanbakh.className}>
-                    {this.props.children}
+                    <div className="w-full h-[100vh] relative bg-[url(/cafe-pattern.jpg)] z-[100]">
+                        <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
+
+                        <div className="lg:container h-[100vh] bg-yellow-very-melo relative z-[30] shadow-lg">
+                            {this.props.children}
+                        </div>
+                    </div>
+
                     <Footer />
                 </body>
             </html>

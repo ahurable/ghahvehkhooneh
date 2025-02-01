@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { Rating } from "flowbite-react"
 import { clubsType } from "./tabs/SocialTabs"
-import { categoryFood, eventDetail, MenuItem, userWithAnyProfileType } from "@/lib/types"
+import { cafeCardType, categoryFood, eventDetail, MenuItem, userWithAnyProfileType } from "@/lib/types"
+import Slider from "@/app/(main)/cafe/[id]/Slider"
 
 
 export interface cafeCard {
@@ -32,7 +33,10 @@ export interface cafeInformation {
         name: string,
         address: string,
         about: string,
-        picture: string,
+        pictures: {
+            picture:string,
+            is_featured:boolean
+        }[],
         ratings: rating[],
         menu_item: menuItem[],
         club: clubsType,
@@ -146,26 +150,35 @@ export const MenuWrapper = ({categories}: {categories: categoryFood[]}) => {
     )
 }
 
-export const CafeCard = ({cafe}) => {
+export const CafeCard = ({cafe}:{cafe:{
+    id: number,
+    name: string,
+    address: string,
+    about: string,
+    pictures: {
+        picture: string,
+        is_featured: boolean
+    }[]
+}}) => {
     
     
     return (
         <>
-            <div className="w-full rounded-3xl text-brown-dark shadow border-gray-200 p-3">
-                <div className="w-full flex">
+            <div className="w-full rounded-xl text-brown-dark lg:shadow border-gray-200 p-3">
+                <div className="w-full lg:flex">
                     <div className="">
-                        <div className="w-20 h-20 rounded-lg bg-gray-400">
-                            <img src={LOCALHOST + cafe.picture} width="100" height="100" className="w-full h-full rounded-lg object-cover" alt=""/>
+                        <div className="w-full h-full lg:w-[140px] lg:h-[130px]">
+                            <Slider pictures={cafe.pictures} classNames="h-[130px] rounded-xl mx-4" />
                         </div>
                     </div>
-                    <div className="ps-4">
+                    <div className="lg:ps-4 lg:pt-0 pt-4">
                         <h1 className='text-lg'>{cafe.name}</h1>
                         <span className="text-gray-400">{cafe.address}</span>
                         <p>{cafe.about}</p>
                     </div>
                 </div>
                 
-                <a href={`cafe/${cafe.id}`} className="block w-full my-3 btn btn-blue text-center">مشاهده کافه</a>
+                <a href={`cafe/${cafe.id}`} className="block w-full my-3 btn btn-blue rounded-xl text-center">بازدید از کافه</a>
             </div>
         </>
     )

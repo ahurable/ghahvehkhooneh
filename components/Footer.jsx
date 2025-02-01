@@ -31,7 +31,7 @@ const Footer = () => {
     })
 
     return (
-        <React.Fragment>
+        <div>
             
             {
                 location.pathname == "/" ?
@@ -39,7 +39,7 @@ const Footer = () => {
                 :
                 <AddButton url={"/add"} show={false} />
             }
-            <div className="w-full z-20 border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
+            <div className="container z-[1000] left-1/2 transform -translate-x-1/2  border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
                     <div className="col-span-4 p-3 ">
                         <div className="w-full text-center">
@@ -81,7 +81,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     )
 }
 

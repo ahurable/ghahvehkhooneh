@@ -10,7 +10,7 @@ const Page = () => {
 
     return (
         <>
-            <div className="absolute bottom-8 w-full">
+            <div className=" w-full">
                 <InfoContentWrapper img={img}>
                     <div className="container mt-32">
                         <div className="w-full p-4">

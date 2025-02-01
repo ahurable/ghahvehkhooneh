@@ -3,6 +3,7 @@ import { LOCALHOST } from "@/lib/variebles"
 import { faArrowLeft, faBackspace, faBackward, faCoffee } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Tabs } from "flowbite-react"
+import Slider from "./Slider"
 
 
 async function fetchData (id:number):Promise<cafeInformation> {
@@ -30,7 +31,7 @@ const Page = async ({params}: {params: {id:number}}) => {
             <div className=" w-full rounded-lg">
                 <div className="w-full">
                     <div className="w-full fixed top-0 right-0 z-0">
-                        <img src={LOCALHOST + cafe.picture} alt="" className="w-full h-60 object-cover" />
+                        <Slider pictures={cafe.pictures} classNames="h-[200px]" />
                     </div>
                     <div className="w-full relative z-10 top-52 rounded-lg py-3 mt-[-20px] shadow bg-yellow-very-melo">
                         <div className="container w-full  rounded-lg">

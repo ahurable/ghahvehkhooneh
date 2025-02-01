@@ -47,11 +47,12 @@ const Login = () => {
 
  
     return (
-        <main className="w-full h-full bg-brown-light absolute">
+        <main className="w-full h-full  bg-[url(/cafe-pattern.jpg)] absolute">
+            <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto absolute right-0 left-0 h-full">
-                <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
-                <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">ورود به حساب</h1>
-                <div className="form-wrapper h-mx pb-20">
+                <h1 className="text-center relative text-[34px] pt-10 text-white font-bold z-20">قهوه خونه</h1>
+                <h1 className="text-center relative text-[50px] pb-10 font-black text-white z-20">ورود به حساب</h1>
+                <div className="form-wrapper z-20 h-mx lg:pb-20">
                     <div className="flex justify-center">
                         <form onSubmit={onSubmit}>
                             <div className="py-10">
@@ -59,11 +60,11 @@ const Login = () => {
                                 <span className="font-light text-md">با ورود به حساب خود از امکانات برنامه استفاده کنید.</span><br />
                                 <span className="font-light text-md">اگر حساب کاربری ندارید <a className="text-blue-400" href="/register">یکی ایجاد کنید.</a></span>
                                 <div className="md:w-[620px] mx-auto">
-                                    <div className="md:w-[620px] mt-10 text-start">
+                                    <div className="md:w-[620px] mt-5 text-start">
                                         <label htmlFor="phone_number" className="text-md my-4">نام کاربری: </label>
                                         <input type="text" id="username" name="username" className="form-control md:w-[620px] w-full" placeholder="شماره تماس همراه موبایل خود  را وارد کنید" />
                                     </div>
-                                    <div className="md:w-[620px] mt-10 text-start">
+                                    <div className="md:w-[620px] mt-5 text-start">
                                         <label htmlFor="password" className="text-md my-4">رمز عبور: </label>
                                         <input type="password" id="password" name="password" className="form-control md:w-[620px] w-full" placeholder="رمز عبور خود را وارد کنید" />
                                     </div>

@@ -104,7 +104,7 @@ export const AddButton = ({url, show}:{url:string, show:boolean}) => {
     })
 
     return (
-        <a href={url} ref={AddButtonRef} className={show ? `btn rounded-full w-16 h-16 transition-all text-center text-2xl fixed bottom-24 right-4 bg-brown-normal text-white ` + `block` : `hidden`}>
+        <a href={url} ref={AddButtonRef} className={show ? `btn rounded-full w-16 h-16 transition-all text-center text-2xl fixed bottom-24 right-4 bg-brown-normal text-white  z-[1000] ` + `block` : `hidden`}>
             <FontAwesomeIcon icon={faPlus} className='my-2'/>
         </a>
     )
