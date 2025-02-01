@@ -30,25 +30,25 @@ class CafeView(APIView):
 
 class AddCafeView(APIView):
     permission_classes = [IsAuthenticated]
-    class Serializer(ModelSerializer):
-        class Meta:
-            model = Cafe
-            fields = ['name', 'about', 'address', 'picture']
+    
     def post(self, request):
-        serializer = self.Serializer(data=request.data)
+        print(request.data)
+        serializer = CreateCafeRequestSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
+            print(serializer)
             instance = serializer.save()
             Cafe.objects.get(id=instance.id).admin.add(request.user)
             return Response({'success':'cafe created with successfully'}, status=200)
-        
+        return Response({'error':'something went wrong with your request'}, status=500)
 
 
 class AllCafeCardListView(ListAPIView):
 
     class Serializer(serializers.ModelSerializer):
+        pictures = PictureSerializer(many=True)
         class Meta:
             model = Cafe
-            fields = ['id', 'name', 'about', 'picture']
+            fields = ['id', 'name', 'about', 'pictures']
 
     serializer_class = Serializer
     queryset = Cafe.objects.all().filter(is_approved=True)

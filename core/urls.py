@@ -63,7 +63,7 @@ urlpatterns = [
     path('api/admin/add/menu/<int:cafeid>/<int:categoryid>/', AddMenuItem.as_view()),
     path('api/admin/add/club/<int:cafeid>/', AddClubView.as_view()),
     path('api/admin/club/members/<int:cafeid>/', AdminMembersClub.as_view()),
-    path('api/admin/cafe/update/banner/<int:id>/', UpdateCafeBanner.as_view()),
+    path('api/admin/cafe/update/banner/<int:id>/', AddCafePicturesView.as_view()),
     path('api/admin/cafe/update/description/<int:id>/', UpdateCafeDescription.as_view()),
     path('api/admin/cafe/update/menu/item/<int:id>/', UpdateItem.as_view()),
     # hooks

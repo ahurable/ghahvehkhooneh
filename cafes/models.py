@@ -16,7 +16,7 @@ def menu_image_upload(instance, file):
 def cafe_image_upload(instance, file):
     basename = os.path.basename(file)
     name, ext = os.path.splitext(basename)
-    new_path = f'cafes/{instance.name}/cafe/{instance.name}-{random.randint(0,99)}{ext}'
+    new_path = f'cafes/{instance.cafe.name}/cafe/{instance.cafe.name}-{random.randint(0,99)}{ext}'
     return new_path
 
 def event_image_upload(instance, file):
@@ -46,8 +46,8 @@ class Cafe(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=200)
     about = models.CharField(max_length=200)
-    picture = models.ImageField(upload_to=cafe_image_upload, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
+    invisible = models.BooleanField(default=True)
     admin = models.ManyToManyField(User, related_name='cafes')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
     number= models.CharField(max_length=12)
@@ -55,6 +55,11 @@ class Cafe(models.Model):
     def __str__(self) -> str:
         return self.name
     
+class Picture(models.Model):
+    picture = models.ImageField(upload_to=cafe_image_upload, blank=True, null=True)
+    is_featured = models.BooleanField(default=False)
+    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name="pictures")
+
 
 class Rating(models.Model):
     cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='ratings')

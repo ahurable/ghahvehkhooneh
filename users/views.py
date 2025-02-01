@@ -329,18 +329,36 @@ class AdminMembersClub(APIView):
         return Response(u_serializer.data)
     
 
-class UpdateCafeBanner(UpdateAPIView):
-    
+class AddCafePicturesView(CreateAPIView):
     class Serializer(ModelSerializer):
         class Meta:
-            model = Cafe
+            model = Picture  # Update the model to Picture since you're adding pictures
             fields = ['picture']
+
+        def create(self, validated_data):
+            cafe_id = self.context.get('id')  # Retrieve 'id' from context
+            cafe = Cafe.objects.get(id=cafe_id)  # Get the existing Cafe instance
+            
+            pictures = self.context['request'].FILES.getlist('pictures')  # Retrieve pictures
+            picture_instances = [
+                Picture(cafe=cafe, picture=picture) for picture in pictures
+            ]
+            Picture.objects.bulk_create(picture_instances)  # Efficiently save all pictures
+
+            return cafe  # Return the updated Cafe instance (optional, for confirmation)
+
 
     lookup_field = 'id'
     permission_classes = [IsAdminOfCafe]
     serializer_class = Serializer
     queryset = Cafe.objects.all()
-
+    def get_serializer_context(self):
+        # Add request to the serializer context
+        context = super().get_serializer_context()
+        print(self.request.data)
+        context['request'] = self.request
+        context['id'] = self.kwargs.get('id')
+        return context
 
 
 class UpdateCafeDescription(UpdateAPIView):

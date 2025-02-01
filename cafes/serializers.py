@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Cafe, Event, MenuItem, Rating, Club, CategoryFood
+from .models import Cafe, Event, MenuItem, Rating, Club, CategoryFood, Picture
 from rest_framework import serializers
 from users.serializers import GetUserWithAnyProfileSerializer
 
@@ -24,6 +24,30 @@ class RatingSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class PictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Picture
+        fields = ['picture', 'is_featured']
+
+
+
+class CreateCafeRequestSerializer(serializers.ModelSerializer):
+    pictures = PictureSerializer(many=True, required=False)
+    class Meta:
+        model = Cafe
+        fields = ['name', 'about', 'address', 'pictures']
+        
+    def create(self, validated_data):
+        pictures = self.context['request'].FILES.getlist('pictures')  # Retrieve the list of files
+        cafe = Cafe.objects.create(**validated_data)
+
+        for picture in pictures:
+            Picture.objects.create(cafe=cafe, picture=picture)
+
+        return cafe
+
+
+
 class MenuItemSerializer(ModelSerializer):
     class Meta:
         model = MenuItem
@@ -34,10 +58,10 @@ class MenuItemSerializer(ModelSerializer):
 
 class CafeListSerializer(ModelSerializer):
     ratings = RatingSerializer(many=True)
-
+    pictures = PictureSerializer(many=True)
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings']
+        fields = ['id', 'name', 'address', 'about', 'pictures', 'ratings', 'invisible']
 
 
 class CafeNameSerializer(ModelSerializer):
@@ -78,10 +102,11 @@ class CafeSerializer(ModelSerializer):
     ratings = RatingSerializer(many=True)
     categories = CategorySerializer(many=True)
     club = AllFieldsClubSerializer()
+    pictures = PictureSerializer(many=True)
 
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'picture', 'ratings', 'categories', 'club']
+        fields = ['id', 'name', 'address', 'about', 'pictures', 'ratings', 'categories', 'club']
 
 
 

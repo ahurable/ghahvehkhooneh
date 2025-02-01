@@ -46,8 +46,6 @@ INSTALLED_APPS = [
     'posts',
     'users',
     'cafes',
-    'payments',
-    'azbankgateways',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
