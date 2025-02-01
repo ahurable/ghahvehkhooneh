@@ -4,11 +4,11 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: {
     steps: number,
-    cafe: number | null,
+    cafe: number | undefined,
     club: number | null
 } = {
     steps: 0,
-    cafe: null,
+    cafe: undefined,
     club: null
 }
 

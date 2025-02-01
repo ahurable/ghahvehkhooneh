@@ -2,9 +2,10 @@ import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { refreshToken } from "@/lib/utils"
 import { LOCALHOST } from "@/lib/variebles"
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react"
-import { jwtDecode } from "jwt-decode"
+import { jwtDecode, JwtPayload } from "jwt-decode"
+import { redirect } from "next/dist/server/api-utils"
 import React, { FormEvent, useState } from "react"
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "./modals/modals"
 
 const ChangeAvatarModal = () => {
 
@@ -19,7 +20,12 @@ const ChangeAvatarModal = () => {
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(selectedFile)
-        let id = jwtDecode(localStorage.getItem('access')).user_id
+        const access = localStorage.getItem('access')
+        const refresh = localStorage.getItem('refresh')
+
+        if (!access || access.length ==0 || typeof(access) != 'string' || access==null)
+            location.replace('/')
+        let id = typeof(access)=='string' && jwtDecode<JwtPayload & {user_id:number|string}>(access).user_id
         // console.log(id)
         let formData = new FormData(e.currentTarget)
         if(selectedFile !== null){
@@ -28,7 +34,7 @@ const ChangeAvatarModal = () => {
             //     selectedFile,
             //     selectedFile.name
             // )
-            const token = localStorage.getItem('access')
+            const token = access
             const response = await fetch(LOCALHOST + "api/auth/update-avatar/"+id+"/", {
                 method: 'PUT',
                 headers: {
@@ -40,7 +46,7 @@ const ChangeAvatarModal = () => {
             })
             if (response.status == 200) {
                 alert('تصویر پروفایل شما با موفقیت ثبت شد')
-                refreshToken(localStorage.getItem('refresh'))
+                typeof(refresh) == 'string' && refresh.length>0 && refreshToken(refresh)
                 location.reload()
             } else {
                 alert("مشکلی در بروزرسانی پروفایل شما رخ داد")
@@ -58,8 +64,8 @@ const ChangeAvatarModal = () => {
 
         <React.Fragment>
 
-            <Modal show={isOpenState} onClose={() => dispatch(setAvatarModalState(false))}>
-                <ModalHeader>
+            <Modal show={isOpenState}>
+                <ModalHeader onClose={() => dispatch(setAvatarModalState(false))}>
                     <h1>بروزرسانی پروفایل</h1>
                 </ModalHeader>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">

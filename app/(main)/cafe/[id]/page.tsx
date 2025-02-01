@@ -1,4 +1,5 @@
-import { BackButton, MenuWrapper, TabsWrapper, cafeInformation } from "@/components/CafeComponents"
+import { BackButton, MenuWrapper, TabsWrapper } from "@/components/CafeComponents"
+import type { cafeInformation } from '@/components/CafeComponents/types'
 import { LOCALHOST } from "@/lib/variebles"
 import { faArrowLeft, faBackspace, faBackward, faCoffee } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -38,7 +39,7 @@ const Page = async ({params}: {params: {id:number}}) => {
                         
                         <div className="container w-full  rounded-lg">
                             <div className="p-4">
-                                <h1 className="text-lg">{cafe.name}</h1>
+                                <h1 className="text-3xl font-black">{cafe.name}</h1>
                                 <span className="text-gray-400">{cafe.address}</span>
                                 <p>{cafe.about}</p>
                             </div>
@@ -55,11 +56,11 @@ const Page = async ({params}: {params: {id:number}}) => {
                                             <img src={ LOCALHOST + cafe.club.club_avatar } className='rounded-full w-20 h-20 object-cover' alt="" />
                                         </div>
                                         <div className="ps-4">
-                                            <span className="text-lg font-bold">{cafe.club.name}</span>
+                                            <span className="text-xl font-black">{cafe.club.name}</span>
                                             <br />
-                                            <span>{cafe.club.description}</span>
+                                            <span className="text-lg font-normal">{cafe.club.description}</span>
                                             <br />
-                                            <span>تعداد اعضا:‌ {cafe.club.members.length} نفر</span>
+                                            <span>باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
                                         </div>
                                     </div>
                                 </div>

@@ -30,22 +30,46 @@ type MultiStepsFormProps = {
     successMessage: string;
     errorMessage: string;
     redirectPath: string | null;
+    club?: number,
 }
 
 
 export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
 
+
+    const initializeFormValues = () => {
+        const initialValues: { [key: string]: string | number | File[] | undefined } = {};
+    
+        props.steps.forEach(step => {
+            const input = step.input;
+    
+            if (input.type === "datepicker") {
+                initialValues[input.name] = undefined; // Date initially unset
+            } else if (input.type === "clock") {
+                initialValues[input.name] = undefined; // Time initially unset
+            } else if (input.type === "file") {
+                initialValues[input.name] = []; // Empty array for file inputs
+            } else {
+                initialValues[input.name] = ""; // Default empty string for text inputs
+            }
+        });
+    
+        return initialValues;
+    };
+
     const [wstep, setStep] = useState(1)
+    const [formValues, setFormValues] = useState(initializeFormValues);
     const [successState, setSuccessState] = useState(false)
     const [pictures, setPictures] = useState<File[]>([])
     const [errorState, setErrorState] = useState(false)
-
+    const [date, setDate] = useState<number | undefined>()
+    const [time, setTime] = useState<number | undefined>()
     const nextStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setStep(wstep+1)
                                                 
     }
-
+    
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
           const files = Array.from(event.target.files); // Convert FileList to an array
@@ -57,9 +81,48 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
         e.preventDefault()
         setStep(wstep-1)
     }
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value, type } = e.target;
+    
+        if (type === "file" && e.target instanceof HTMLInputElement) {
+            const files = e.target.files ? Array.from(e.target.files) : [];
+            setFormValues(prevValues => ({
+                ...prevValues,
+                [name]: files
+            }));
+        } else {
+            setFormValues(prevValues => ({
+                ...prevValues,
+                [name]: value
+            }));
+        }
+    };
+    
+    const isStepValid = (stepIdx: number) => {
+        const step = props.steps.find(s => s.idx === stepIdx);
+        if (!step) return false;
+        console.log(stepIdx)
+        // Find all required fields in the current step
+        const requiredInputs = props.steps
+            .filter(s => s.idx === stepIdx)
+            .map(s => s.input);
+    
+        const isValid = requiredInputs.every(input => {
+            const value = formValues[input.name];
+            console.log(formValues)
+            if (input.type === "datepicker") return date !== undefined;
+            if (input.type === "clock") return time !== undefined;
+            if (input.type === "file") return pictures.length > 0;
+            return typeof value === "string" && value.trim().length > 0;
+        });
+        console.log(isValid)
+        return(isValid)
+    };
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        // const formData = new FormData(e.currentTarget)
+        // console.log(formData)
         try {
             
             const formData = new FormData(e.currentTarget)
@@ -69,6 +132,23 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                     formData.append(`pictures`, picture); // You can name them as needed
                 });
             }
+            if (props.club != undefined && props.club > 0) {
+                formData.append('club',props.club.toString())
+            }
+            if(props.steps.some(step => step.input.type === "datepicker")) {
+                if (typeof date == "number") {
+                    formData.append('date', date.toString())
+                } else if (date == undefined)
+                    alert("از تقویم یک تاریخ انتخاب نمایید")
+                console.log(date)
+            }
+            // if(props.steps.some(step => step.input.type === "clock")) {
+            //     if (typeof time == "number") {
+            //         formData.append('time', time.toString())
+            //     } else if (time == undefined)
+            //         alert("ساعت برگزاری رویداد را مشخص نمایید")
+            //     console.log(time)
+            // }
             const response = await fetch(props.fetchUrl, {
                 method: 'POST',
                 headers: {
@@ -116,6 +196,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                                     <textarea rows={3} 
                                                     id={step.input.id} 
                                                     name={step.input.name} 
+                                                    onChange={handleInputChange}
                                                     className={`form-control md:w-[620px] w-full ${step.input.classNames}`} 
                                                     placeholder={step.input.placeholder} ></textarea>
                                                 }
@@ -124,7 +205,10 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                                  step.input.multiple && step.input.multiple == true &&
                                                     <input type={step.input.type} 
                                                     accept="images/*" 
-                                                    onChange={handleFileChange} 
+                                                    onChange={(e) => {
+                                                        handleFileChange(e)
+                                                        handleInputChange(e)
+                                                    }} 
                                                     multiple 
                                                     id={step.input.id} 
                                                     name={step.input.name} 
@@ -136,6 +220,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                                  step.input.type =="text" &&
                                                     <input type={step.input.type} 
                                                     id={step.input.id} name={step.input.name} 
+                                                    onChange={handleInputChange}
                                                     className={`form-control md:w-[620px] w-full ${step.input.classNames}`} 
                                                     placeholder={step.input.placeholder} />
                                                 }
@@ -147,30 +232,41 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                                         locale={persian_fa}
                                                         disableMonthPicker={true}
                                                         disableYearPicker={true}
+                                                        onChange={e => {setDate(e?.unix)
+                                                            console.log(typeof e)
+                                                        }}
                                                         buttons={false}
                                                         minDate={new DateObject({ calendar: persian }).subtract(2, "days")}
                                                         maxDate={new DateObject({ calendar: persian }).add(5, "days")}
                                                     />
                                                 }
-                                                    
+                                                {
+                                                    step.input.type == "clock" && 
+                                                        <input type="time" 
+                                                        name="time"
+                                                        onChange={e => setTime(e.timeStamp)}
+                                                        value={"13:00"}
+                                                        className={`form-control md:w-[620px] w-full ${step.input.classNames}`} 
+                                                        />
+                                                }
                                             
                                             </div>
 
                                         {
                                             step.isLastStep == false && step.idx ==1 && <div className={wstep == step.idx ? "mt-10 text-center lg:w-[620px]" : "hidden"}>
-                                                <button id="continue" onClick={nextStep} className="btn btn-blue">{step.nextButtonText}</button>
+                                                <button id="continue" onClick={nextStep} disabled={!isStepValid(wstep)} className="btn btn-blue">{step.nextButtonText}</button>
                                             </div>
                                         } {
                                             step.isLastStep == false && step.idx > 1 && <div className={ "mt-10 text-center " }>
                                                 <button id="back" onClick={prevStep} className="btn btn-red">قبلی</button>
-                                                <button id="continue" onClick={nextStep} className="btn btn-blue mt-4">{step.nextButtonText}</button>
+                                                <button id="continue" onClick={nextStep} disabled={!isStepValid(wstep)} className="btn btn-blue mt-4">{step.nextButtonText}</button>
                                             </div>
                                         }
                                         {
                                             step.isLastStep == true && <>
                                                 <div className={ "mt-10 text-center " }>
                                                     <button id="back" onClick={prevStep} className="btn btn-blue">قبلی</button>
-                                                    <button id="register" type="submit" className="btn btn-green mt-4">ثبت نام</button>
+                                                    <button id="register" type="submit" disabled={!isStepValid(wstep)} className="btn btn-green mt-4">ثبت</button>
                                                 </div>
                                             </>
                                         }

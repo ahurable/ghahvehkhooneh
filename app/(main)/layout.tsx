@@ -4,7 +4,7 @@ import Footer from '../../components/Footer'
 import localFont from "next/font/local";
 import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import { refreshToken } from "@/lib/utils";
 // font declaration
 
@@ -78,8 +78,8 @@ export default class RootLayout extends React.Component<MyProps> {
                 if (token && token != null) {
                     console.log(jwtDecode(token).exp)
                     console.log(Date.now() / 1000)
-                    if (jwtDecode(token).exp < (Date.now() / 1000)) {
-                        refreshToken(refresh)
+                    if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
+                        typeof(refresh) == 'string' && refresh.length>0 && refreshToken(refresh) || location.replace('/logout')
                     } 
                 }
             } else {
@@ -95,10 +95,10 @@ export default class RootLayout extends React.Component<MyProps> {
             <StoreProvider>
             <html lang="fa" dir="rtl">
                 <body className={yekanbakh.className}>
-                    <div className="w-full h-[100vh] relative bg-[url(/cafe-pattern.jpg)] z-[100]">
+                    <div className="w-full relative bg-[url(/cafe-pattern.jpg)] z-[100]">
                         <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
 
-                        <div className="lg:container h-[100vh] bg-yellow-very-melo relative z-[30] shadow-lg">
+                        <div className="lg:container bg-yellow-very-melo relative z-[30] shadow-lg">
                             {this.props.children}
                         </div>
                     </div>

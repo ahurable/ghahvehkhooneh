@@ -125,7 +125,7 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
                     }
                 </ModalBody>
             </Modal>
-            <AddItemWrapper cafeId={cafeId} />
+            <AddItemWrapper cafeid={cafeId} />
         </>
     )
 }

@@ -48,8 +48,8 @@ const steps: Steps = [
         input: {
             type: "textarea",
             placeholder: "توضیحات رویداد را وارد کنید",
-            name: "about",
-            id: "about",
+            name: "description",
+            id: "description",
             classNames: null,
         },
         helpText: "راجب رویداد خود و محیط آن توضیحاتی دهید که منجر به جذب کاربر شود",
@@ -58,7 +58,7 @@ const steps: Steps = [
     },
     {
         idx: 3,
-        label: "تاریخ برگزاری رویداد را انتخاب نمایید",
+        label: "",
         input: {
             type: "datepicker",
             placeholder: "",
@@ -66,20 +66,51 @@ const steps: Steps = [
             id: "date",
             classNames: null,
         },
-        helpText: "راجب رویداد خود و محیط آن توضیحاتی دهید که منجر به جذب کاربر شود",
+        helpText: "در چه تاریخی این رویداد برگزار میشود",
+        isLastStep: false,
+        nextButtonText: "ادامه"
+    },
+    {
+        idx: 4,
+        label: "",
+        input: {
+            type: "clock",
+            placeholder: "",
+            name: "time",
+            id: "time",
+            classNames: null,
+        },
+        helpText: "در چه ساعتی این رویداد برگزار میشود.",
         isLastStep: true,
         nextButtonText: "ادامه"
     },
 ]
 
-export const CreateEventForm = () => <MultiStepsForm props={{
-    pageTitle: "ثبت رویداد",
-    steps: steps,
-    errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
-    successMessage: "کافه شما با موفقیت ثبت شد",
-    fetchUrl: `${LOCALHOST}api/cafes/add/`,
-    redirectPath: "",
-}} />
+export const CreateEventForm = () => {
+    const clubId = useAppSelector(s => s.eventStep.club)
+    if (clubId!=undefined) {
+        return (
+            <MultiStepsForm props={{
+                pageTitle: "ثبت رویداد",
+                steps: steps,
+                errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
+                successMessage: "کافه شما با موفقیت ثبت شد",
+                fetchUrl: `${LOCALHOST}api/events/create/`,
+                redirectPath: "",
+                club:clubId
+            }} />
+        )
+    }
+    else {
+        return (
+            <div className="container p-4">
+                <div className="p-4 rounded-xl shadow text-center mx-auto transform translate-y-[50%]">
+                    <h1>شما ابتدا باید یک کافه را انتخاب کنید</h1>
+                </div>
+            </div>
+        )
+    }
+}
 
 
 

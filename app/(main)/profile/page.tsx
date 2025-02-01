@@ -1,7 +1,7 @@
 "use client"
 import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { useAppDispatch } from "@/lib/hook"
-import { jwtDecode } from "jwt-decode"
+import { jwtDecode, JwtPayload } from "jwt-decode"
 import React, { useEffect, useState } from "react"
 import ProfileModal from '@/components/ProfileModal'
 import { redirect } from "next/navigation"
@@ -45,7 +45,8 @@ const Profile = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
     const dispatch = useAppDispatch()
-    
+    const access = localStorage.getItem('access')
+    const username = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {username: string}>(access).username || 'نام کاربری'
     useEffect(() => {
         // const loc = navigator.geolocation.getCurrentPosition(success, error)
         // function success(position: any) {
@@ -123,7 +124,7 @@ const Profile = () => {
                                     <div className="ms-4 text-center md:text-right ">
                                         <h1 className="text-lg">
                                             { profile.first_name == '' ? 
-                                                localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "نام کاربری" 
+                                                username
                                                 :
                                                 profile.first_name == null ? "نام خود را تنظیم کنید" : profile.first_name + " " }{ profile.last_name && profile.last_name
                                             }

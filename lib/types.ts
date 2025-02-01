@@ -1,4 +1,4 @@
-import { menuItem, rating } from "@/components/CafeComponents";
+import { menuItem, rating } from "@/components/CafeComponents/types";
 import { StaticImageData } from "next/image";
 
 export interface profileType {
@@ -123,7 +123,7 @@ export interface cafeDetailedType {
     }[]
 }
 
-export interface MenuItem {
+export interface MenuItemProps {
     id?: number,
     item?: string,
     description?: string,
@@ -134,5 +134,12 @@ export interface MenuItem {
 export interface categoryFood {
     id: number,
     name: string,
-    items: MenuItem[]
+    items: menuItem[]
+}
+
+
+export interface club {
+    id: number,
+    members: userWithAnyProfileType[],
+    events: eventDetail[]
 }

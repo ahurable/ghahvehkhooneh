@@ -25,7 +25,7 @@ const Page = () => {
                     <div className="w-10 h-10 me-2">
                         <img src={logo.src} className="w-full h-full" alt="" />
                     </div>
-                    <h1 className="title-wrapper text-lg text-brown-dark py-5 font-bold">قهوهخونه</h1>
+                    <h1 className="title-wrapper text-lg text-brown-dark py-5 font-black">گپی</h1>
                 </div>
                 <a href="/social" className="absolute block right-4 p-[11px] top-4 w-10 h-10 rounded-2xl bg-slate-50 shadow-sm">
                     <span className=" text-brown-normal">
@@ -47,7 +47,10 @@ const Page = () => {
 
 
             <div className="w-full p-4">
-                <div className="bg-brown-normal text-center py-10 rounded-3xl"><span className="text-yellow-very-melo text-xl">دوستان تو پیدا کن</span></div>
+                <div className="bg-brown-normal text-center py-10 rounded-3xl p-4">
+                    <span className="text-yellow-very-melo text-[2rem] font-black">بهترین مقصد برای توقف کجاست؟</span><br />
+                    <span className="text-yellow-very-melo">با گپی میتونید کافه های شهر رو پیدا کنی و ببینی که داخلشون چخبره</span>
+                </div>
             </div>
 
             <div className="container">

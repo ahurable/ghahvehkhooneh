@@ -5,7 +5,7 @@ import '../globals.css'
 import StoreProvider from '@/lib/StoreProvider'
 import { Metadata } from 'next'
 import { useEffect } from 'react'
-import { ManagedUserContext } from '@/lib/context/user'
+// import { ManagedUserContext } from '@/lib/context/user'
 // font declaration
 
 
@@ -63,18 +63,19 @@ export default function RootLayout({
 }) {
 
   useEffect(() => {
-    if (localStorage.getItem('access')){
-      if (localStorage.getItem('access') != undefined) {
-        if (localStorage.getItem('access') && localStorage.getItem('access').length == 0)
-          location.replace('/logout') 
-      }
-      else {
-        location.replace('/logout')
+    const accessToken = localStorage.getItem('access');
+
+    if (accessToken) {
+      if (typeof accessToken === 'string') {
+        if (accessToken.length === 0) {
+          location.replace('/logout');
+        }
+      } else {
+        location.replace('/logout');
       }
     } else {
-      location.replace('/')
+      location.replace('/');
     }
-
   }, [RootLayout])
   return (
     <StoreProvider>

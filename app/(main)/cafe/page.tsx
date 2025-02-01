@@ -1,11 +1,11 @@
 'use server'
 import React from 'react'
 import { LOCALHOST } from '@/lib/variebles'
-import { CafeCard, cafeCard } from '@/components/CafeComponents'
+import { CafeCard, type CafeCardProps } from '@/components/CafeComponents'
 import Image from 'next/image'
 
 
-async function getData():Promise<cafeCard[]>  {
+async function getData():Promise<CafeCardProps[]>  {
     const res = await fetch(LOCALHOST + 'api/cafes/list/', {
         method: 'GET',
         headers: {
