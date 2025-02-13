@@ -30,10 +30,12 @@ const Page = async ({params}: {params: {id:number}}) => {
         <>
             <div className=" w-full rounded-lg">
                 <div className="w-full">
-                    <div className="w-full fixed top-0 right-0 z-0">
-                        <Slider pictures={cafe.pictures} classNames="h-[200px]" />
+
+                    <div className="container fixed top-0 transform translate-x-[50%] right-[50%] z-0">
+                        <Slider pictures={cafe.pictures} classNames="h-[200px] lg:h-[380px]" />
                     </div>
-                    <div className="w-full relative z-10 top-52 rounded-lg py-3 mt-[-20px] shadow bg-yellow-very-melo">
+                    <div className="w-full relative z-10 lg:top-80 top-52 rounded-lg py-3 mt-[-20px] shadow bg-yellow-very-melo">
+                        
                         <div className="container w-full  rounded-lg">
                             <div className="p-4">
                                 <h1 className="text-lg">{cafe.name}</h1>

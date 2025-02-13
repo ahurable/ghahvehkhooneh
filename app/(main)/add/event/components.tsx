@@ -7,58 +7,80 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { setEventCafe, setEventClub, setEventStep } from "@/lib/features/eventStep"
 
-export const CreateEventForm = () => {
-    const [success, setSuccess] = useState(false)
+import { MultiStepsForm } from "@/layouts/MultiStepsForm/MultiStepsForm"
 
-    const club = useAppSelector(state => state.eventStep.club)
 
-    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget)
-        const token = localStorage.getItem('access')
-        const res = await fetch(
-            LOCALHOST + 'api/events/create/',
-            {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: formData.get('name'),
-                    description: formData.get('description'),
-                    club: club
-                })
-            }
-        )
-        if (res.ok) {
-            setSuccess(true)
-        }
-    } 
 
-    return (
-        <>
-            <SuccessModal title="موفق" description="رویداد شما با موفقیت ایجاد شد" state={success} redirectPath="/" /> 
+type Steps = {
+    idx: number;
+    label: string;
+    input: {
+        type: string;
+        placeholder: string;
+        name: string;
+        id: string;
+        multiple?: boolean;
+        classNames: string | null;
+    };
+    helpText: string;
+    isLastStep: boolean;
+    nextButtonText: string;
+}[];
 
-            <div className="w-full">
-                <div className="container w-full p-8 justify-center">
-                    <div className="my-4">
-                        <form onSubmit={handleSubmit}>
+const steps: Steps = [
+    {
+        idx: 1,
+        label: "نام رویداد",
+        input: {
+            type: "text",
+            placeholder: "نام رویداد خود را وارد کنید",
+            name: "name",
+            id: "name",
+            classNames: null,
+        },
+        helpText: "در مرحله اول شما لازم است نام رویداد خود را وارد کنید. بهتر است از یک نام خوب برای کاربران مخاطب خود استفاده کنید مثلا 'دورهمی نوازندگان یا دورهمی برنامه نویس ها'",
+        isLastStep: false,
+        nextButtonText: "ادامه"
+    },
+    {
+        idx: 2,
+        label: "توضیحات",
+        input: {
+            type: "textarea",
+            placeholder: "توضیحات رویداد را وارد کنید",
+            name: "about",
+            id: "about",
+            classNames: null,
+        },
+        helpText: "راجب رویداد خود و محیط آن توضیحاتی دهید که منجر به جذب کاربر شود",
+        isLastStep: false,
+        nextButtonText: "ادامه"
+    },
+    {
+        idx: 3,
+        label: "تاریخ برگزاری رویداد را انتخاب نمایید",
+        input: {
+            type: "datepicker",
+            placeholder: "",
+            name: "date",
+            id: "date",
+            classNames: null,
+        },
+        helpText: "راجب رویداد خود و محیط آن توضیحاتی دهید که منجر به جذب کاربر شود",
+        isLastStep: true,
+        nextButtonText: "ادامه"
+    },
+]
 
-                            <input type="text" name="name" className="w-full md:w-3/5 form-control block my-3" placeholder="نام رویداد" />
+export const CreateEventForm = () => <MultiStepsForm props={{
+    pageTitle: "ثبت رویداد",
+    steps: steps,
+    errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
+    successMessage: "کافه شما با موفقیت ثبت شد",
+    fetchUrl: `${LOCALHOST}api/cafes/add/`,
+    redirectPath: "",
+}} />
 
-                            <textarea name="description" className="w-full md:w-3/5 form-control block my-3" placeholder="درباره این رویداد توضیح بدهید" id="" cols={30} rows={10}></textarea>
-
-                            <button type="submit" className="btn btn-green w-full p-4 mt-4">ایجاد رویداد</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            
-        
-        </>
-    )
-}
 
 
 export const SelectClubs = () => {
@@ -199,3 +221,5 @@ export const AddButtons = () => {
         </div>
     )
 }
+
+

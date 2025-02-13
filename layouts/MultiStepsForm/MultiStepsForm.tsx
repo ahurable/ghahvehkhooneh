@@ -2,8 +2,9 @@
 
 import { ChangeEvent, useState } from "react"
 import { FormEvent } from "react"
-import { redirect } from "next/navigation"
-import { LOCALHOST } from "@/lib/variebles"
+import { Calendar, DateObject } from "react-multi-date-picker"
+import persian from "react-date-object/calendars/persian"
+import persian_fa from "react-date-object/locales/persian_fa"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 
 
@@ -89,12 +90,14 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
     }
 
     return (
-        <main className="w-full h-full fixed overflow-auto top-0 bg-brown-light">
+        <main className="w-full h-full fixed overflow-auto right-[50%] transform translate-x-[50%] top-0  bg-[url(/cafe-pattern.jpg)]">
+
+            <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
             <SuccessModal state={successState} title={''} description={props.successMessage} redirectPath={props.redirectPath} />
             <ErrorModal state={errorState} title={''} description={props.errorMessage} redirectPath={null} />
-            <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
-                <h1 className="text-center text-[34px] pt-10 text-brown-dark font-bold">قهوه خونه</h1>
-                <h1 className="text-center text-[50px] pb-10 font-black text-brown-dark">{props.pageTitle}</h1>
+            <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full z-20">
+                <h1 className="text-center text-[34px] pt-10 font-bold text-white">قهوه خونه</h1>
+                <h1 className="text-center text-[50px] pb-10 font-black text-white">{props.pageTitle}</h1>
                 <div className="form-wrapper h-mx absolute bottom-0 pb-20 md:pb-4 mt-4">
                     <div className="flex justify-center">
                         <form onSubmit={onSubmit}>
@@ -107,16 +110,50 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                         
                                         <div className="md:w-[620px] mt-14 text-start">
                                             <label htmlFor="username" className="text-md my-4">{step.label}</label>
-                                            {  
-                                                step.input.type == "textarea" ?
-                                                <textarea rows={3} id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} ></textarea>
-                                                : step.input.multiple && step.input.multiple == true ? 
-                                                    <input type={step.input.type} accept="images/*" onChange={handleFileChange} multiple id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} />
-                                                    :
-                                                    <input type={step.input.type} id={step.input.id} name={step.input.name} className={`form-control md:w-[620px] w-full ${step.input.classNames}`} placeholder={step.input.placeholder} />
+                                              
+                                                {
+                                                 step.input.type == "textarea" &&
+                                                    <textarea rows={3} 
+                                                    id={step.input.id} 
+                                                    name={step.input.name} 
+                                                    className={`form-control md:w-[620px] w-full ${step.input.classNames}`} 
+                                                    placeholder={step.input.placeholder} ></textarea>
+                                                }
+                                                 
+                                                {
+                                                 step.input.multiple && step.input.multiple == true &&
+                                                    <input type={step.input.type} 
+                                                    accept="images/*" 
+                                                    onChange={handleFileChange} 
+                                                    multiple 
+                                                    id={step.input.id} 
+                                                    name={step.input.name} 
+                                                    className={`form-control md:w-[620px] w-full ${step.input.classNames}`} 
+                                                    placeholder={step.input.placeholder} />
+                                                }
+
+                                                {
+                                                 step.input.type =="text" &&
+                                                    <input type={step.input.type} 
+                                                    id={step.input.id} name={step.input.name} 
+                                                    className={`form-control md:w-[620px] w-full ${step.input.classNames}`} 
+                                                    placeholder={step.input.placeholder} />
+                                                }
                                             
+                                                {
+                                                 step.input.type=="datepicker" &&
+                                                    <Calendar
+                                                        calendar={persian}
+                                                        locale={persian_fa}
+                                                        disableMonthPicker={true}
+                                                        disableYearPicker={true}
+                                                        buttons={false}
+                                                        minDate={new DateObject({ calendar: persian }).subtract(2, "days")}
+                                                        maxDate={new DateObject({ calendar: persian }).add(5, "days")}
+                                                    />
+                                                }
                                                     
-                                            }
+                                            
                                             </div>
 
                                         {
