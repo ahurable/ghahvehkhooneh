@@ -61,7 +61,7 @@ class CafeListSerializer(ModelSerializer):
     pictures = PictureSerializer(many=True)
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'pictures', 'ratings', 'invisible']
+        fields = ['id', 'name', 'address', 'slug', 'about', 'pictures', 'ratings', 'invisible']
 
 
 class CafeNameSerializer(ModelSerializer):
@@ -126,5 +126,5 @@ class DetailedEventSerializer(ModelSerializer):
 class CreateEventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'club', 'cafe', 'created_by']
+        fields = ['name', 'description', 'club', 'cafe', 'date', 'time', 'created_by']
 

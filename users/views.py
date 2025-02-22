@@ -406,9 +406,12 @@ class CreateCategoryView(APIView):
 class GetCategoryView(APIView):
     permission_classes = [IsAuthenticated, IsAdminOfCafe]
     def get(self, request, categoryid, cafeid):
-        category = CategoryFood.objects.get(id=categoryid)
-        c_serializer = CategorySerializer(category)
-        return Response(c_serializer.data)
+        try:
+            category = CategoryFood.objects.get(id=categoryid)
+            c_serializer = CategorySerializer(category)
+            return Response(c_serializer.data)
+        except CategoryFood.DoesNotExist:
+            return Response({'error' : 'does not exists'}, status=404)
 
 class DeleteCategoryView(APIView):
     permission_classes = [IsAdminOfCafe, IsAuthenticated]

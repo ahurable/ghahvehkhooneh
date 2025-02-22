@@ -22,11 +22,18 @@ class CafeListView(APIView):
 
 class CafeView(APIView):
     permission_classes = (AllowAny, )
-    def get(self, request, id):
-        serializer = CafeSerializer(Cafe.objects.get(id=id))
-        category_serializer =CategorySerializer(CategoryFood.objects.all(), many=True)
+    def get(self, request, slug):
+        try:
+            cafe = Cafe.objects.get(slug=slug)
+        except Cafe.DoesNotExist:
+            return Response({"error": "Cafe not found"}, status=404)
+
+        serializer = CafeSerializer(cafe)
+        
+        categories = CategoryFood.objects.filter(cafe=cafe)  # Use .filter() instead of .get()
+        category_serializer = CategorySerializer(categories, many=True)  # Ensure many=True
+
         return Response({'cafe': serializer.data, 'categories': category_serializer.data}, status=200)
-    
 
 class AddCafeView(APIView):
     permission_classes = [IsAuthenticated]
@@ -48,7 +55,7 @@ class AllCafeCardListView(ListAPIView):
         pictures = PictureSerializer(many=True)
         class Meta:
             model = Cafe
-            fields = ['id', 'name', 'about', 'pictures']
+            fields = ['id', 'name', 'about', 'slug', 'pictures']
 
     serializer_class = Serializer
     queryset = Cafe.objects.all().filter(is_approved=True)
@@ -78,13 +85,18 @@ class CreateEventView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
         club = Club.objects.get(id=request.data['club'])
-        request.data['cafe'] = club.cafe.id
-        request.data['created_by'] = request.user.id
-        serializer = CreateEventSerializer(data=request.data)
+        # print(request.data)
+        mutable_data = request.data.copy()
+        mutable_data['cafe'] = club.cafe.id
+        mutable_data['created_by'] = request.user.id
+        serializer = CreateEventSerializer(data=mutable_data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
-            return Response({'success':'Event created with successfully'})
-
+            return Response({'موفق':'رویداد با موفقیت ایجاد شد.'})
+        else:
+            return Response({'خطا', 'فرم اشتباه پر شده است'}, status=500)
+        
 
 class ListEventView(ListAPIView):
     serializer_class = EventSerializer

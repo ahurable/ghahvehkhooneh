@@ -44,7 +44,7 @@ urlpatterns = [
     # cafe urls
     path('api/cafes/add/', AddCafeView.as_view(), name="add-cafe-url"),
     path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url"),
-    path('api/cafes/detail/<int:id>/', CafeView.as_view(), name="cafe-detail-url"),
+    path('api/cafes/detail/<str:slug>/', CafeView.as_view(), name="cafe-detail-url"),
     path('api/cafes/clubs/', GetAllClubsView.as_view(), name='clubs-list-url'),
     path('api/cafes/clubs/<int:pk>/', GetClubInformationView.as_view(), name="club-details-url"),
     path('api/cafes/list/cards/', AllCafeCardListView.as_view(), name='all-cafe-card-url'),

@@ -3,6 +3,8 @@ from users.models import CustomUser as User
 import os
 import random
 from users.models import City
+from django.utils.text import slugify
+
 # Create your models here.
 
 
@@ -46,11 +48,28 @@ class Cafe(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=200)
     about = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, blank=True, null=True, allow_unicode=True)
     is_approved = models.BooleanField(default=False)
     invisible = models.BooleanField(default=True)
     admin = models.ManyToManyField(User, related_name='cafes')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
     number= models.CharField(max_length=12)
+
+    def generate_unique_slug(self):
+        base_slug = slugify(self.name, allow_unicode=True)  # Generate initial slug
+        unique_slug = base_slug
+        num = 1
+
+        while Cafe.objects.filter(slug=unique_slug).exists():  # Check for duplicates
+            unique_slug = f"{base_slug}-{num}"  # Append number if slug exists
+            num += 1
+
+        return unique_slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:  # Generate slug only if it's empty
+            self.slug = self.generate_unique_slug()
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
@@ -114,7 +133,8 @@ class Club(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.CharField(max_length=50)
+    time = models.CharField(max_length=25)
     cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='events')
     club = models.ForeignKey(Club, related_name="events", on_delete=models.CASCADE)
     intvited = models.ManyToManyField(User, related_name="suggestions")
