@@ -2,6 +2,7 @@ import React from "react";
 import localFont from "next/font/local";
 import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
+import { AuthProvider } from "@/lib/Context/AuthContext";
 
 
 
@@ -66,11 +67,13 @@ export default function RootLayout({
 }) {
     return (
         <StoreProvider>
+            <AuthProvider>
             <html lang="fa" dir="rtl">
                 <body className={yekanbakh.className}>
                     {children}
                 </body>
             </html>
+            </AuthProvider>
         </StoreProvider>
     )
 }

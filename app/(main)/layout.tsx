@@ -5,7 +5,8 @@ import localFont from "next/font/local";
 import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import { refreshToken } from "@/lib/utils";
+// import { refreshToken } from "@/lib/utils";
+import { AuthProvider } from "@/lib/Context/AuthContext";
 // font declaration
 
 const yekanbakh = localFont({
@@ -73,15 +74,15 @@ export default class RootLayout extends React.Component<MyProps> {
         if (localStorage.getItem('access') && localStorage.getItem('refresh')) {
 
             if (localStorage.getItem('access') !== undefined){
-                let token: any = localStorage.getItem('access')
-                let refresh = localStorage.getItem('refresh')
-                if (token && token != null) {
-                    console.log(jwtDecode(token).exp)
-                    console.log(Date.now() / 1000)
-                    if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
-                        typeof(refresh) == 'string' && refresh.length>0 && refreshToken(refresh) || location.replace('/logout')
-                    } 
-                }
+                // let token: any = localStorage.getItem('access')
+                // let refresh = localStorage.getItem('refresh')
+                // if (token && token != null) {
+                //     console.log(jwtDecode(token).exp)
+                //     console.log(Date.now() / 1000)
+                //     if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
+                //         typeof(refresh) == 'string' && refresh.length>0 && refreshToken(refresh) || location.replace('/logout')
+                //     } 
+                // }
             } else {
                 location.replace('/logout')
             }
@@ -93,19 +94,21 @@ export default class RootLayout extends React.Component<MyProps> {
     render(): React.ReactNode {
         return (
             <StoreProvider>
-            <html lang="fa" dir="rtl">
-                <body className={yekanbakh.className}>
-                    <div className="w-full relative bg-[url(/cafe-pattern.jpg)] z-[100]">
-                        <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
+                <AuthProvider>
+                <html lang="fa" dir="rtl">
+                    <body className={yekanbakh.className}>
+                        <div className="w-full relative bg-[url(/cafe-pattern.jpg)] z-[100]">
+                            <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
 
-                        <div className="lg:container bg-yellow-very-melo relative z-[30] shadow-lg">
-                            {this.props.children}
+                            <div className="lg:container bg-yellow-very-melo relative z-[30] shadow-lg">
+                                {this.props.children}
+                            </div>
                         </div>
-                    </div>
 
-                    <Footer />
-                </body>
-            </html>
+                        <Footer />
+                    </body>
+                </html>
+                </AuthProvider>
             </StoreProvider>
         )
     }

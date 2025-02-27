@@ -105,6 +105,7 @@ export interface eventDetail {
 }
 
 export interface Picture {
+    id: number,
     picture: string | StaticImageData;
     cafe: number;
 }
@@ -127,7 +128,7 @@ export interface MenuItemProps {
     id?: number,
     item?: string,
     description?: string,
-    picture?: string,
+    picture: string | StaticImageData,
     price?: string
 }
 

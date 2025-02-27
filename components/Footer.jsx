@@ -6,17 +6,17 @@ import { jwtDecode } from "jwt-decode"
 import Link from "next/link"
 import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
-import { LOCALHOST } from "@/lib/variebles"
+import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
 import { AddButton } from "./Buttons"
 import { useAppSelector } from "@/lib/hook"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 const Footer = () => {
-    const avatar = useAppSelector(s => s.user.avatar)
-    const username = useAppSelector(s => s.user.username)
+    const {user} = useAuth()
     const footerRef = useRef()
     const [sy, setSy] = useState(0)
     useEffect(() => {
-        console.log(username)
+        // console.log(user['avatar'])
         console.log(location.pathname == "/main")
         window.addEventListener('scroll', () => {
             if (window.scrollY > sy) {
@@ -45,7 +45,7 @@ const Footer = () => {
                         <div className="w-full text-center">
                             <span className="text-brown-dark">
                                 {
-                                    localStorage.getItem('access') ? <img className="rounded-full w-8 h-8 inline-table" alt="" src={avatar} /> :<FontAwesomeIcon icon={faUserCircle}/>
+                                    user != null ? <Image className="rounded-full w-8 h-8 inline-table" alt="" src={IMAGE_HOST + user.avatar} width={50} height={50} /> :<FontAwesomeIcon icon={faUserCircle}/>
                                 }
                                 
                             </span>

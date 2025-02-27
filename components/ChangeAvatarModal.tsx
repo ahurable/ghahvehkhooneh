@@ -1,18 +1,20 @@
 import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
-import { refreshToken } from "@/lib/utils"
+// import { refreshToken } from "@/lib/utils"
 import { LOCALHOST } from "@/lib/variebles"
 import { jwtDecode, JwtPayload } from "jwt-decode"
 import { redirect } from "next/dist/server/api-utils"
 import React, { FormEvent, useState } from "react"
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "./modals/modals"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 const ChangeAvatarModal = () => {
 
     const dispatch = useAppDispatch()
     const isOpenState = useAppSelector(state => state.avatarmodal.isOpen)
     const [selectedFile, setFile] = useState({})
-
+    const { refreshAccessToken, accessToken } = useAuth()
+    const access = accessToken
     // const onChangeFile = (e) => {
     //     setFile(e.currentTarget.files[0])
     // }
@@ -20,9 +22,7 @@ const ChangeAvatarModal = () => {
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(selectedFile)
-        const access = localStorage.getItem('access')
-        const refresh = localStorage.getItem('refresh')
-
+        
         if (!access || access.length ==0 || typeof(access) != 'string' || access==null)
             location.replace('/')
         let id = typeof(access)=='string' && jwtDecode<JwtPayload & {user_id:number|string}>(access).user_id
@@ -46,7 +46,7 @@ const ChangeAvatarModal = () => {
             })
             if (response.status == 200) {
                 alert('تصویر پروفایل شما با موفقیت ثبت شد')
-                typeof(refresh) == 'string' && refresh.length>0 && refreshToken(refresh)
+                refreshAccessToken()
                 location.reload()
             } else {
                 alert("مشکلی در بروزرسانی پروفایل شما رخ داد")

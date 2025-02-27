@@ -1,5 +1,5 @@
 import { ModalHeader, ModalBody, ModalFooter, Modal } from "@/components/modals/modals"
-import { setAddItemModalState, setEditCategoryState } from "@/lib/features/adminModalSlice"
+import { setAddItemModalState, setEditCategoryState, setEditItem } from "@/lib/features/adminModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
 import { faAdd } from "@fortawesome/free-solid-svg-icons"
@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import AddItemWrapper from "./AddItemWrapper"
+import { faEdit } from "@fortawesome/free-regular-svg-icons"
 
 
 type Category = {
@@ -26,6 +27,7 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
     const state = useAppSelector(s => s.admin.editCategory.show)
     const dispatch = useAppDispatch()
     const id = useAppSelector(s=>s.admin.editCategory.id)
+    const refAdd = useAppSelector(s=>s.admin.refAdd)
     const [addItem, setAddItem] = useState<{show: boolean, cafeId:number, categoryId: number}>({
         show: false,
         cafeId: 0,
@@ -57,7 +59,7 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
             }
         }
         handleAsync()
-    },[id])
+    },[id, refAdd])
     return (
         <>
             <Modal show={state}>
@@ -91,6 +93,13 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
                                                     <br />
                                                     <span className="text-brown-normal">{item.price} تومان</span>
                                                 </div>
+                                                <button 
+                                                className="btn bg-green-400 text-white border-b 
+                                                border-b-4 border-b-green-500 mx-4"
+                                                onClick={() => dispatch(setEditItem({id:item.id, title: item.item, description: item.description, price: item.price, state: true}))}
+                                                >
+                                                        <FontAwesomeIcon icon={faEdit}/>
+                                                </button>
                                             </div>
                                         </div>
                                     ])}

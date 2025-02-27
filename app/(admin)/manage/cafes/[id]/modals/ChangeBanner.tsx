@@ -1,13 +1,17 @@
+"use client"
 import { Modal, ModalHeader, ModalBody } from "@/components/modals/modals"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { setEditBannerState } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
-import { LOCALHOST } from "@/lib/variebles"
-import { ChangeEvent, FormEvent, useState } from "react"
+import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
+import { faClose } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Image, { StaticImageData } from "next/image"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 
-const ChangeBanner = ({cafeid}:{cafeid:number}) => {
+const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture: string | StaticImageData}[]}) => {
     const state = useAppSelector(s => s.admin.showEditBanner)
     const dispatch = useDispatch()
     const [success, setSuccess] = useState(false)
@@ -52,7 +56,36 @@ const ChangeBanner = ({cafeid}:{cafeid:number}) => {
         }
     }
 
-    
+    const handleDeleteImage = (id:number) => {
+        let token 
+        token = localStorage.getItem('access')
+        if (!token || token.length == 0)
+            location.replace('/logout')
+        fetch(LOCALHOST + `api/admin/cafes/${cafeid}/pictures/`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `bearer ${token}`
+            },
+            body: JSON.stringify({picture_id : id})
+        })
+        .then(res => {
+            if (!res.ok)
+                alert('در انجام عملیات حذف مشکلی به وجود آمد')
+            alert('حذف با موفقیت انجام شد')
+        })
+    }
+    // const [pics, setPics] = useState<{id:number, picture:string|StaticImageData}[]>([])
+    // const [loading, setLoading] = useState<boolean>(true)
+    // useEffect(() => {
+    //     const handleRequest = async () => {
+    //         const res = await fetch(LOCALHOST + `api/admin/cafes/${cafeid}/pictures/`)
+    //         const data = await res.json()
+    //         console.log(data)
+    //         setPics(data)
+    //     }
+    //     handleRequest()
+    //     setLoading(false)
+    // }, [])
 
     return (
         <>
@@ -63,6 +96,22 @@ const ChangeBanner = ({cafeid}:{cafeid:number}) => {
                 <h1>تغییر تصویر بنر کافه</h1>
             </ModalHeader>
             <ModalBody>
+                <div className="w-full">
+
+                    {
+                        pics && pics.length > 0 &&
+
+                        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4" >
+                            {pics.map(pict => [
+                                    <div className="aspect-square relative rounded-lg flex items-center justify-center" key={pict.id}>
+                                        <button className="absolute top-2 right-2 z-[20] text-white" onClick={() => handleDeleteImage(pict.id)}><FontAwesomeIcon icon={faClose} /></button>
+                                        <Image src={IMAGE_HOST + pict.picture} className="w-full h-full rounded-lg object-cover absolute top-0" alt="" width={100} height={100} />
+                                    </div>
+                            ])}
+
+                        </div>
+                    }
+                </div>
                 <form onSubmit={handleSubmit}>
                     <input type="file" multiple accept="images/*" onChange={handleChange} name="pictures" id="" className="form-control w-full my-4" />
                     <br />

@@ -220,7 +220,7 @@ export const SelectCafe = () => {
                                 }}>
                                     <div className="w-full bg-brown-normal text-white rounded-3xl shadow p-4">
                                         <div className="w-full">
-                                            <img src={LOCALHOST + cafe.picture} alt="" className="rounded-2xl object-cover w-full h-32" />
+                                            <img src={LOCALHOST + cafe.pictures[0].picture} alt="" className="rounded-2xl object-cover w-full h-32" />
                                         </div>
                                         <div className="w-full pt-2">
                                             <span className="font-normal text-lg block">{cafe.name}</span>

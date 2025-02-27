@@ -17,7 +17,9 @@ const initialState: {
     editItem: {id:number, title?:string, description?:string, price?: string, state: boolean},
     showQR: boolean,
     editClubMembers: boolean,
-    showAddCategory: boolean
+    showAddCategory: boolean,
+    updateItem: boolean,
+    refAdd: number
 } = {
     showEditBanner: false,
     editDescription: false,
@@ -33,7 +35,9 @@ const initialState: {
     editItem: {id: 0, title: "", description: "", price: "", state: false},
     showQR: false,
     editClubMembers: false,
-    showAddCategory: false
+    showAddCategory: false,
+    updateItem: false,
+    refAdd: 0,
 }
 
 const adminSlice = createSlice({
@@ -68,6 +72,12 @@ const adminSlice = createSlice({
         },
         setShowAddCategory: (state, action: PayloadAction<boolean>) => {
             state.showAddCategory = action.payload
+        },
+        setUpdateItem: (state, action: PayloadAction<boolean>) => {
+            state.updateItem = action.payload
+        },
+        refreshAddItem: (state, action: PayloadAction) => {
+            state.refAdd += 1
         }
     }
 })
@@ -80,6 +90,9 @@ export const { setQrCodeState } = adminSlice.actions
 export const { setEditItem } = adminSlice.actions
 export const { setEditClubMembers } = adminSlice.actions
 export const { setShowAddCategory } = adminSlice.actions
-export const { setEditCategoryState } = adminSlice.actions 
+export const { setEditCategoryState } = adminSlice.actions
+export const { setUpdateItem } = adminSlice.actions 
+export const { refreshAddItem } = adminSlice.actions 
+
 
 export const adminReducer = adminSlice.reducer

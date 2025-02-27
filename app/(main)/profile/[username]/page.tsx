@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
 import { StaticImageData } from "next/image"
 import Loader from "@/components/Loader"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 
 
@@ -26,9 +27,8 @@ interface profileType {
 }
 
 const Profile = ({params}:{params:{username:string}}) => {
-    const [profile, setProfile] = useState<profileType[]>()
+    const [profile, setProfile] = useState<profileType>()
     const [loading, setLoading] = useState<boolean>(true)
-
     const dispatch = useAppDispatch()
     
     useEffect(() => {
@@ -50,6 +50,9 @@ const Profile = ({params}:{params:{username:string}}) => {
 
 
     }, [])
+
+    if (profile == undefined || profile.first_name == null || profile.first_name.length == 0)
+        return null
 
     return (
         <>
@@ -76,9 +79,7 @@ const Profile = ({params}:{params:{username:string}}) => {
                                 <div className="md:col-span-9 col-span-12">
                                     <div className="ms-4 text-center md:text-right ">
                                         <h1 className="text-lg">
-                                            { profile.first_name == null ? 
-                                                localStorage.getItem('access') ? jwtDecode(localStorage.getItem('access')).username : "" 
-                                                :
+                                            { 
                                                  profile.first_name + " "} {profile.last_name == null ? "" : profile.last_name 
                                             }
                                         </h1>

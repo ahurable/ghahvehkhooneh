@@ -12,7 +12,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChartBar, faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
 import { StaticImageData } from "next/image"
 import { TrimedIconCard } from "@/components/Cards"
-
+import { PhoneValidation } from "./components/PhoneValidation"
+import { NextSeo } from 'next-seo'
 
 interface idNameType {
     id: number,
@@ -47,6 +48,9 @@ const Profile = () => {
     const dispatch = useAppDispatch()
     const access = localStorage.getItem('access')
     const username = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {username: string}>(access).username || 'نام کاربری'
+    const isVerified = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {is_verified: boolean}>(access).is_verified 
+    const phoneNumber = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {phone_number: string}>(access).phone_number 
+
     useEffect(() => {
         // const loc = navigator.geolocation.getCurrentPosition(success, error)
         // function success(position: any) {
@@ -104,6 +108,10 @@ const Profile = () => {
 
     return (
         <>
+        <NextSeo 
+        title="گپی - پروفایل"
+        
+        />
         { profile ? loading ?
         <span>loading</span>:
         <>
@@ -136,6 +144,10 @@ const Profile = () => {
                                     <button className="btn btn-green" onClick={() => dispatch(setEditProfileModalState(true))}>ویرایش پروفایل</button>
                                 </div>
                             </div>
+                            {
+                                isVerified == false &&
+                                <PhoneValidation phoneNumber={phoneNumber} />
+                            }
                             <div className="w-full p-4 grid grid-cols-2 mt-4">
                                 <div className="col-span-1 p-2">
                                     <div className="shadow-lg rounded-3xl p-4 w-full text-center">

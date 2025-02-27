@@ -10,9 +10,9 @@ import { EventsWrapper } from "./EventsWrapper"
 
 export const TabsWrapper = ({menuItems, club, categories}:{menuItems: menuItem[], club: club, categories: categoryFood[]}) => {
 
-    const menu = useRef<HTMLButtonElement>()
+    const menu = useRef<HTMLButtonElement|null>(null)
     // const ratingsButton = useRef()
-    const events = useRef<HTMLButtonElement>()
+    const events = useRef<HTMLButtonElement|null>(null)
     const [tab, setTab] = useState('menu')
     
 

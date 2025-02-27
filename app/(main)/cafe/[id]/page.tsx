@@ -5,6 +5,7 @@ import { faArrowLeft, faBackspace, faBackward, faCoffee } from "@fortawesome/fre
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Tabs } from "flowbite-react"
 import Slider from "./Slider"
+import Head from "next/head"
 
 
 async function fetchData (id:number):Promise<cafeInformation> {
@@ -29,6 +30,9 @@ const Page = async ({params}: {params: {id:number}}) => {
 
     return (
         <>
+            <Head>
+                <title>{cafe.name} - گپی</title>
+            </Head>
             <div className=" w-full rounded-lg">
                 <div className="w-full">
 
@@ -49,18 +53,18 @@ const Page = async ({params}: {params: {id:number}}) => {
                                 </button>
                             </div>
                             { cafe.club != null && 
-                                <div className="container w-full p-4">
-                                    <h1 className="text-lg">باشگاه مشتریان</h1>
-                                    <div className="py-4 w-full flex items-center">
+                                <div className="container w-full p-4 bg-brown-dark ">
+                                    <h1 className="text-lg text-white">باشگاه مشتریان</h1>
+                                    <div className="py-4 w-full flex flex-wrap justify-center gap-2 items-center">
                                         <div className="img-container">
                                             <img src={ LOCALHOST + cafe.club.club_avatar } className='rounded-full w-20 h-20 object-cover' alt="" />
                                         </div>
                                         <div className="ps-4">
-                                            <span className="text-xl font-black">{cafe.club.name}</span>
+                                            <span className="text-xl font-black text-white">{cafe.club.name}</span>
                                             <br />
-                                            <span className="text-lg font-normal">{cafe.club.description}</span>
+                                            <span className="text-lg font-normal text-white">{cafe.club.description}</span>
                                             <br />
-                                            <span>باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
+                                            <span className="text-white">باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
                                         </div>
                                     </div>
                                 </div>

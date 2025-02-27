@@ -3,19 +3,17 @@
 
 import { useState } from "react"
 import { FormEvent } from "react"
-import { cookies } from 'next/headers'
-import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
-import { jwtDecode } from "jwt-decode"
 import { useAppDispatch } from "@/lib/hook"
-import { setAvatar, setIsAdmin, setLoggedIn, setUsername } from "@/lib/features/userSlice"
+import { useAuth } from "@/lib/Context/AuthContext"
 
-const Login = () => {
+const LoginPage = () => {
     const dispatch = useAppDispatch()
     const [success, setSuccess] = useState(false)
     const [errorState, setErrorState] = useState(false)
     const [error, setError] = useState<string>("")
+    const { login } = useAuth()
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -27,16 +25,7 @@ const Login = () => {
         // window.alert(data)
         if (response.status == 200) {
             setSuccess(true)
-            const _user: {
-                username: string,
-                avatar: string,
-                is_admin: boolean
-            } = jwtDecode(data.access)
-            console.log(_user.username)
-            dispatch(setUsername(_user.username))
-            localStorage.setItem('access', data.access)
-            localStorage.setItem('refresh', data.refresh)
-            
+            login(data.access, data.refresh)
         } else if (response.status == 401) {
             setError("حسابی با مشخصات وارد شده یافت نشد.")
             setErrorState(true)
@@ -78,10 +67,10 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <SuccessModal title="موفق" description="شما با موفقیت وارد حساب کاربری خود شدید" redirectPath="/" state={success} />
+            <SuccessModal title="موفق" description="شما با موفقیت وارد حساب کاربری خود شدید" redirectPath={'/'} state={success} />
             <ErrorModal title="خطا" description={error} state={errorState} redirectPath={'/'} />
         </main>
         )
     }
 
-export default Login
+export default LoginPage

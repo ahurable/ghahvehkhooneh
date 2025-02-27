@@ -1,11 +1,11 @@
 "use client"
 
-import { cafeInformation } from "@/components/CafeComponents"
+// import { cafeInformation } from "@/components/CafeComponents"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { setAddClubState, setAddItemModalState, setEditBannerState, setEditClubMembers, setEditDescription, setEditItem, setQrCodeState } from "@/lib/features/adminModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { cafeDetailedType, categoryFood, userWithAnyProfileType } from "@/lib/types"
-import { LOCALHOST } from "@/lib/variebles"
+import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
 import { faEdit } from "@fortawesome/free-regular-svg-icons"
 import { faClose, faFileEdit, faL, faPlusCircle, faQrcode, faRemove, faUserEdit, faUserGroup } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -36,7 +36,6 @@ const Page = ({params}: {params: {id:number}}) => {
                 location.replace('/manage')
             }
             const data = await res.json()
-            console.log(data)
             setCafe(data)
             setLoading(false)
         }
@@ -55,7 +54,11 @@ const Page = ({params}: {params: {id:number}}) => {
                     :
                     <>
                     <div className="w-full rounded-3xl shadow-lg mb-4 relative">
-                        <img src={ typeof(cafe.pictures) == "object" && cafe.pictures.length > 0 && LOCALHOST + cafe.pictures[0] || './default-banner.png'} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
+                        
+
+                        <img src={typeof(cafe.pictures) == "object" && cafe.pictures.length > 0 && IMAGE_HOST + cafe.pictures[0].picture || '/default-banner.png'} width={1000} height={500} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
+                        
+                        
                         <div className="w-full h-full absolute top-0 bg-black bg-opacity-25 rounded-3xl">
                             <button className="rounded-full mt-4 mr-4 p-4 bg-white text-black" onClick={() => dispatch(setEditBannerState(true))}>
                                 <FontAwesomeIcon icon={faFileEdit}/>
@@ -113,7 +116,7 @@ const Page = ({params}: {params: {id:number}}) => {
                             <AddItemWrapper cafeid={cafe.id}/>
                             <QrCodeWrapper cafeid={cafe.id}/>
                             <ClubMembersWrapper cafeid={cafe.id}/>
-                            <ChangeBanner cafeid={cafe.id} />
+                            <ChangeBanner cafeid={cafe.id} pics={cafe.pictures} />
                             <UpdateDescription cafeid={cafe.id} />
                             <AddCategory cafeId={cafe.id} />
                             <UpdateMenuItem />

@@ -3,11 +3,15 @@ import { setMenuModal } from "@/lib/features/cafeSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { useEffect } from "react";
+import { IMAGE_HOST } from "@/lib/variebles";
 
 export const MenuModal = () => {
   const dispatch = useAppDispatch();
   const { isMenuOpen, selectedCategory } = useAppSelector((state) => state.cafeslice);
-
+  useEffect(() => {
+    console.log(selectedCategory)
+  },[])
   if (!isMenuOpen) return null;
 
   return (
@@ -29,8 +33,13 @@ export const MenuModal = () => {
           {selectedCategory.items.length > 0 ? (
             selectedCategory.items.map((item, index) => (
               <div key={index} className="p-2 bg-gray-100 rounded-lg flex items-center relative">
-                    <span className="block w-20 h-20 me-2">
-                        <Image src={item.picture ? item.picture : './logo72x72.png'} alt="" width={100} height={100} className="rounded-xl w-full h-full object-cover" />
+                    <span className="block w-20 h-20 me-2"> 
+                      {
+                        item.picture != null || item.picture ?
+                        <Image src={IMAGE_HOST + item.picture} alt="" width={100} height={100} className="rounded-xl w-full h-full object-cover" />
+                        : 
+                        <Image src={'/logo72x72.png'} alt="" width={100} height={100} className="rounded-xl w-full h-full object-cover" />
+                      }
                     </span>
                     <span className="block w-40">
                         <p className="font-bold">{item.item}</p>

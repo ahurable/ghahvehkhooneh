@@ -5,6 +5,7 @@ import { LOCALHOST } from "@/lib/variebles"
 import { fetchAllUsersInArea, sendFollowReq, sendUnfollowReq } from "@/lib/fetchs"
 import { userType, clubsType } from "@/lib/types"
 import { jwtDecode } from "jwt-decode"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 
 
@@ -13,13 +14,22 @@ const UsersWrapper = () => {
 
     const [loading, setLoading] = useState(true)
     const [users, setUsers] = useState<userType[]>()
-    const [client, setClient] = useState()
+    const [client, setClient] = useState<{
+        user_id: number,
+        username: string
+    }>({
+        user_id: 0,
+        username: ""
+    })
     
     const [followed, setFollowed] = useState(false)
+    const { accessToken } = useAuth()
 
     useEffect(() => {
+        if ( accessToken == null)
+            return location.replace('/')
         try {
-            setClient(jwtDecode(localStorage?.getItem('access')))
+            setClient(jwtDecode(accessToken))
         } catch {
             location.replace('/login')
         }
@@ -44,9 +54,9 @@ const UsersWrapper = () => {
                         </h1>
                     </div> :
 
-                    users.map(user => [
+                    users != undefined && users.map(user => [
                         <>
-                        { client.username == user.username ? "" :
+                        { client != undefined && client.username == user.username ? "" :
                             user.profile.followers.some(e => e == client.user_id) ? "" : (user.profile.first_name != null && user.profile.last_name != null) && 
                             <div key={user.id} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
                                 <div className="w-full flex items-center">
@@ -136,7 +146,7 @@ const ClubsWrapper = () => {
                 درحال بارگزاری...
             </h1>
         </div>:
-            clbs.map(
+            clbs !== undefined &&  clbs.map(
                 club => [
                     <div key={club.id} className="p-4 mt-4">
                         <div className='w-full rounded-3xl md:flex md:items-center shadow p-3'>
@@ -158,7 +168,7 @@ const ClubsWrapper = () => {
                         </div>
                     </div>
                 ]
-            )
+            ) || "باشگاهی وجود ندارد"
         }
         </>
     )
@@ -168,11 +178,13 @@ const ClubsWrapper = () => {
 
 export const SocialTabsWrapper = () => {
 
-    const users = useRef()
-    const clubs = useRef()
+    const users = useRef<HTMLButtonElement | null>(null)
+    const clubs = useRef<HTMLButtonElement | null>(null)
     const [tab, setTab] = useState('users')
 
     const toggleTabs = (buttonName:string) => {
+        if (users.current == null || clubs.current == null)
+            return
         switch (buttonName) {
             case 'users':
                 // users.current.classList.add('bg-white')

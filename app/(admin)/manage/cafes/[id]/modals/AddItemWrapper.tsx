@@ -4,12 +4,13 @@ import { categoryFood } from "@/lib/types"
 import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useEffect, useState } from "react"
-import { setAddItemModalState } from "@/lib/features/adminModalSlice"
+import { refreshAddItem, setAddItemModalState, setEditCategoryState } from "@/lib/features/adminModalSlice"
 
 const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
 
     const state = useAppSelector(s=>s.admin.additem.show)
     const categoryId = useAppSelector(s=>s.admin.additem.categoryId)
+    const refAdd = useAppSelector(s=>s.admin.refAdd)
     const dispatch = useAppDispatch()
     const [ ok, setOk ] = useState(false)
     const [errorState, setErrorState] = useState(false)
@@ -35,7 +36,8 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
                 }
             }
             asyncHandler()
-        } , []
+            console.log('refreshed')
+        } , [refAdd]
     )
 
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
@@ -51,7 +53,11 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
         })
         if (res.status == 201) {
             setOk(true)
-            setTimeout(()=>setOk(false),1000)
+            setTimeout(()=> {
+                setOk(false)
+
+                dispatch(refreshAddItem())
+            },1000)
         }
         
     }

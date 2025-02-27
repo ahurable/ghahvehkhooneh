@@ -3,6 +3,7 @@ import React from 'react'
 import { LOCALHOST } from '@/lib/variebles'
 import { CafeCard, type CafeCardProps } from '@/components/CafeComponents'
 import Image from 'next/image'
+import Head from 'next/head'
 
 
 async function getData():Promise<CafeCardProps[]>  {
@@ -34,6 +35,10 @@ export default async function Page() {
     return (
 
         <React.Fragment>
+            <Head>
+                <title>کافه های اطراف - گپی</title>
+                <meta name="description" content='بهترین کافه های شهر رو الان پیدا کن'/>
+            </Head>
             <div className="container">
 
 
