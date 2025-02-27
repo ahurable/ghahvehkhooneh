@@ -1,0 +1,34 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: gappy
+      POSTGRES_USER: gappy
+      POSTGRES_PASSWORD: 5@5$32341jdlskf0
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  django:
+    build: .
+    container_name: django_app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=gappy
+      - DB_USER=gappy
+      - DB_PASSWORD=5@5$32341jdlskf0
+      - DB_HOST=db
+      - DB_PORT=5432
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:

@@ -91,6 +91,8 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['avatar'] = user.profile.avatar.url
         token['is_admin'] = checkAdmin(user)
+        token['is_verified'] = user.is_verified
+        token['phone_number'] = str(user.phone_number)
         return token
     
 
@@ -122,3 +124,47 @@ class PersonalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Personality
         fields = '__all__'
+
+
+class CityListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ['id', 'name']
+
+
+class OTPRequestSerializer(serializers.Serializer):
+    phone_number = serializers.CharField()
+
+    def validate(self, attrs):
+        phone_number = attrs.get("phone_number")
+        try:
+            user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("User not found.")
+
+        user.generate_otp()  # Generate OTP when requested
+        return attrs
+    
+
+class OTPVerifySerializer(serializers.Serializer):
+    phone_number = serializers.CharField()
+    otp_code = serializers.CharField()
+
+    def validate(self, attrs):
+        phone_number = attrs.get("phone_number")
+        otp_code = attrs.get("otp_code")
+
+        try:
+            user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("User not found.")
+
+        if not user.is_otp_valid(otp_code):
+            raise serializers.ValidationError("Invalid or expired OTP.")
+
+        # OTP is correct, mark user as verified
+        user.is_verified = True
+        user.otp_code = None  # Clear OTP after verification
+        user.save()
+
+        return {"message": "Phone number verified successfully."}

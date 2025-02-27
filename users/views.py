@@ -10,10 +10,12 @@ from rest_framework.generics import UpdateAPIView, CreateAPIView
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status
 from cafes.serializers import *
 from cafes.models import *
 from .models import Profile, CustomUser as User
 from .permissions import IsAdminOfCafe
+from .utls import generate_otp
 # Create your views here.
 
 
@@ -131,6 +133,12 @@ def offerHobbyHook(request):
         return Response(serialized_response.data)
         
 
+@api_view(['GET'])
+def getAllCities(request):
+    cities = City.objects.all()
+    serializer = CityListSerializer(cities,many=True)
+    return Response(serializer.data)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -243,8 +251,9 @@ class AddMenuItem(APIView):
 
     def post(self, request, categoryid, cafeid):
         cat = CategoryFood.objects.get(id=categoryid)
-        request.data['category'] = categoryid
-        serializer = self.Serializer(data=request.data)
+        mutable_data = request.data.copy()
+        mutable_data['category'] = categoryid
+        serializer = self.Serializer(data=mutable_data)
         # print(request.data['picture'])
         if serializer.is_valid():
             serializer.save()
@@ -359,6 +368,23 @@ class AddCafePicturesView(CreateAPIView):
         context['request'] = self.request
         context['id'] = self.kwargs.get('id')
         return context
+    
+
+class UpdateBanners(APIView):
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+    def get(self, request, cafeid):
+        pictures = Picture.objects.all().filter(cafe__id = cafeid)
+        ser = PictureSerializer(pictures, many=True)
+        return Response(ser.data)
+    
+    def delete(self, request, cafeid):
+        picture_id = request.data['picture_id']
+        if not picture_id: 
+            return Response({"error": "Missing picture_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+        picture = get_object_or_404(Picture, id=picture_id, cafe__id=cafeid)
+        picture.delete()
+        return Response({"message": "Picture deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class UpdateCafeDescription(UpdateAPIView):
@@ -421,3 +447,31 @@ class DeleteCategoryView(APIView):
             return Response({'success':'deleted'}, status=201)
         except:
             return Response({'error':'some error happened'}, status=400)
+        
+
+
+class RequestOTPView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer = OTPRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            phone_number = serializer.validated_data["phone_number"]
+            user = CustomUser.objects.get(phone_number=phone_number)
+            
+            # Send OTP via SMS (Placeholder - Use Twilio, Firebase, etc.)
+            print(f"OTP for {phone_number}: {user.otp_code}")
+
+            return Response({"message": "OTP sent successfully."}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class VerifyOTPView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer = OTPVerifySerializer(data=request.data)
+        print(request.data)
+        if serializer.is_valid():
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

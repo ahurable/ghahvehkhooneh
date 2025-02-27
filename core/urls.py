@@ -41,6 +41,9 @@ urlpatterns = [
     path('api/users/follow/<int:id>/', FollowRequestView.as_view(), name='follow-request-url'),
     path('api/users/unfollow/<int:id>/', unfollowRequestView, name="unfollow-request-url"),
     path('api/users/profile/<str:username>/', ProfileDetails.as_view()),
+    path('api/users/list-cities/', getAllCities),
+    path('request-otp/', RequestOTPView.as_view(), name='request-otp'),
+    path('verify-otp/', VerifyOTPView.as_view(), name='verify-otp'),
     # cafe urls
     path('api/cafes/add/', AddCafeView.as_view(), name="add-cafe-url"),
     path('api/cafes/list/', CafeListView.as_view(), name="list-cafes-url"),
@@ -60,6 +63,7 @@ urlpatterns = [
     # admin
     path('api/admin/', adminAPIView),
     path('api/admin/cafes/<int:id>/', AdminGetCafeAPIView.as_view()),
+    path('api/admin/cafes/<int:cafeid>/pictures/', UpdateBanners.as_view()),
     path('api/admin/add/menu/<int:cafeid>/<int:categoryid>/', AddMenuItem.as_view()),
     path('api/admin/add/club/<int:cafeid>/', AddClubView.as_view()),
     path('api/admin/club/members/<int:cafeid>/', AdminMembersClub.as_view()),

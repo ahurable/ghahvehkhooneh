@@ -3,6 +3,9 @@ from django.dispatch.dispatcher import receiver
 from django.db.models.signals import post_save
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
+from django.utils.timezone import now
+from datetime import timedelta
 import os, random
 # Create your models here.
 
@@ -49,11 +52,29 @@ class CustomUser(AbstractBaseUser):
     phone_number = PhoneNumberField(region="IR", unique=True)
 
     is_admin = models.BooleanField(default=False)
-    is_verified = models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
+    otp_code = models.CharField(max_length=6, blank=True, null=True)
+    otp_created_at = models.DateTimeField(blank=True, null=True)
+
+    
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['phone_number']
     objects = CustomUserManager()
+
+
+    def generate_otp(self):
+        """Generate a 6-digit OTP and store it with a timestamp"""
+        self.otp_code = str(random.randint(100000, 999999))
+        print(self.otp_code)
+        self.otp_created_at = now()
+        self.save()
+
+    def is_otp_valid(self, otp):
+        """Check if the OTP is valid (not expired and matches)"""
+        if self.otp_code == otp and now() - self.otp_created_at < timedelta(minutes=5):  
+            return True
+        return False
 
     def __str__(self) -> str:
         return self.username

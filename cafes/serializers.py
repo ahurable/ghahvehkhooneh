@@ -27,7 +27,7 @@ class RatingSerializer(ModelSerializer):
 class PictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Picture
-        fields = ['picture', 'is_featured']
+        fields = ['id', 'picture', 'is_featured']
 
 
 
