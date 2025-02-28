@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 import datetime
 from .serializers import *
 from .models import *
@@ -15,7 +16,7 @@ class CafeListView(APIView):
     permission_classes = (AllowAny, )
     def get(self, request):
         
-        serializer = CafeListSerializer(Cafe.objects.all(), many=True)
+        serializer = CafeListSerializer(Cafe.objects.all().order_by('-id'), many=True)
         return Response(serializer.data, status=200)
     
 
@@ -64,14 +65,13 @@ class AllCafeCardListView(ListAPIView):
 
 
 class GetAllClubsView(ListAPIView):
-
     serializer_class = AllFieldsClubSerializer
 
     def get_queryset(self):
         try:
-            qs = Club.objects.all().filter(city__city=self.request.user.city)
+            qs = Club.objects.annotate(members_count=Count('members')).filter(city__city=self.request.user.city).order_by('-members_count')
         except:
-            qs = Club.objects.all()
+            qs = Club.objects.annotate(members_count=Count('members')).order_by('-members_count')
         return qs
     
 

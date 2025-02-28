@@ -54,6 +54,7 @@ class Cafe(models.Model):
     admin = models.ManyToManyField(User, related_name='cafes')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
     number= models.CharField(max_length=12)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def generate_unique_slug(self):
         base_slug = slugify(self.name, allow_unicode=True)  # Generate initial slug
