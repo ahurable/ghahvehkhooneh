@@ -13,12 +13,12 @@ const Register = () => {
     const [successState, setSuccessState] = useState(false)
     const [errorState, setErrorState] = useState(false)
     const [errorDesc, setErrorDesc] = useState('')
-    const nextStep = (e) => {
+    const nextStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setStep(2)
     }
 
-    const prevStep = (e) => {
+    const prevStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setStep(1)
     }

@@ -1,12 +1,13 @@
 "use client"
 
+import { useNotification } from "@/lib/Context/NotificationContext"
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react"
 import { useEffect, useState } from "react"
 
 
-export const SuccessModal = ({title, description, state, redirectPath}:{title:string | null, description:string | null, state:boolean, redirectPath?:string | null}) => {
+export const SuccessModal = ({title, description, state, redirectPath}:{title:string | null, description:string | undefined, state:boolean, redirectPath?:string | undefined}) => {
 
     const [show, setShow] = useState<boolean>()
     useEffect(()=>{
@@ -38,7 +39,7 @@ export const SuccessModal = ({title, description, state, redirectPath}:{title:st
 
 }
 
-export const ErrorModal = ({title, description, state, redirectPath}:{title:string | null, description:string | null, state:boolean, redirectPath?:string | null}) => {
+export const ErrorModal = ({title, description, state, redirectPath}:{title:string | null, description:string | undefined, state:boolean, redirectPath?:string | null}) => {
 
     const [show, setShow] = useState<boolean>()
     useEffect(()=>{
@@ -69,3 +70,17 @@ export const ErrorModal = ({title, description, state, redirectPath}:{title:stri
     )
 
 }
+
+const NotificationComponent = () => {
+    const { notification } = useNotification();
+  
+    if (!notification) return null;
+  
+    return (
+        <>{
+        notification.type === "success" ? <SuccessModal title={notification.title} description={notification.message} redirectPath={notification.redirect} state={notification.state}  />: <ErrorModal title={notification.title} description={notification.message} redirectPath={notification.redirect} state={notification.state} />
+        }</>
+    );
+  };
+  
+  export default NotificationComponent;

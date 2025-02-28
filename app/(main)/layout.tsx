@@ -7,6 +7,7 @@ import StoreProvider from "@/lib/StoreProvider";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 // import { refreshToken } from "@/lib/utils";
 import { AuthProvider } from "@/lib/Context/AuthContext";
+import { NotificationProvider } from "@/lib/Context/NotificationContext";
 // font declaration
 
 const yekanbakh = localFont({
@@ -95,19 +96,21 @@ export default class RootLayout extends React.Component<MyProps> {
         return (
             <StoreProvider>
                 <AuthProvider>
-                <html lang="fa" dir="rtl">
-                    <body className={yekanbakh.className}>
-                        <div className="w-full relative bg-[url(/cafe-pattern.jpg)] z-[100]">
-                            <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
+                    <NotificationProvider>
+                    <html lang="fa" dir="rtl">
+                        <body className={yekanbakh.className}>
+                            <div className="w-full relative bg-[url(/cafe-pattern.jpg)] z-[100]">
+                                <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
 
-                            <div className="lg:container bg-yellow-very-melo relative z-[30] shadow-lg">
-                                {this.props.children}
+                                <div className="lg:container bg-yellow-very-melo relative z-[30] shadow-lg">
+                                    {this.props.children}
+                                </div>
                             </div>
-                        </div>
 
-                        <Footer />
-                    </body>
-                </html>
+                            <Footer />
+                        </body>
+                    </html>
+                    </NotificationProvider>
                 </AuthProvider>
             </StoreProvider>
         )

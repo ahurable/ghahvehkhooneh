@@ -3,11 +3,9 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
-import { faBars, faBasketShopping, faClose } from "@fortawesome/free-solid-svg-icons"
-import { useRef } from "react"
+import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { useAppDispatch } from "@/lib/hook"
 import { setIsMenuOpen } from "@/lib/features/menuMobileSlice"
-import MenuMobile from "./MenuMobile"
 
 const Header = () => {
 
@@ -42,8 +40,6 @@ const Header = () => {
                         </button>
                         <span className="text-2xl font-bold">قهوهخونه</span>
                     </div>
-                    {/* menu mobile btn */}
-                    <MenuMobile/>
                     {/* desktop menu */}
                     <div className="lg:col-span-10 md:col-span-12  hidden md:menu-wrapper items-center">
                         <ul>

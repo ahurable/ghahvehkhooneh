@@ -29,7 +29,7 @@ type MultiStepsFormProps = {
     fetchUrl: string;
     successMessage: string;
     errorMessage: string;
-    redirectPath: string | null;
+    redirectPath: string | undefined;
     club?: number,
 }
 

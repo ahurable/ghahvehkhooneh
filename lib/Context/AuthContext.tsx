@@ -84,6 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(decodedUser);
             setAccessToken(access);
             setRefreshToken(refresh);
+            console.log(accessToken)
             localStorage.setItem("access", access);
             localStorage.setItem("refresh", refresh);
         } catch (error) {

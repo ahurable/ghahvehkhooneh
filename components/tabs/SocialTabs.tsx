@@ -6,10 +6,12 @@ import { fetchAllUsersInArea, sendFollowReq, sendUnfollowReq } from "@/lib/fetch
 import { userType, clubsType } from "@/lib/types"
 import { jwtDecode } from "jwt-decode"
 import { useAuth } from "@/lib/Context/AuthContext"
+import NotificationComponent from "@/layouts/Modals/MessageModals"
+import { NotificationProvider, useNotification } from "@/lib/Context/NotificationContext"
 
 
 
-const UsersWrapper = () => {
+const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
 
 
     const [loading, setLoading] = useState(true)
@@ -21,13 +23,14 @@ const UsersWrapper = () => {
         user_id: 0,
         username: ""
     })
-    
+    const { showNotification } = useNotification()
     const [followed, setFollowed] = useState(false)
-    const { accessToken } = useAuth()
 
     useEffect(() => {
-        if ( accessToken == null)
+        if ( accessToken == null){
+            alert('اطلاعات کاربر یافت نشد - وارد سیستم شوید')
             return location.replace('/')
+        }
         try {
             setClient(jwtDecode(accessToken))
         } catch {
@@ -54,11 +57,12 @@ const UsersWrapper = () => {
                         </h1>
                     </div> :
 
-                    users != undefined && users.map(user => [
+                    users != undefined && users.map((user, idx) => [
                         <>
+                        <NotificationComponent />
                         { client != undefined && client.username == user.username ? "" :
                             user.profile.followers.some(e => e == client.user_id) ? "" : (user.profile.first_name != null && user.profile.last_name != null) && 
-                            <div key={user.id} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
+                            <div key={idx} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
                                 <div className="w-full flex items-center">
                                     <div className="py-4 w-3/12" onClick={()=> location.replace('/profile/'+user.username)}>
                                         <img src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
@@ -76,7 +80,7 @@ const UsersWrapper = () => {
                                         {
                                             !followed &&    
                                             <SendFollowButton onClick={async (e) => {
-                                                await sendFollowReq(user.id)
+                                                await sendFollowReq(user.id, showNotification)
                                                 setFollowed(true)
                                             }} />
                                         }
@@ -181,6 +185,7 @@ export const SocialTabsWrapper = () => {
     const users = useRef<HTMLButtonElement | null>(null)
     const clubs = useRef<HTMLButtonElement | null>(null)
     const [tab, setTab] = useState('users')
+    const access = localStorage.getItem('access')
 
     const toggleTabs = (buttonName:string) => {
         if (users.current == null || clubs.current == null)
@@ -224,7 +229,7 @@ export const SocialTabsWrapper = () => {
             </div>
 
             <div className="w-full md:container">
-                { tab == "users" && <UsersWrapper /> }
+                { tab == "users" && <UsersWrapper accessToken={access} /> }
                 
                 { tab == "clubs" && <ClubsWrapper /> }
                 

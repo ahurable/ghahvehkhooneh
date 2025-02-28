@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
 import { AuthProvider } from "@/lib/Context/AuthContext";
+import { NotificationProvider } from "@/lib/Context/NotificationContext";
 
 
 
@@ -68,11 +69,13 @@ export default function RootLayout({
     return (
         <StoreProvider>
             <AuthProvider>
-            <html lang="fa" dir="rtl">
-                <body className={yekanbakh.className}>
-                    {children}
-                </body>
-            </html>
+                <NotificationProvider>
+                    <html lang="fa" dir="rtl">
+                        <body className={yekanbakh.className}>
+                            {children}
+                        </body>
+                    </html>
+                </NotificationProvider>
             </AuthProvider>
         </StoreProvider>
     )

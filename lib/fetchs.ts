@@ -1,18 +1,32 @@
 import { ChangeEvent } from "react"
 import { userType } from "./types"
 import { LOCALHOST } from "./variebles"
+import { useNotification } from "./Context/NotificationContext"
+import { title } from "process"
 
 
-export const sendFollowReq = async (id:number) => {
+export const sendFollowReq = async (id:number, showNotification: (title: string, type: "success" | "error", state: boolean, message?: string, redirect?: string) => void) => {
+    // const { showNotification } = useNotification()
     const res = await fetch(LOCALHOST + 'api/users/follow/'+id+'/', {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('access')}`
         }
     })
-    if(!res.ok) {
-        throw new Error('Failed to send follow request')
+    if(res.ok) {
+        showNotification(
+            "موفق",
+            "success",
+            true,
+            "با موفقیت دنبال شد",
+        )
     } else {
-        console.log('با موفقیت به لیست فالور های شما اضافه شد')
+        showNotification(
+            "خطا",
+            "error",
+            true,
+            "به پروفایل بروید و وارد حساب خود شوید",
+            "/logout"
+        )
     }
     const data = await res.json()
     return data

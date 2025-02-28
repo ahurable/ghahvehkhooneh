@@ -1,5 +1,6 @@
 import { LOCALHOST } from "@/lib/variebles"
 import { SocialTabsWrapper } from "@/components/tabs/SocialTabs"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 export interface userInArea {
     id: number,
@@ -25,14 +26,12 @@ const fetchUsers = async ():Promise<userInArea[]> => {
 
 
 const Page = async () => {
-
-
     return (
         <div className="w-full">
             <div className=" text-center border-b">
                 <h1 className="title-wrapper text-lg text-brown-dark p-5"> اجتماعی </h1>
             </div>
-            <SocialTabsWrapper />
+            <SocialTabsWrapper/>
         </div>
     )
 

@@ -14,6 +14,7 @@ import { StaticImageData } from "next/image"
 import { TrimedIconCard } from "@/components/Cards"
 import { PhoneValidation } from "./components/PhoneValidation"
 import { NextSeo } from 'next-seo'
+import { useAuth } from "@/lib/Context/AuthContext"
 
 interface idNameType {
     id: number,
@@ -47,21 +48,12 @@ const Profile = () => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     const access = localStorage.getItem('access')
+    const {accessToken} = useAuth()
     const username = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {username: string}>(access).username || 'نام کاربری'
     const isVerified = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {is_verified: boolean}>(access).is_verified 
     const phoneNumber = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {phone_number: string}>(access).phone_number 
 
     useEffect(() => {
-        // const loc = navigator.geolocation.getCurrentPosition(success, error)
-        // function success(position: any) {
-        //     const latitude = position.coords.latitude;
-        //     const longitude = position.coords.longitude;
-        //     console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        // }
-        // function error() {
-        //     console.log("Unable to retrieve your location");
-        //   }
-        // console.log(loc)
         try{
             const token = localStorage.getItem('access')
             const handleAsync = async () => {

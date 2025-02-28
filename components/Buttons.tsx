@@ -88,16 +88,20 @@ export const SubscribeButton = ({classNames, clubId}:{classNames?:string, clubId
 
 export const AddButton = ({url, show}:{url:string, show:boolean}) => {
 
-    const AddButtonRef = useRef()
+    const AddButtonRef = useRef<HTMLAnchorElement | null>(null)
     const [sy, setSy] = useState(0)
     useEffect(() => {
         window.addEventListener('scroll', () => {
             if (window.scrollY > sy) {
-                AddButtonRef.current.style.marginBottom = "-80px"
+                if (AddButtonRef.current)
+                    AddButtonRef.current.style.marginBottom = "-80px"
 
                 setSy(window.scrollY)
             } else if (window.scrollY < sy) {
-                AddButtonRef.current.style.marginBottom = "0px"
+
+                if (AddButtonRef.current)
+                    AddButtonRef.current.style.marginBottom = "0px"
+                
                 setSy(window.scrollY)
             }
         })
