@@ -3,13 +3,16 @@ import { userType } from "./types"
 import { LOCALHOST } from "./variebles"
 import { useNotification } from "./Context/NotificationContext"
 import { title } from "process"
+import { useAuth } from "./Context/AuthContext"
 
 
 export const sendFollowReq = async (id:number, showNotification: (title: string, type: "success" | "error", state: boolean, message?: string, redirect?: string) => void) => {
     // const { showNotification } = useNotification()
+    const { accessToken } = useAuth()
+    
     const res = await fetch(LOCALHOST + 'api/users/follow/'+id+'/', {
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('access')}`
+            Authorization: `Bearer ${accessToken}`
         }
     })
     if(res.ok) {
@@ -34,9 +37,11 @@ export const sendFollowReq = async (id:number, showNotification: (title: string,
 
 
 export const sendUnfollowReq = async (id:number) => {
+    const { accessToken } = useAuth()
+
     const res = await fetch(LOCALHOST + 'api/users/unfollow/'+id+'/', {
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('access')}`
+            Authorization: `Bearer ${accessToken}`
         }
     })
     if(!res.ok) {

@@ -47,8 +47,8 @@ const Profile = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
     const dispatch = useAppDispatch()
-    const access = localStorage.getItem('access')
     const {accessToken} = useAuth()
+    const access = accessToken
     const username = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {username: string}>(access).username || 'نام کاربری'
     const isVerified = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {is_verified: boolean}>(access).is_verified 
     const phoneNumber = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {phone_number: string}>(access).phone_number 

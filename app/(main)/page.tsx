@@ -13,7 +13,6 @@ import Head from "next/head"
 
 
 const Page = () => {
-    // const token = localStorage.getItem('access')
     
     return (
         <>

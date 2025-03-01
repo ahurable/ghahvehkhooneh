@@ -1,6 +1,7 @@
 "use client"
 import { Modal, ModalHeader, ModalBody } from "@/components/modals/modals"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
+import { useAuth } from "@/lib/Context/AuthContext"
 import { setEditBannerState } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
@@ -25,6 +26,8 @@ const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture
         }
     }
 
+    const { accessToken } = useAuth()
+
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (pictures.length < 1){
@@ -38,7 +41,7 @@ const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture
         )
         let token
         try {
-            token = localStorage.getItem('access')
+            token = accessToken
             const res = await fetch(LOCALHOST + 'api/admin/cafe/update/banner/' + cafeid + '/', {
                 method: 'POST',
                 headers: {
@@ -58,7 +61,7 @@ const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture
 
     const handleDeleteImage = (id:number) => {
         let token 
-        token = localStorage.getItem('access')
+        token = accessToken
         if (!token || token.length == 0)
             location.replace('/logout')
         fetch(LOCALHOST + `api/admin/cafes/${cafeid}/pictures/`, {

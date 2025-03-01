@@ -1,5 +1,6 @@
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
+import { useAuth } from "@/lib/Context/AuthContext"
 import { setShowAddCategory } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
@@ -11,10 +12,11 @@ import { useDispatch } from "react-redux"
 const AddCategory = ({cafeId}: {cafeId: number}) => {
     const state = useAppSelector(s => s.admin.showAddCategory)
     const dispatch = useDispatch()
+    const { accessToken } = useAuth()
     const [ ok, setOk] = useState(false)
     async function handleSubmit (e:FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const token = localStorage.getItem('access')
+        const token = accessToken
         const formData = new FormData(e.currentTarget)
         if (token && token.length > 0) {
             const res = await fetch(

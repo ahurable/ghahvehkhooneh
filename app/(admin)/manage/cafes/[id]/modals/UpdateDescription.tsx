@@ -1,5 +1,6 @@
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
+import { useAuth } from "@/lib/Context/AuthContext"
 import { setEditBannerState } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
@@ -10,14 +11,14 @@ const UpdateDescription = ({cafeid}:{cafeid:number}) => {
     const state = useAppSelector(s => s.admin.editDescription)
     const dispatch = useDispatch()
     const [success, setSuccess] = useState(false)
-
+    const { accessToken } = useAuth()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         formData.append('id', cafeid.toString())
         let token
         try {
-            token = localStorage.getItem('access')
+            token = accessToken
             const res = await fetch(LOCALHOST + 'api/admin/cafe/update/description/' + cafeid + '/', {
                 method: 'PUT',
                 headers: {

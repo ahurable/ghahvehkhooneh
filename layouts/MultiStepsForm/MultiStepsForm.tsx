@@ -6,6 +6,7 @@ import { Calendar, DateObject } from "react-multi-date-picker"
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 
 type MultiStepsFormProps = {
@@ -119,6 +120,8 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
         return(isValid)
     };
 
+    const { accessToken } = useAuth()
+
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // const formData = new FormData(e.currentTarget)
@@ -126,7 +129,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
         try {
             
             const formData = new FormData(e.currentTarget)
-            const token = localStorage.getItem('access')
+            const token = accessToken
             if (pictures.length > 0) {
                 pictures.forEach((picture, index) => {
                     formData.append(`pictures`, picture); // You can name them as needed

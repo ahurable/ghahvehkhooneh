@@ -5,6 +5,7 @@ import { sendFollowReq } from "@/lib/fetchs"
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState, useRef, MouseEventHandler } from "react"
 import { LOCALHOST } from "@/lib/variebles"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 
 
@@ -23,7 +24,8 @@ export const SendUnfollowButton = ({classNames, onClick}:{classNames?:string, on
 export const SubscribeButton = ({classNames, clubId}:{classNames?:string, clubId:number}) => {
     const [subscribed, setSubscribed] = useState<boolean>(false)
     const [haveLogin, setHaveLogin] = useState<boolean>(false)
-    const token = localStorage.getItem('access')
+    const { accessToken } = useAuth()
+    const token = accessToken
     const subscribeClub = async (id:number) => {
         if (token){
             try {

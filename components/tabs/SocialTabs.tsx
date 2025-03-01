@@ -109,9 +109,10 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
 const ClubsWrapper = () => {
     const [loading, setLoading] = useState(true)
     const [clbs, setClubs] = useState<clubsType[]>()
+    const { accessToken } = useAuth()
     const fetchClubs = async () => {
         try {
-            const token = localStorage.getItem('access')
+            const token = accessToken
 
             const res = await fetch(LOCALHOST + 'api/cafes/clubs/', {
                 headers: {
@@ -185,7 +186,8 @@ export const SocialTabsWrapper = () => {
     const users = useRef<HTMLButtonElement | null>(null)
     const clubs = useRef<HTMLButtonElement | null>(null)
     const [tab, setTab] = useState('users')
-    const access = localStorage.getItem('access')
+    const { accessToken } = useAuth()
+    const access = accessToken
 
     const toggleTabs = (buttonName:string) => {
         if (users.current == null || clubs.current == null)

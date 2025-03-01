@@ -7,7 +7,9 @@ import { LOCALHOST } from "@/lib/variebles"
 import { FormEvent, useEffect, useState } from "react"
 
 export const ValidateModal = ({phoneNumber}:{phoneNumber:string}) => {
-    const access = localStorage.getItem('access')
+
+    const { accessToken, refreshAccessToken } = useAuth()    
+    const access = accessToken
     const show = useAppSelector( s => s.profilemodal.isPhoneValidationModal)
     // if the otp code generated in backend successfully it would be true
     const [ otpSat, setOtpSat ] = useState<boolean>(false)
@@ -30,7 +32,6 @@ export const ValidateModal = ({phoneNumber}:{phoneNumber:string}) => {
         state:false,
     })
     const dispatch = useAppDispatch()
-    const { accessToken, refreshAccessToken } = useAuth()
     useEffect(() => {
         const handleAsync = async () => {
             const res = await fetch(LOCALHOST+'request-otp/', {

@@ -1,5 +1,6 @@
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
+import { useAuth } from "@/lib/Context/AuthContext"
 import { setEditItem } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
@@ -11,6 +12,7 @@ const UpdateMenuItem = () => {
     const item = useAppSelector(s => s.admin.editItem)
     const dispatch = useDispatch()
     const [success, setSuccess] = useState(false)
+    const { accessToken } = useAuth()
     useEffect(() => {
         console.log(state)
     })
@@ -20,7 +22,7 @@ const UpdateMenuItem = () => {
         formData.append('id', item.id.toString())
         let token
         try {
-            token = localStorage.getItem('access')
+            token = accessToken
             const res = await fetch(LOCALHOST + 'api/admin/cafe/update/menu/item/' + item.id + '/', {
                 method: 'PUT',
                 headers: {

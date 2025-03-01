@@ -5,6 +5,7 @@ import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useEffect, useState } from "react"
 import { refreshAddItem, setAddItemModalState, setEditCategoryState } from "@/lib/features/adminModalSlice"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
 
@@ -39,11 +40,11 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
             console.log('refreshed')
         } , [refAdd]
     )
-
+    const { accessToken } = useAuth()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
-        const token = localStorage.getItem('access')
+        const token = accessToken
         const res = await fetch(LOCALHOST + 'api/admin/add/menu/' + cafeid + '/' + categoryId + '/', {
             method: 'POST',
             headers: {

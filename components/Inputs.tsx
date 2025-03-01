@@ -1,5 +1,6 @@
 "use client";
 import { SuccessModal } from "@/layouts/Modals/MessageModals";
+import { useAuth } from "@/lib/Context/AuthContext";
 import { LOCALHOST } from "@/lib/variebles";
 import { FormEvent, useEffect, useRef, useState, ChangeEvent } from "react";
 
@@ -47,9 +48,11 @@ export const InputWithLiveFetch = ({
     setData(_data);
   };
 
+  const { accessToken } = useAuth()
+
   const handleDataSubmission = async (inputValue: string) => {
     console.log(inputValue);
-    const token = localStorage.getItem("access");
+    const token = accessToken
 
     const res = await fetch(LOCALHOST + fetchAddress, {
       method: "POST",

@@ -4,16 +4,17 @@ import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useState } from "react"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 const AddClub = ({id}:{id:number}) => {
 
     const state = useAppSelector(s => s.admin.addClub)
     const dispatch = useAppDispatch()
-
+    const { accessToken } = useAuth()
     const [success, setSuccess] = useState(false)
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const token = localStorage.getItem('access')
+        const token = accessToken
         const formData = new FormData(e.currentTarget)
         formData.append('cafe', id.toString())
         const res = await fetch(LOCALHOST + 'api/admin/add/club/' + id + '/', {

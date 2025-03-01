@@ -33,7 +33,6 @@ const Profile = ({params}:{params:{username:string}}) => {
     
     useEffect(() => {
         try{
-            // const token = localStorage.getItem('access')
             const handleAsync = async () => {
                 const res = await fetch(LOCALHOST + 'api/users/profile/'+params.username+'/', {
                     method: "GET"

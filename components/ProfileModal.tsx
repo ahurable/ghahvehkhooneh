@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { FormEvent } from "react"
 import { LOCALHOST } from "@/lib/variebles"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 type props = {
     firstName: string,
@@ -16,13 +17,13 @@ const ProfileModal = ({ profile } : { profile: props }) => {
 
     const isOpenState = useAppSelector((state) => state.profilemodal.isOpen)
     const dispatch = useAppDispatch()
-
+    const { accessToken } = useAuth()
     const profileSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(e.currentTarget)
         let formData = new FormData(e.currentTarget)
         console.log(formData)
-        const token = localStorage.getItem('access')
+        const token = accessToken
         const response = await fetch(LOCALHOST + "api/auth/update-profile-info/", {
             method: 'POST',
             headers: {

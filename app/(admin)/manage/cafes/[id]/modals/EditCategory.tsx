@@ -8,6 +8,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import AddItemWrapper from "./AddItemWrapper"
 import { faEdit } from "@fortawesome/free-regular-svg-icons"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 
 type Category = {
@@ -35,7 +36,8 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
     })
     const [ ok, setOk ] = useState(false)
     const [ category, setCategory ] = useState<Category>()
-    const token = localStorage.getItem('access')
+    const { accessToken } = useAuth()
+    const token = accessToken
     useEffect(()=>{
         console.log(id)
         const handleAsync = async () => {

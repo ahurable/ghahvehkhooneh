@@ -1,18 +1,19 @@
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
+import { useAuth } from "@/lib/Context/AuthContext"
 import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalBody, ModalHeader } from "flowbite-react"
 import { useEffect, useState } from "react"
 
 
 const DeleteEnsurance = ({cafeId, categoryId, show}:{cafeId?:number, categoryId?: number, show: boolean}) => {
-
+    const { accessToken } = useAuth()
     const [state, setState] = useState<boolean>(false)
     useEffect(() => {
         setState(show)
     }, [show])
     const [ ok, setOk ] = useState(false)
     const handleDelete = async (categoryId:number) => {
-        const token = localStorage.getItem('access')
+        const token = accessToken
         if (token && token.length > 0){
             const res = await fetch(
                 `${LOCALHOST}api/cafes/delete/category/${cafeId}/${categoryId}/`,
