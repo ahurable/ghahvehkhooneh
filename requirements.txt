@@ -2,4 +2,7 @@ django
 djangorestframework
 django-cors-headers
 django-phonenumber-field
+djangorestframework-simplejwt
 Pillow
+phonenumbers
+colorama
