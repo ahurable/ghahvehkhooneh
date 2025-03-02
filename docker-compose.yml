@@ -1,30 +1,35 @@
+version: '3.8'
 
 services:
   db:
     image: postgres:15
     container_name: postgres_db
     restart: always
+    env_file: 
+      - .env
     environment:
-      POSTGRES_DB: gappy
-      POSTGRES_USER: gappy
-      POSTGRES_PASSWORD: 5@5$32341jdlskf0
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   django:
     build: .
     container_name: django_app
     restart: always
     depends_on:
-      - db
-    environment:
-      - DB_NAME=gappy
-      - DB_USER=gappy
-      - DB_PASSWORD=5@5$32341jdlskf0
-      - DB_HOST=db
-      - DB_PORT=5432
+      db:
+        condition: service_healthy
+    env_file: 
+      - .env
     ports:
       - "8000:8000"
     volumes:

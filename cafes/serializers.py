@@ -106,7 +106,7 @@ class CafeSerializer(ModelSerializer):
 
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'address', 'about', 'pictures', 'ratings', 'categories', 'club']
+        fields = ['id', 'name', 'slug', 'address', 'about', 'pictures', 'ratings', 'categories', 'club']
 
 
 

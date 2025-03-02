@@ -6,3 +6,4 @@ djangorestframework-simplejwt
 Pillow
 phonenumbers
 colorama
+python-dotenv
