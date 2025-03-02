@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default':dj_database_url.config(
-        default=os.getenv('DB_URL'),
+        default='postgres://postgres:BQuSUCd4bF1Ot5FdmKil@postgres.ahura.svc:5432/postgres',
         conn_max_age=600,
         conn_health_checks=True,
     )
