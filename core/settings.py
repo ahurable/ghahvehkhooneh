@@ -110,6 +110,11 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
+
+
+# Ensure ENGINE is set correctly
+if 'ENGINE' not in DATABASES['default']:
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
