@@ -105,11 +105,11 @@ load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'gappy'),
-        'USER': os.getenv('DB_USER', 'gappy'),
-        'PASSWORD': os.getenv('DB_PASSWORD', '5@5$32341jdlskf0'),
-        'HOST': os.getenv('DB_HOST', 'db'),  # This should match the service name in docker-compose
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),  # This should match the service name in docker-compose
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
