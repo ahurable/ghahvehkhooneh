@@ -103,11 +103,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-DATABASES["default"] = dj_database_url.config(
-    default=os.getenv('DB_URL'),
-    conn_max_age=600,
-    conn_health_checks=True,
-)
+DATABASES = {
+    'default':dj_database_url.config(
+        default=os.getenv('DB_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
