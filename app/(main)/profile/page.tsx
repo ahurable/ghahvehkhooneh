@@ -4,13 +4,13 @@ import { useAppDispatch } from "@/lib/hook"
 import { jwtDecode, JwtPayload } from "jwt-decode"
 import React, { useEffect, useState } from "react"
 import ProfileModal from '@/components/ProfileModal'
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
 import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import ChangeAvatarModal from "@/components/ChangeAvatarModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChartBar, faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
-import { StaticImageData } from "next/image"
+import Image, { StaticImageData } from "next/image"
 import { TrimedIconCard } from "@/components/Cards"
 import { PhoneValidation } from "./components/PhoneValidation"
 import { NextSeo } from 'next-seo'
@@ -52,7 +52,7 @@ const Profile = () => {
     const username = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {username: string}>(access).username || 'نام کاربری'
     const isVerified = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {is_verified: boolean}>(access).is_verified 
     const phoneNumber = typeof(access) === 'string' && access.length > 0 && jwtDecode<JwtPayload & {phone_number: string}>(access).phone_number 
-
+    const router = useRouter()
     useEffect(() => {
         try{
             const token = localStorage.getItem('access')
@@ -71,10 +71,10 @@ const Profile = () => {
             }
             handleAsync()
         } catch {
-            location.replace('/logout')
+            router.replace('/logout')
         }
 
-    }, [])
+    }, [router])
 
     useEffect(()=>{
         try {
@@ -118,7 +118,7 @@ const Profile = () => {
                                 
                                 
                                 <button className="col-span-12 md:col-span-3 justify-center border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
-                                    <img className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} />
+                                    <Image className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} alt="" />
                                 </button>
                                 <div className="md:col-span-9 col-span-12">
                                     <div className="ms-4 text-center md:text-right ">
@@ -158,7 +158,7 @@ const Profile = () => {
                             </div>
                             <div className="w-full">
                                 <div className="p-4">
-                                    { isAdmin ? <TrimedIconCard iconName={faChartBar} altText="رفتن به صفحه مدیریت" onClick={() => location.replace('/manage')}/> : "" }
+                                    { isAdmin ? <TrimedIconCard iconName={faChartBar} altText="رفتن به صفحه مدیریت" onClick={() => router.push('/manage')}/> : "" }
                                 </div>
                             </div>
                             <div className="p-4">

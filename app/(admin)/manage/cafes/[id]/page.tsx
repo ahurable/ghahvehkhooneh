@@ -15,6 +15,8 @@ import QRCode from 'react-qr-code'
 import { useDispatch } from "react-redux"
 import { AddCategory, AddClub, AddItemWrapper, ChangeBanner, ClubMembersWrapper, QrCodeWrapper, UpdateDescription, UpdateMenuItem } from "./modals"
 import Category from "./Cateogry/Category"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 
 const Page = ({params}: {params: {id:number}}) => {
@@ -23,7 +25,7 @@ const Page = ({params}: {params: {id:number}}) => {
     const [loading, setLoading] = useState(true)
     const [cafe, setCafe] = useState<cafeDetailedType>()
     const dispatch = useAppDispatch()
-
+    const router = useRouter()
     useEffect(()=>{
         const fetchAsync = async () => {
             const token = localStorage.getItem('access')
@@ -33,14 +35,14 @@ const Page = ({params}: {params: {id:number}}) => {
                 }
             })
             if (res.status == 404) {
-                location.replace('/manage')
+                router.push('/manage')
             }
             const data = await res.json()
             setCafe(data)
             setLoading(false)
         }
         fetchAsync()
-    },[Page])
+    },[router, params.id])
 
     const [addItemState, setAddItemState] = useState(false)
     if (!cafe)
@@ -56,7 +58,7 @@ const Page = ({params}: {params: {id:number}}) => {
                     <div className="w-full rounded-3xl shadow-lg mb-4 relative">
                         
 
-                        <img src={typeof(cafe.pictures) == "object" && cafe.pictures.length > 0 && IMAGE_HOST + cafe.pictures[0].picture || '/default-banner.png'} width={1000} height={500} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
+                        <Image src={typeof(cafe.pictures) == "object" && cafe.pictures.length > 0 && IMAGE_HOST + cafe.pictures[0].picture || '/default-banner.png'} width={1000} height={500} className="w-full h-[340px] object-cover rounded-3xl" alt="" />
                         
                         
                         <div className="w-full h-full absolute top-0 bg-black bg-opacity-25 rounded-3xl">
@@ -75,7 +77,7 @@ const Page = ({params}: {params: {id:number}}) => {
                             {
                                 cafe.club && <div className="w-full md:w-3/4 flex pt-4">
                                 <div className="w-40 h-40">
-                                    <img src={LOCALHOST + cafe?.club.club_avatar} className="rounded-2xl" alt="" />
+                                    <Image src={LOCALHOST + cafe?.club.club_avatar} width={100} height={100} className="rounded-2xl" alt="" />
                                 </div>
                                 <div className="ps-4">
                                     <h1 className="text-xl font-bold">
@@ -114,7 +116,7 @@ const Page = ({params}: {params: {id:number}}) => {
                         cafe != undefined && 
                         <>
                             <AddItemWrapper cafeid={cafe.id}/>
-                            <QrCodeWrapper cafeid={cafe.id}/>
+                            <QrCodeWrapper cafeid={cafe.slug}/>
                             <ClubMembersWrapper cafeid={cafe.id}/>
                             <ChangeBanner cafeid={cafe.id} pics={cafe.pictures} />
                             <UpdateDescription cafeid={cafe.id} />
@@ -129,43 +131,6 @@ const Page = ({params}: {params: {id:number}}) => {
     )
 
 }
-
-
-// const MenuItems = () => {
-//     <div className="w-full mt-4">
-//         <div className="flex flex-wrap">
-//             {
-//                 cafe?.menu_item != null &&
-//                 cafe?.menu_item.map(item => [
-//                     <div key={item.id} className="w-full md:w-1/2 p-2">
-//                         <div className="w-full rounded-3xl shadow p-4">
-//                             <div className="w-full grid grid-cols-6 items-center">
-//                                 <div className="col-span-1">
-//                                     <img src={LOCALHOST + item.picture} alt="" className="w-16 h-16 rounded-full object-cover" />
-//                                 </div>
-//                                 <div className="col-span-4 ps-2">
-//                                     <h1 className="text-lg">{item.item}</h1>
-//                                     <p>{item.description}</p>
-//                                 </div>
-//                                 <div className="col-span-1 flex flex-wrap justify-center">
-//                                     <button className="block h-8 p-2 bg-gray-400 rounded-full text-white" onClick={() => dispatch(setEditItem({
-//                                         id: item.id,
-//                                         title: item?.item,
-//                                         description: item?.description,
-//                                         price: item?.price,
-//                                         state: true
-//                                     }))}><FontAwesomeIcon icon={faEdit}/></button>
-//                                     <span className="block h-8 p-2 bg-red-400 rounded-full text-white mx-1"><FontAwesomeIcon icon={faClose}/></span>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 ])
-//             }
-//         </div>
-//     </div>
-// }
-
 
 
 

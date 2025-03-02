@@ -76,7 +76,7 @@ export default function RootLayout({
     } else {
       location.replace('/');
     }
-  }, [RootLayout])
+  }, [])
   return (
     <StoreProvider>
     <html lang="fa" dir="rtl">

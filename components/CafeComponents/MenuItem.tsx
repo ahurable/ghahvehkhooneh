@@ -1,5 +1,6 @@
 import { LOCALHOST } from "@/lib/variebles"
 import { menuItem } from "./types"
+import Image from "next/image"
 
 export const MenuItem = ({menuItem}:{menuItem: menuItem}) => {
     return (
@@ -7,7 +8,7 @@ export const MenuItem = ({menuItem}:{menuItem: menuItem}) => {
             <div className="">
                 <div className="w-full rounded-lg p-3 flex items-center">
                     <div className="w-3/12 p-2">
-                        <img src={LOCALHOST + menuItem.picture} alt="" className="w-20 h-20 rounded-lg object-cover" />
+                        <Image src={LOCALHOST + menuItem.picture} alt="" className="w-20 h-20 rounded-lg object-cover" />
                     </div>
                     <div className="w-5/12 p-2">
                         <span className="text-lg">{menuItem.item}</span><br />

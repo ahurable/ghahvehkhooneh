@@ -10,9 +10,7 @@ export const MenuWrapper = ({categories}: {categories: categoryFood[]}) => {
 
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        console.log(categories)
-    }, [])
+    
     return (
         <div>
       <div className="container w-full">

@@ -113,6 +113,7 @@ export interface Picture {
 export interface cafeDetailedType {
     id: number,
     name: string,
+    slug: string,
     address: string,
     about: string,
     pictures: Picture[],

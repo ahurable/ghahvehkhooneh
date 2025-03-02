@@ -3,7 +3,7 @@ import { setQrCodeState } from "@/lib/features/adminModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import QRCode from "react-qr-code"
 
-const QrCodeWrapper = ({cafeid}:{cafeid:number}) => {
+const QrCodeWrapper = ({cafeid}:{cafeid:string}) => {
     const state = useAppSelector(state => state.admin.showQR)
     const dispatch = useAppDispatch()
     return (

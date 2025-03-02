@@ -3,15 +3,12 @@ import { setMenuModal } from "@/lib/features/cafeSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { useEffect } from "react";
 import { IMAGE_HOST } from "@/lib/variebles";
 
 export const MenuModal = () => {
   const dispatch = useAppDispatch();
   const { isMenuOpen, selectedCategory } = useAppSelector((state) => state.cafeslice);
-  useEffect(() => {
-    console.log(selectedCategory)
-  },[])
+  
   if (!isMenuOpen) return null;
 
   return (

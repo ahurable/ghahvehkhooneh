@@ -7,6 +7,7 @@ import { redirect } from "next/dist/server/api-utils"
 import React, { FormEvent, useState } from "react"
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "./modals/modals"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { useRouter } from "next/navigation"
 
 const ChangeAvatarModal = () => {
 
@@ -14,6 +15,7 @@ const ChangeAvatarModal = () => {
     const isOpenState = useAppSelector(state => state.avatarmodal.isOpen)
     const [selectedFile, setFile] = useState({})
     const { refreshAccessToken, accessToken } = useAuth()
+    const router = useRouter()
     const access = accessToken
     // const onChangeFile = (e) => {
     //     setFile(e.currentTarget.files[0])
@@ -24,7 +26,7 @@ const ChangeAvatarModal = () => {
         console.log(selectedFile)
         
         if (!access || access.length ==0 || typeof(access) != 'string' || access==null)
-            location.replace('/')
+            router.push('/')
         let id = typeof(access)=='string' && jwtDecode<JwtPayload & {user_id:number|string}>(access).user_id
         // console.log(id)
         let formData = new FormData(e.currentTarget)
@@ -47,7 +49,7 @@ const ChangeAvatarModal = () => {
             if (response.status == 200) {
                 alert('تصویر پروفایل شما با موفقیت ثبت شد')
                 refreshAccessToken()
-                location.reload()
+                router.refresh()
             } else {
                 alert("مشکلی در بروزرسانی پروفایل شما رخ داد")
             }

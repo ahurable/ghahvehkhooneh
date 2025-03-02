@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/Context/AuthContext"
 import { setEditItem } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
+import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
@@ -13,6 +14,7 @@ const UpdateMenuItem = () => {
     const dispatch = useDispatch()
     const [success, setSuccess] = useState(false)
     const { accessToken } = useAuth()
+    const router = useRouter()
     useEffect(() => {
         console.log(state)
     })
@@ -32,11 +34,11 @@ const UpdateMenuItem = () => {
             })
             if (res.ok) {
                 setSuccess(true)
-                location.reload()
+                router.refresh()
             }
         }
         catch {
-            location.replace('/logout')
+            router.push('/logout')
         }
     }
 

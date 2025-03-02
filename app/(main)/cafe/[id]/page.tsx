@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Tabs } from "flowbite-react"
 import Slider from "./Slider"
 import Head from "next/head"
+import Image from "next/image"
 
 
 async function fetchData (id:number):Promise<cafeInformation> {
@@ -57,7 +58,7 @@ const Page = async ({params}: {params: {id:number}}) => {
                                     <h1 className="text-lg text-white">باشگاه مشتریان</h1>
                                     <div className="py-4 w-full flex flex-wrap justify-center gap-2 items-center">
                                         <div className="img-container">
-                                            <img src={ LOCALHOST + cafe.club.club_avatar } className='rounded-full w-20 h-20 object-cover' alt="" />
+                                            <Image src={ LOCALHOST + cafe.club.club_avatar } className='rounded-full w-20 h-20 object-cover' alt="" />
                                         </div>
                                         <div className="ps-4">
                                             <span className="text-xl font-black text-white">{cafe.club.name}</span>

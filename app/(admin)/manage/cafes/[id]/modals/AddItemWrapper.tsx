@@ -38,7 +38,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
             }
             asyncHandler()
             console.log('refreshed')
-        } , [refAdd]
+        } , [refAdd, cafeid, categoryId]
     )
     const { accessToken } = useAuth()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {

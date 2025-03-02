@@ -5,6 +5,7 @@ import { eventDetail } from "@/lib/types"
 import { LOCALHOST } from "@/lib/variebles"
 import { jwtDecode, JwtPayload } from "jwt-decode"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 const fetchData = async (id:number):Promise<eventDetail> => {
@@ -35,8 +36,9 @@ const Page = ({params}:{params:{id:number}}) => {
         
         
         
-    }, [Page])
+    }, [])
 
+    const router = useRouter()
 
     useEffect(() => {
         
@@ -113,7 +115,7 @@ const Page = ({params}:{params:{id:number}}) => {
                                 </button> : <button className="block btn-brown mt-4 text-center p-4 w-full" ref={participentBtn}>
                                     شرکت در رویداد
                                 </button> :
-                                <button className="block btn-brown mt-4 text-center p-4 w-full" onClick={() => location.replace('/login')}>
+                                <button className="block btn-brown mt-4 text-center p-4 w-full" onClick={() => router.push('/login')}>
                                     ورود به حساب برای شرکت
                                 </button>
                             }

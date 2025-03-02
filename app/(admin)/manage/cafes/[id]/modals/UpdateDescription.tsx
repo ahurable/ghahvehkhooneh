@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/Context/AuthContext"
 import { setEditBannerState } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
+import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 import { useDispatch } from "react-redux"
 
@@ -12,6 +13,7 @@ const UpdateDescription = ({cafeid}:{cafeid:number}) => {
     const dispatch = useDispatch()
     const [success, setSuccess] = useState(false)
     const { accessToken } = useAuth()
+    const router = useRouter()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -28,11 +30,11 @@ const UpdateDescription = ({cafeid}:{cafeid:number}) => {
             })
             if (res.ok) {
                 setSuccess(true)
-                location.reload()
+                router.refresh()
             }
         }
         catch {
-            location.replace('/logout')
+            router.push('/logout')
         }
     }
 

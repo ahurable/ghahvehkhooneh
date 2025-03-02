@@ -1,5 +1,6 @@
 "use client"
 import { LOCALHOST } from "@/lib/variebles"
+import Image from "next/image"
 import Flickity from "react-flickity-component"
 
 
@@ -32,7 +33,7 @@ const Slider = ({pictures, classNames}:{pictures:Pictures, classNames:string}) =
             <Flickity options={flickityOptions} elementType="div">
                 {
                     pictures.map((p, idx) => [
-                        <img key={idx} src={LOCALHOST + p.picture} alt="" className={`w-full object-cover ${classNames}`} />
+                        <Image key={idx} src={LOCALHOST + p.picture} alt="" className={`w-full object-cover ${classNames}`} />
                     ])
                 }
             </Flickity>

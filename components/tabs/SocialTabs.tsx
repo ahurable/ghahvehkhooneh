@@ -8,6 +8,8 @@ import { jwtDecode } from "jwt-decode"
 import { useAuth } from "@/lib/Context/AuthContext"
 import NotificationComponent from "@/layouts/Modals/MessageModals"
 import { NotificationProvider, useNotification } from "@/lib/Context/NotificationContext"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 
 
@@ -25,16 +27,16 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
     })
     const { showNotification } = useNotification()
     const [followed, setFollowed] = useState(false)
-
+    const router = useRouter()
     useEffect(() => {
         if ( accessToken == null){
             alert('اطلاعات کاربر یافت نشد - وارد سیستم شوید')
-            return location.replace('/')
+            return router.push('/')
         }
         try {
             setClient(jwtDecode(accessToken))
         } catch {
-            location.replace('/login')
+            router.push('/login')
         }
         const fetchUsers = async () => {
             const _users = await fetchAllUsersInArea()
@@ -43,7 +45,7 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
         }
         fetchUsers()
         // console.log(client.user_id)
-    }, [UsersWrapper])
+    }, [accessToken, router])
 
     return (
         <>
@@ -64,10 +66,10 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
                             user.profile.followers.some(e => e == client.user_id) ? "" : (user.profile.first_name != null && user.profile.last_name != null) && 
                             <div key={idx} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
                                 <div className="w-full flex items-center">
-                                    <div className="py-4 w-3/12" onClick={()=> location.replace('/profile/'+user.username)}>
-                                        <img src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
+                                    <div className="py-4 w-3/12" onClick={()=> router.push('/profile/'+user.username)}>
+                                        <Image src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
                                     </div>
-                                    <div className="py-4 pe-4 w-6/12" onClick={()=> location.replace('/profile/'+user.username)}>
+                                    <div className="py-4 pe-4 w-6/12" onClick={()=> router.push('/profile/'+user.username)}>
                                         <span className="text-lg">
                                             {user.profile.first_name ? user.profile.first_name + ' ' + user.profile.last_name && user.profile.last_name : user.username}
                                         </span>
@@ -78,16 +80,16 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
                                     </div>
                                     <div className="p-4 w-3/12">
                                         {
-                                            !followed &&    
+                                            accessToken && !followed && 
                                             <SendFollowButton onClick={async (e) => {
-                                                await sendFollowReq(user.id, showNotification)
+                                                await sendFollowReq(user.id, accessToken, showNotification)
                                                 setFollowed(true)
                                             }} />
                                         }
                                         {
-                                            followed &&
+                                            accessToken && followed &&
                                             <SendUnfollowButton onClick={async (e) => {
-                                                await sendUnfollowReq(user.id)
+                                                await sendUnfollowReq(user.id, accessToken)
                                                 setFollowed(false)
                                             }} /> 
                                         }
@@ -141,7 +143,7 @@ const ClubsWrapper = () => {
             setLoading(false)
         }
         getClubs()
-    }, [ClubsWrapper])
+    }, [fetchClubs])
 
     return (
         <>
@@ -157,7 +159,7 @@ const ClubsWrapper = () => {
                         <div className='w-full rounded-3xl md:flex md:items-center shadow p-3'>
                             <div className="p-4 w-full flex flex-wrap items-center">
                                 <div className="img-container block">
-                                    <img src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover block' alt="" />
+                                    <Image src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover block' alt="" />
                                 </div>
                                 <div className="ps-4">
                                     <span className="text-lg">{club.name}</span>

@@ -5,6 +5,7 @@ import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useState } from "react"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { useRouter } from "next/navigation"
 
 const AddClub = ({id}:{id:number}) => {
 
@@ -12,6 +13,7 @@ const AddClub = ({id}:{id:number}) => {
     const dispatch = useAppDispatch()
     const { accessToken } = useAuth()
     const [success, setSuccess] = useState(false)
+    const router = useRouter()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const token = accessToken
@@ -26,7 +28,7 @@ const AddClub = ({id}:{id:number}) => {
         })
         if (res.status == 201) {
             setSuccess(true)
-            location.reload()
+            router.refresh()
         }
         const data = await res.json()
     }

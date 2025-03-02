@@ -6,9 +6,8 @@ import { title } from "process"
 import { useAuth } from "./Context/AuthContext"
 
 
-export const sendFollowReq = async (id:number, showNotification: (title: string, type: "success" | "error", state: boolean, message?: string, redirect?: string) => void) => {
+export const sendFollowReq = async (id:number, accessToken: string, showNotification: (title: string, type: "success" | "error", state: boolean, message?: string, redirect?: string) => void) => {
     // const { showNotification } = useNotification()
-    const { accessToken } = useAuth()
     
     const res = await fetch(LOCALHOST + 'api/users/follow/'+id+'/', {
         headers: {
@@ -36,8 +35,7 @@ export const sendFollowReq = async (id:number, showNotification: (title: string,
 }
 
 
-export const sendUnfollowReq = async (id:number) => {
-    const { accessToken } = useAuth()
+export const sendUnfollowReq = async (id:number, accessToken: string) => {
 
     const res = await fetch(LOCALHOST + 'api/users/unfollow/'+id+'/', {
         headers: {

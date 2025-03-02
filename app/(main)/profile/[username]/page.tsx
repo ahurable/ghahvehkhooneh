@@ -10,9 +10,10 @@ import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import ChangeAvatarModal from "@/components/ChangeAvatarModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faUserMinus } from "@fortawesome/free-solid-svg-icons"
-import { StaticImageData } from "next/image"
+import Image, { StaticImageData } from "next/image"
 import Loader from "@/components/Loader"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { useRouter } from "next/navigation"
 
 
 
@@ -30,7 +31,7 @@ const Profile = ({params}:{params:{username:string}}) => {
     const [profile, setProfile] = useState<profileType>()
     const [loading, setLoading] = useState<boolean>(true)
     const dispatch = useAppDispatch()
-    
+    const router = useRouter()
     useEffect(() => {
         try{
             const handleAsync = async () => {
@@ -44,11 +45,11 @@ const Profile = ({params}:{params:{username:string}}) => {
             }
             handleAsync()
         } catch {
-            location.replace('/logout')
+            router.push('/logout')
         }
 
 
-    }, [])
+    }, [router, params.username])
 
     if (profile == undefined || profile.first_name == null || profile.first_name.length == 0)
         return null
@@ -73,7 +74,7 @@ const Profile = ({params}:{params:{username:string}}) => {
                                 
                                 
                                 <button className="col-span-12 md:col-span-3 justify-center border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
-                                    <img className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} />
+                                    <Image className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} alt="" />
                                 </button>
                                 <div className="md:col-span-9 col-span-12">
                                     <div className="ms-4 text-center md:text-right ">

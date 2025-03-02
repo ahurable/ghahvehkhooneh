@@ -4,18 +4,20 @@ import { useNotification } from "@/lib/Context/NotificationContext"
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
 export const SuccessModal = ({title, description, state, redirectPath}:{title:string | null, description:string | undefined, state:boolean, redirectPath?:string | undefined}) => {
 
     const [show, setShow] = useState<boolean>()
+    const router = useRouter()
     useEffect(()=>{
         if(state){
             setShow(true)
             if(redirectPath != null && redirectPath.length > 0 ) {
                 setTimeout(()=>{
-                    location.replace(redirectPath)
+                    router.push(redirectPath)
                 }, 2000)
             } else {
                 setTimeout(()=>{
@@ -42,12 +44,13 @@ export const SuccessModal = ({title, description, state, redirectPath}:{title:st
 export const ErrorModal = ({title, description, state, redirectPath}:{title:string | null, description:string | undefined, state:boolean, redirectPath?:string | null}) => {
 
     const [show, setShow] = useState<boolean>()
+    const router = useRouter()
     useEffect(()=>{
         if(state){
             setShow(true)
             if(redirectPath != null && redirectPath.length > 0 ) {
                 setTimeout(()=>{
-                    location.replace(redirectPath)
+                    router.push(redirectPath)
                 }, 2000)
             } else {
                 setTimeout(()=>{

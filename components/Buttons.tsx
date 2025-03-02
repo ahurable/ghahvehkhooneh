@@ -63,7 +63,7 @@ export const SubscribeButton = ({classNames, clubId}:{classNames?:string, clubId
         else {
             setHaveLogin(true)
         }
-    }, [])
+    }, [clubId, token])
     return (
         <>
             {!subscribed && 

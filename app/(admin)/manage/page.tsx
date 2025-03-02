@@ -2,6 +2,7 @@
 
 import { cafeCardType } from "@/lib/types"
 import { LOCALHOST } from "@/lib/variebles"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
@@ -12,7 +13,7 @@ const Page = () => {
 
     const [loading, setLoading] = useState(true)
     const [cafes, setCafes] = useState<cafeCardType[]>()
-
+    const router = useRouter()
     useEffect(() => {
 
         const fetchFunction = async () => {
@@ -28,12 +29,12 @@ const Page = () => {
                 setCafes(data)
                 setLoading(false)
             } else if (res.status == 403) {
-                location.replace('/main')
+                router.push('/main')
             }
         }
         fetchFunction()
 
-    }, [Page])
+    }, [])
 
     return (
         <>

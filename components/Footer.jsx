@@ -10,14 +10,16 @@ import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
 import { AddButton } from "./Buttons"
 import { useAppSelector } from "@/lib/hook"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { usePathname, useRouter } from "next/navigation"
 
 const Footer = () => {
     const {user} = useAuth()
     const footerRef = useRef()
     const [sy, setSy] = useState(0)
+    const pathname = usePathname()
     useEffect(() => {
         // console.log(user['avatar'])
-        console.log(location.pathname == "/main")
+        console.log(pathname == "/main")
         window.addEventListener('scroll', () => {
             if (window.scrollY > sy) {
                 footerRef.current.style.marginBottom = "-100px"
@@ -34,7 +36,7 @@ const Footer = () => {
         <div>
             
             {
-                location.pathname == "/" ?
+                pathname == "/" ?
                 <AddButton url={"/add"} show={true} />
                 :
                 <AddButton url={"/add"} show={false} />

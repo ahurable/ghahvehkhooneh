@@ -8,6 +8,7 @@ import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
 import { faClose } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Image, { StaticImageData } from "next/image"
+import { useRouter } from "next/navigation"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
@@ -27,7 +28,7 @@ const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture
     }
 
     const { accessToken } = useAuth()
-
+    const router = useRouter()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (pictures.length < 1){
@@ -51,11 +52,11 @@ const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture
             })
             if (res.ok) {
                 setSuccess(true)
-                location.reload()
+                router.refresh()
             }
         }
         catch {
-            location.replace('/logout')
+            router.push('/logout')
         }
     }
 
@@ -63,7 +64,7 @@ const ChangeBanner = ({cafeid, pics}:{cafeid:number, pics?: {id: number, picture
         let token 
         token = accessToken
         if (!token || token.length == 0)
-            location.replace('/logout')
+            router.push('/logout')
         fetch(LOCALHOST + `api/admin/cafes/${cafeid}/pictures/`, {
             method: 'DELETE',
             headers: {

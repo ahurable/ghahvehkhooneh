@@ -9,6 +9,7 @@ import { Modal, ModalHeader, ModalBody } from "@/components/modals/modals"
 import { jwtDecode } from "jwt-decode"
 import { CityPicker, SelectCityModal } from "@/components/main/CityPicker"
 import Head from "next/head"
+import Image from "next/image"
 
 
 
@@ -46,7 +47,7 @@ const Page = () => {
             <div className="w-full relative">
                 <div className=" text-center shadow flex items-center justify-center">
                     <div className="w-10 h-10 me-2">
-                        <img src={logo.src} className="w-full h-full" alt="" />
+                        <Image src={logo.src} className="w-full h-full" alt="" />
                     </div>
                     <h1 className="title-wrapper text-lg text-brown-dark py-5 font-black">گپی</h1>
                 </div>

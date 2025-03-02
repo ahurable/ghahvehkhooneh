@@ -6,8 +6,9 @@ import { faCalendarCheck, faShop, faTable } from "@fortawesome/free-solid-svg-ic
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { setEventCafe, setEventClub, setEventStep } from "@/lib/features/eventStep"
-
+import { useRouter } from "next/navigation"
 import { MultiStepsForm } from "@/layouts/MultiStepsForm/MultiStepsForm"
+import Image from "next/image"
 
 
 
@@ -140,7 +141,7 @@ export const SelectClubs = () => {
             setLoading(false)
         }
         asyncHandler()
-    }, [SelectClubs])
+    }, [])
     const dispatch = useAppDispatch()
 
     return (
@@ -164,7 +165,7 @@ export const SelectClubs = () => {
                     }} className="col-span-6 md:col-span-4 lg:col-span-3 p-2">
                         <div className="rounded-lg shadow p-3">
                             <div className="w-full flex justify-center">
-                                <img src={LOCALHOST + club.club_avatar} alt="" className="rounded-full w-20 h-20 object-cover" />
+                                <Image src={LOCALHOST + club.club_avatar} alt="" className="rounded-full w-20 h-20 object-cover" />
                             </div>
                             <div className="w-full text-center pt-3">
                                 <span>{club.name}</span>
@@ -220,7 +221,7 @@ export const SelectCafe = () => {
                                 }}>
                                     <div className="w-full bg-brown-normal text-white rounded-3xl shadow p-4">
                                         <div className="w-full">
-                                            <img src={LOCALHOST + cafe.pictures[0].picture} alt="" className="rounded-2xl object-cover w-full h-32" />
+                                            <Image src={LOCALHOST + cafe.pictures[0].picture} width={800} height={800} alt="" className="rounded-2xl object-cover w-full h-32" />
                                         </div>
                                         <div className="w-full pt-2">
                                             <span className="font-normal text-lg block">{cafe.name}</span>
@@ -240,13 +241,13 @@ export const SelectCafe = () => {
 
 export const AddButtons = () => {
     const dispatch = useAppDispatch()
-
+    const router = useRouter()
     return (
         <div className="w-full">
             <div className="container">
                 <div className="w-full">
-                    <TrimedIconCard iconName={faCalendarCheck} altText="ایجاد یک رویداد جدید" onClick={() => {location.replace('/add/event')}} />
-                    <TrimedIconCard iconName={faShop} altText="درخواست ایجاد پروفایل کافه" onClick={() => {location.replace('/add/cafe')}} />
+                    <TrimedIconCard iconName={faCalendarCheck} altText="ایجاد یک رویداد جدید" onClick={() => {router.push('/add/event')}} />
+                    <TrimedIconCard iconName={faShop} altText="درخواست ایجاد پروفایل کافه" onClick={() => {router.push('/add/cafe')}} />
                 </div>
             </div>
         </div>

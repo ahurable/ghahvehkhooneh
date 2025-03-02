@@ -61,7 +61,7 @@ export const EditCategory = ({cafeId}:{cafeId:number}) => {
             }
         }
         handleAsync()
-    },[id, refAdd])
+    },[id, refAdd, cafeId, token])
     return (
         <>
             <Modal show={state}>

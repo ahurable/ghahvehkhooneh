@@ -6,6 +6,7 @@ import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { FormEvent } from "react"
 import { LOCALHOST } from "@/lib/variebles"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { useRouter } from "next/navigation"
 
 type props = {
     firstName: string,
@@ -18,6 +19,7 @@ const ProfileModal = ({ profile } : { profile: props }) => {
     const isOpenState = useAppSelector((state) => state.profilemodal.isOpen)
     const dispatch = useAppDispatch()
     const { accessToken } = useAuth()
+    const router = useRouter()
     const profileSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(e.currentTarget)
@@ -34,7 +36,7 @@ const ProfileModal = ({ profile } : { profile: props }) => {
         const data = await response.json()
         if (response.status == 200) {
             alert("اطلاعات شما با موفقیت بروزرسانی شد.")
-            location.reload()
+            router.refresh()
         } else if(response.status == 400) {
             alert("فرمت اطلاعات وارد شده درست نمی باشد")
         }

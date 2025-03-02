@@ -35,7 +35,7 @@ const ClubMembersWrapper = ({cafeid}:{cafeid:number}) => {
             setLoading(false)
         } 
         fetchData()
-    }, [ClubMembersWrapper])
+    }, [cafeid])
 
     return (
         <>

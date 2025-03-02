@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/Context/AuthContext"
 import { setPhoneValidationModal } from "@/lib/features/profileModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
+import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useState } from "react"
 
 export const ValidateModal = ({phoneNumber}:{phoneNumber:string}) => {
@@ -13,6 +14,7 @@ export const ValidateModal = ({phoneNumber}:{phoneNumber:string}) => {
     const show = useAppSelector( s => s.profilemodal.isPhoneValidationModal)
     // if the otp code generated in backend successfully it would be true
     const [ otpSat, setOtpSat ] = useState<boolean>(false)
+    const router = useRouter()
     const [ error, setError ] = useState<{
         title:string,
         description: string,
@@ -82,7 +84,7 @@ export const ValidateModal = ({phoneNumber}:{phoneNumber:string}) => {
         }
         if (show)
             handleAsync()
-    }, [show])
+    }, [show, phoneNumber, access])
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget)
@@ -101,7 +103,7 @@ export const ValidateModal = ({phoneNumber}:{phoneNumber:string}) => {
                 state: true
             })
             refreshAccessToken()
-            location.reload()
+            router.refresh()
         }
         else {
             setError(
