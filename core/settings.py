@@ -28,7 +28,7 @@ DEBUG = True
 
 
 FRONTEND_URL = 'https://d1fd-23-137-200-114.ngrok-free.app'
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['gappy.ir', 'localhost:3000', 'localhost']
 
 
 
