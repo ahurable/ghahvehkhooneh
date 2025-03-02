@@ -7,3 +7,4 @@ Pillow
 phonenumbers
 colorama
 python-dotenv
+dj_database_url
