@@ -104,13 +104,17 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # }
 
 DATABASES = {
-    'default':dj_database_url.config(
-        default='postgres://postgres:BQuSUCd4bF1Ot5FdmKil@postgres.ahura.svc:5432/postgres',
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', 'db'),  # Refers to the service name in docker-compose
+        'PORT': os.getenv('DB_PORT', '5432'),
+    }
 }
 
+DATABASES['default']['CONN_MAX_AGE'] = 600
 
 # Ensure ENGINE is set correctly
 if 'ENGINE' not in DATABASES['default']:
