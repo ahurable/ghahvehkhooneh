@@ -47,7 +47,7 @@ const Page = () => {
             <div className="w-full relative">
                 <div className=" text-center shadow flex items-center justify-center">
                     <div className="w-10 h-10 me-2">
-                        <Image src={logo.src} className="w-full h-full" alt="" />
+                        <Image src={logo.src} width={100} height={100} className="w-full h-full" alt="" />
                     </div>
                     <h1 className="title-wrapper text-lg text-brown-dark py-5 font-black">گپی</h1>
                 </div>

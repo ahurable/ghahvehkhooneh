@@ -44,14 +44,26 @@ const Register = () => {
         if (data.username == "user with this username already exists."){
             setErrorDesc('حساب کاربری با این نام کاربری قبلا وجود دارد')
             setErrorState(true)
+            setTimeout(() => {
+                setErrorDesc('')
+                setErrorState(false)
+            }, 1000)
         }
         else {
             setErrorDesc('خطایی هنگام پردازش اطلاعات رخ داد')
             setErrorState(true)
+            setTimeout(() => {
+                setErrorDesc('')
+                setErrorState(false)
+            }, 1000)
         }
        } catch {
             setErrorDesc('کاربری با شماره تلفن همراه وارد شده وجود دارد')
             setErrorState(true)
+            setTimeout(() => {
+                setErrorDesc('')
+                setErrorState(false)
+            }, 1000)
        }
     }
 
