@@ -1,7 +1,7 @@
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAuth } from "@/lib/Context/AuthContext"
-import { setEditBannerState, setEditDescription } from "@/lib/features/adminModalSlice"
+import { setEditDescription } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
 import { useRouter } from "next/navigation"
@@ -29,7 +29,9 @@ const UpdateDescription = ({cafeid}:{cafeid:number}) => {
                 body: formData
             })
             if (res.ok) {
-                setSuccess(true)
+                setTimeout(() => 
+                    setSuccess(true), 1000)
+                dispatch(setEditDescription(false))                
                 router.refresh()
             }
         }
