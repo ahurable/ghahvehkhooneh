@@ -41,6 +41,12 @@ const nextConfig = withPWA({
         port: '8000',
         pathname: '/media/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'backend.gappy.ir',
+        port: '8000',
+        pathname: '/media/**',
+      },
     ],
   },
 });
