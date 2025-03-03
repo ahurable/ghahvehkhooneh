@@ -1,6 +1,7 @@
 "use client"
 
 import { MultiStepsForm } from "@/layouts/MultiStepsForm/MultiStepsForm"
+import { useAuth } from "@/lib/Context/AuthContext";
 
 import { LOCALHOST } from "@/lib/variebles"
 
@@ -81,13 +82,29 @@ const steps: Steps = [
     },
 ]
 
-const Page = () => <MultiStepsForm props={{
-    pageTitle: "ثبت کافه",
-    steps: steps,
-    errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
-    successMessage: "کافه شما با موفقیت ثبت شد",
-    fetchUrl: `${LOCALHOST}api/cafes/add/`,
-    redirectPath: "",
-}} />
+const Page = () => {
+
+    const { user } = useAuth()
+
+    if (user==null){
+        return (
+            <div className="container w-full h-[100vh]">
+                <div className="transform translate-y-[50%] text-center">
+                    <span className="font-bold text-xl">شما باید وارد حساب خود شوید برای ثبت کافه</span>
+                </div>
+            </div>
+        )
+    }
+    return (
+        <MultiStepsForm props={{
+            pageTitle: "ثبت کافه",
+            steps: steps,
+            errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
+            successMessage: "کافه شما با موفقیت ثبت شد",
+            fetchUrl: `${LOCALHOST}api/cafes/add/`,
+            redirectPath: "",
+        }} />
+    )
+}
 
 export default Page
