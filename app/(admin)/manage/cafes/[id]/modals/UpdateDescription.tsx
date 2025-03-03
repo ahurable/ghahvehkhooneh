@@ -1,7 +1,7 @@
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAuth } from "@/lib/Context/AuthContext"
-import { setEditBannerState } from "@/lib/features/adminModalSlice"
+import { setEditBannerState, setEditDescription } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
 import { useRouter } from "next/navigation"
@@ -42,7 +42,7 @@ const UpdateDescription = ({cafeid}:{cafeid:number}) => {
         <>
         <Modal show={state}>
             <SuccessModal title="موفق" description="تصویر بنر کافه شما با موفقیت تغییر کرد" state={success} />
-            <ModalHeader onClose={() => dispatch(setEditBannerState(false))}>
+            <ModalHeader onClose={() => dispatch(setEditDescription(false))}>
                 <h1>ویرایش توضیحات کافه</h1>
             </ModalHeader>
             <ModalBody>
