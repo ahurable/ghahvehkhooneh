@@ -34,6 +34,13 @@ const nextConfig = withPWA({
         port: '8000',
         pathname: '/media/**',
       },
+
+      {
+        protocol: 'http',
+        hostname: '94.101.184.56',
+        port: '8000',
+        pathname: '/media/**',
+      },
     ],
   },
 });
