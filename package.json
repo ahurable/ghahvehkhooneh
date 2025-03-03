@@ -32,7 +32,8 @@
     "react-flickity-component": "^4.0.7",
     "react-multi-date-picker": "^4.5.2",
     "react-qr-code": "^2.0.15",
-    "react-redux": "^9.1.1"
+    "react-redux": "^9.1.1",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@types/node": "^20",

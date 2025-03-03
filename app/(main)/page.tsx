@@ -10,10 +10,12 @@ import { jwtDecode } from "jwt-decode"
 import { CityPicker, SelectCityModal } from "@/components/main/CityPicker"
 import Head from "next/head"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 
 
 const Page = () => {
+
     
     return (
         <>
@@ -69,6 +71,13 @@ const Page = () => {
                 <div className="bg-brown-normal text-center py-10 rounded-3xl p-4">
                     <span className="text-yellow-very-melo text-[2rem] font-black">بهترین مقصد برای توقف کجاست؟</span><br />
                     <span className="text-yellow-very-melo">با گپی میتونید کافه های شهر رو پیدا کنی و ببینی که داخلشون چخبره</span>
+                </div>
+            </div>
+            <div className="w-full p-4">
+                <div className="bg-greenny-dark text-center py-10 rounded-3xl p-4">
+                    <span className="text-yellow-very-melo text-[2rem] font-black">برای استفاده از خدمات سایت حساب ایجاد کنید</span><br />
+                    <span className="text-yellow-very-melo">ضمن اینکه ما در نسخه آزمایشی به سر میبریم و داریم روی خودمون کار میکنیم تا بتونیم سرویس های بیشتر و بهتری ارائه بدیم</span>
+                    <a href="/login" className="bg-white p-4 text-brown-dark block mt-4 font-bold">ایجاد یا ورود به حساب</a>
                 </div>
             </div>
 

@@ -4,7 +4,8 @@ import Header from '@/components/Header'
 import '../globals.css'
 import StoreProvider from '@/lib/StoreProvider'
 import { useEffect } from 'react'
-import { AuthProvider } from '@/lib/Context/AuthContext'
+import { AuthProvider, useAuth } from '@/lib/Context/AuthContext'
+import { jwtDecode, JwtPayload } from 'jwt-decode'
 // import { ManagedUserContext } from '@/lib/context/user'
 // font declaration
 
@@ -63,20 +64,31 @@ export default function RootLayout({
 }) {
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access');
-
-    if (accessToken) {
-      if (typeof accessToken === 'string') {
-        if (accessToken.length === 0) {
-          location.replace('/logout');
-        }
-      } else {
-        location.replace('/logout');
-      }
-    } else {
-      location.replace('/');
-    }
-  }, [])
+          const { accessToken, refreshAccessToken, logout } = useAuth()
+  
+          if (accessToken && localStorage.getItem('refresh')) {
+  
+                  if (accessToken !== undefined){
+                      let token: any = accessToken
+                      let refresh = localStorage.getItem('refresh')
+                      if (token && token != null) {
+                          console.log(jwtDecode(token).exp)
+                          console.log(Date.now() / 1000)
+                          if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
+                              typeof(refresh) == 'string' && refresh.length>0 && refreshAccessToken || location.replace('/logout')
+                          } 
+                      } else {
+                          setTimeout(() => logout(), 1000)
+                          location.replace('/login')
+                      }
+                  } else {
+                    setTimeout(() => logout(), 1000)
+                    location.replace('/login')
+                  }
+  
+              }
+          }
+      )
   return (
     <StoreProvider>
       <AuthProvider>

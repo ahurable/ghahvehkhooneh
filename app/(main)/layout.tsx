@@ -6,7 +6,7 @@ import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 // import { refreshToken } from "@/lib/utils";
-import { AuthProvider } from "@/lib/Context/AuthContext";
+import { AuthProvider, useAuth } from "@/lib/Context/AuthContext";
 import { NotificationProvider } from "@/lib/Context/NotificationContext";
 // font declaration
 
@@ -66,33 +66,34 @@ type MyProps = {
     children: React.ReactNode
 }
 
-export default class RootLayout extends React.Component<MyProps> {
+export default function RootLayout({children}:{children:React.ReactNode}) {
 
 
-    componentDidMount(): void {
-        
+    useEffect(() => {
+        const { accessToken, refreshAccessToken } = useAuth()
 
-        if (localStorage.getItem('access') && localStorage.getItem('refresh')) {
+        if (accessToken && localStorage.getItem('refresh')) {
 
-            if (localStorage.getItem('access') !== undefined){
-                // let token: any = localStorage.getItem('access')
-                // let refresh = localStorage.getItem('refresh')
-                // if (token && token != null) {
-                //     console.log(jwtDecode(token).exp)
-                //     console.log(Date.now() / 1000)
-                //     if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
-                //         typeof(refresh) == 'string' && refresh.length>0 && refreshToken(refresh) || location.replace('/logout')
-                //     } 
-                // }
-            } else {
-                location.replace('/logout')
+                if (accessToken !== undefined){
+                    let token: any = accessToken
+                    let refresh = localStorage.getItem('refresh')
+                    if (token && token != null) {
+                        console.log(jwtDecode(token).exp)
+                        console.log(Date.now() / 1000)
+                        if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
+                            typeof(refresh) == 'string' && refresh.length>0 && refreshAccessToken || location.replace('/logout')
+                        } 
+                    } else {
+                        location.replace('/logout')
+                    }
+                } else {
+                    location.replace('/logout')
+                }
+
             }
-
         }
+    )
 
-    }
-
-    render(): React.ReactNode {
         return (
             <StoreProvider>
                 <AuthProvider>
@@ -103,7 +104,7 @@ export default class RootLayout extends React.Component<MyProps> {
                                 <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
 
                                 <div className="lg:container bg-yellow-very-melo relative z-[30] shadow-lg">
-                                    {this.props.children}
+                                    {children}
                                 </div>
                             </div>
 
@@ -114,6 +115,5 @@ export default class RootLayout extends React.Component<MyProps> {
                 </AuthProvider>
             </StoreProvider>
         )
-    }
     
 }
