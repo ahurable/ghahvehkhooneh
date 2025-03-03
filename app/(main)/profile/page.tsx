@@ -5,7 +5,7 @@ import { jwtDecode, JwtPayload } from "jwt-decode"
 import React, { useEffect, useState } from "react"
 import ProfileModal from '@/components/ProfileModal'
 import { redirect, useRouter } from "next/navigation"
-import { LOCALHOST } from "@/lib/variebles"
+import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
 import { setAvatarModalState } from "@/lib/features/avatarModalSlice"
 import ChangeAvatarModal from "@/components/ChangeAvatarModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -118,7 +118,7 @@ const Profile = () => {
                                 
                                 
                                 <button className="col-span-12 md:col-span-3 justify-center border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
-                                    <Image className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} alt="" />
+                                    <Image className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={IMAGE_HOST + profile.avatar} width={300} height={300} alt="" />
                                 </button>
                                 <div className="md:col-span-9 col-span-12">
                                     <div className="ms-4 text-center md:text-right ">
