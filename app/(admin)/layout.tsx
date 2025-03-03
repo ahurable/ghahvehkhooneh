@@ -3,8 +3,8 @@ import localFont from 'next/font/local'
 import Header from '@/components/Header'
 import '../globals.css'
 import StoreProvider from '@/lib/StoreProvider'
-import { Metadata } from 'next'
 import { useEffect } from 'react'
+import { AuthProvider } from '@/lib/Context/AuthContext'
 // import { ManagedUserContext } from '@/lib/context/user'
 // font declaration
 
@@ -79,11 +79,13 @@ export default function RootLayout({
   }, [])
   return (
     <StoreProvider>
-    <html lang="fa" dir="rtl">
-      <body className={yekanbakh.className}>
-          {children}
-      </body>
-    </html>
+      <AuthProvider>
+      <html lang="fa" dir="rtl">
+        <body className={yekanbakh.className}>
+            {children}
+        </body>
+      </html>
+      </AuthProvider>
     </StoreProvider>
   )
 }
