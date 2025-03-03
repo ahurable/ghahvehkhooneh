@@ -6,6 +6,7 @@ import StoreProvider from '@/lib/StoreProvider'
 import { useEffect } from 'react'
 import { AuthProvider, useAuth } from '@/lib/Context/AuthContext'
 import { jwtDecode, JwtPayload } from 'jwt-decode'
+import { NormalLayout } from '@/layouts/layout/Layout'
 // import { ManagedUserContext } from '@/lib/context/user'
 // font declaration
 
@@ -63,40 +64,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  useEffect(() => {
-          const { accessToken, refreshAccessToken, logout } = useAuth()
+
   
-          if (accessToken && localStorage.getItem('refresh')) {
-  
-                  if (accessToken !== undefined){
-                      let token: any = accessToken
-                      let refresh = localStorage.getItem('refresh')
-                      if (token && token != null) {
-                          console.log(jwtDecode(token).exp)
-                          console.log(Date.now() / 1000)
-                          if (jwtDecode<JwtPayload & {exp:any}>(token).exp < (Date.now() / 1000)) {
-                              typeof(refresh) == 'string' && refresh.length>0 && refreshAccessToken || location.replace('/logout')
-                          } 
-                      } else {
-                          setTimeout(() => logout(), 1000)
-                          location.replace('/login')
-                      }
-                  } else {
-                    setTimeout(() => logout(), 1000)
-                    location.replace('/login')
-                  }
-  
-              }
-          }
-      )
   return (
     <StoreProvider>
       <AuthProvider>
-      <html lang="fa" dir="rtl">
-        <body className={yekanbakh.className}>
-            {children}
-        </body>
-      </html>
+        <NormalLayout>
+          {children}
+        </NormalLayout>
       </AuthProvider>
     </StoreProvider>
   )
