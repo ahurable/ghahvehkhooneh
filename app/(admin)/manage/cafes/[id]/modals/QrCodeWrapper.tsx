@@ -6,6 +6,7 @@ import QRCode from "react-qr-code"
 const QrCodeWrapper = ({cafeid}:{cafeid:string}) => {
     const state = useAppSelector(state => state.admin.showQR)
     const dispatch = useAppDispatch()
+    const encodedCafeId = encodeURIComponent(cafeid)
     return (
         <Modal show={state} >
             <ModalHeader onClose={() => dispatch(setQrCodeState(false))}>
@@ -15,7 +16,7 @@ const QrCodeWrapper = ({cafeid}:{cafeid:string}) => {
                 <div className="w-full">
                     <div className="flex justify-center">
                         <div className="p-4 w-full">
-                            <QRCode value={`http://app.gappy.ir/cafe/${cafeid}`} />
+                            <QRCode  value={`http://app.gappy.ir/cafe/${encodedCafeId}`} />
                         </div>
                     </div>
                 </div>
