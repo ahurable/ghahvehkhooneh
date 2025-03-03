@@ -33,7 +33,7 @@ DEBUG = True
 
 
 FRONTEND_URL = 'https://d1fd-23-137-200-114.ngrok-free.app'
-ALLOWED_HOSTS = ['gappy.ir', 'gappy.darkube.app', 'localhost:3000', 'localhost', '94.101.184.56', '*']
+ALLOWED_HOSTS = ['gappy.ir', 'app.gappy.ir', 'backend.gappy.ir', 'gappy.darkube.app', 'localhost:3000', 'localhost', '94.101.184.56', '*']
 
 
 
