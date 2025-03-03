@@ -102,7 +102,7 @@ const Page = () => {
             errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
             successMessage: "کافه شما با موفقیت ثبت شد",
             fetchUrl: `${LOCALHOST}api/cafes/add/`,
-            redirectPath: "",
+            redirectPath: "/success/",
         }} />
     )
 }

@@ -7,6 +7,7 @@ import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { useRouter } from "next/navigation"
 
 
 type MultiStepsFormProps = {
@@ -121,6 +122,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
     };
 
     const { accessToken } = useAuth()
+    const router = useRouter()
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -163,6 +165,8 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
             
             if(response.ok){
                 setSuccessState(true)
+                if (props.redirectPath && props.redirectPath.length > 0)
+                    router.push(props.redirectPath)
             } else {
                 setErrorState(true)
             }
