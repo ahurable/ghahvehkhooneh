@@ -7,6 +7,12 @@ import { LOCALHOST } from "@/lib/variebles"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAppDispatch } from "@/lib/hook"
 import { useAuth } from "@/lib/Context/AuthContext"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: 'گپی - ورود به حساب',
+    description: 'وارد حساب خود شوید.'
+}
 
 const LoginPage = () => {
     const dispatch = useAppDispatch()

@@ -1,10 +1,13 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { CafeCardListSliderWrapper } from "./slider"
-import { setSelectCity } from "@/lib/features/profileModalSlice"
+import { setCity, setSelectCity } from "@/lib/features/profileModalSlice"
 import { Modal, ModalBody, ModalHeader } from "../modals/modals"
 import { useEffect, useState } from "react"
 import { LOCALHOST } from "@/lib/variebles"
+import { useNotification } from "@/lib/Context/NotificationContext"
+import { useRouter } from "next/navigation"
+import NotificationComponent from "@/layouts/Modals/MessageModals"
 
 
 
@@ -30,6 +33,8 @@ export const CityPicker = () => {
 export const SelectCityModal = () => {
     const state = useAppSelector(s => s.profilemodal.isCityModal)
     const [cities, setCities] = useState<{id:number, name:string}[]>()
+    const { showNotification } = useNotification()
+    const router = useRouter()
     useEffect(() => {
         const handleAsync = async () => {
             const res = await fetch(LOCALHOST+'api/users/list-cities/')
@@ -43,15 +48,39 @@ export const SelectCityModal = () => {
     const dispatch = useAppDispatch()
     return (
         <>
+        <NotificationComponent/>
             <Modal show={state}>
                 <ModalHeader onClose={() => dispatch(setSelectCity(false))}>
                     <h2>انتخاب شهر فعلی</h2>
                 </ModalHeader>
                 <ModalBody>
+                <div className="w-full p-4" onClick={() =>{
+                        dispatch(setCity({id:0, name:'default'}))
+                        showNotification(
+                            "عملیات موفق",
+                            "success",
+                            true,
+                            "شهر شما با موفقیت تغییر کرد"
+                        ),
+                        router.refresh()
+                        }}>
+                    <div className="w-full bg-yellow-very-melo p-4 rounded-2xl">
+                        پیش فرض
+                    </div>
+                </div>
                     {
                         cities == undefined || cities.length == 0 ? "شهری وجود ندارد" :
                         cities.map(city => (
-                            <div key={city.id} className="w-full p-4">
+                            <div key={city.id} className="w-full p-4" onClick={() =>{
+                                 dispatch(setCity({id:city.id, name:city.name}))
+                                 showNotification(
+                                    "عملیات موفق",
+                                    "success",
+                                    true,
+                                    "شهر شما با موفقیت تغییر کرد"
+                                 ),
+                                 router.refresh()
+                                 }}>
                                 <div className="w-full bg-yellow-very-melo p-4 rounded-2xl">
                                     {city.name}
                                 </div>

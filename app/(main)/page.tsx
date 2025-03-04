@@ -1,17 +1,18 @@
 import logo from "@/assets/img/logo72x72.png"
-import { AddButton } from "@/components/Buttons"
 import EventWrapper from "@/components/Events"
 import { CafeCardListSliderWrapper } from "@/components/main/slider"
 import { faPeopleGroup } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { setSelectCity } from "@/lib/features/profileModalSlice"
-import { Modal, ModalHeader, ModalBody } from "@/components/modals/modals"
-import { jwtDecode } from "jwt-decode"
 import { CityPicker, SelectCityModal } from "@/components/main/CityPicker"
 import Head from "next/head"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import type { Metadata } from "next"
 
+export const metadata: Metadata = {
+    title: 'گپی - قهوه به صرف دوست',
+    description: "همنشینی با دوست به صرف قهوه ، پروفایل ساز کافه ، رویداد های کافه های شهرت رو سریع پیدا کن و اونی که خیلی دوست داری رو شرکت کن",
+    keywords: "کافه های اطراف من , کافه های اصفهان , کافه های شهر , کافه های تهران ,کافه های تهارن , دوستیابی , منوی کافه , منوساز , منو ساز , منوساز کافه , منو ساز کافه , منوی کیو آر, منوی qr , بهترین جا های تهران , بهترین جاهای تهران , لوکیشن های خوب"
+}
 
 
 const Page = () => {
@@ -19,33 +20,7 @@ const Page = () => {
     
     return (
         <>
-            <Head>
-                <title>گپی - قهوه به صرف دوست</title>
-                <meta name="description" content="همنشینی با دوست به صرف قهوه ، پروفایل ساز کافه ، رویداد های کافه های شهرت رو سریع پیدا کن و اونی که خیلی دوست داری رو شرکت کن"/>
-                <meta name="keywords" content="قهوه, کافه, بهترین کافه های تهران
-                    , کافه های اطراف من
-                    , کافه های اصفهان
-                    , کافه های تهران
-                    , کافه های شهر
-                    , کافه های تهارن
-                    , دوستیابی
-                    , منوی کافه
-                    , منوساز
-                    , منو ساز
-                    , منوساز کافه
-                    , منوی کیو آر
-                    , کیو آر کد
-                    , منو ساز کافه
-                    , بهترین جا های تهران
-                    , دیدنی های تهران
-                    , صحبت کردن
-                "/>
-                <meta property="og:title" content="Best Coffee in Town | My Cafe" />
-                <meta property="og:description" content="Discover the best coffee and snacks in town at My Cafe." />
-                <meta property="og:image" content="/images/cafe.jpg" />
-                <meta property="og:type" content="website" />
-                <meta name="twitter:card" content="summary_large_image" />
-            </Head>
+            
             <div className="w-full relative">
                 <div className=" text-center shadow flex items-center justify-center">
                     <div className="w-10 h-10 me-2">

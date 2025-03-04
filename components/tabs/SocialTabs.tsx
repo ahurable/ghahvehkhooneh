@@ -29,8 +29,14 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
     const [followed, setFollowed] = useState(false)
     const router = useRouter()
     useEffect(() => {
-        if ( accessToken == null){
-            alert('اطلاعات کاربر یافت نشد - وارد سیستم شوید')
+        setTimeout(() => null, 10000)
+        if ( accessToken === null){
+            showNotification(
+                'خطا',
+                'error',
+                true,
+                'لطفا برای داشتن دسترسی به این صفحه وارد حساب کاربری خود شوید'
+            )
             return router.push('/')
         }
         try {
@@ -111,7 +117,7 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
 const ClubsWrapper = () => {
     const [loading, setLoading] = useState(true)
     const [clbs, setClubs] = useState<clubsType[]>()
-    const { accessToken } = useAuth()
+    const { accessToken, user } = useAuth()
     const fetchClubs = async () => {
         try {
             const token = accessToken
@@ -170,7 +176,7 @@ const ClubsWrapper = () => {
                                 </div>
                             </div>
                             <div className="px-4 pb-4">
-                                <SubscribeButton clubId={club.id}/>     
+                                {user && <SubscribeButton clubId={club.id}/>}     
                             </div>
                         </div>
                     </div>

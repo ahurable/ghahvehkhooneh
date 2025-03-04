@@ -4,7 +4,6 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
   swcMinify: true,
-  disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
   },
@@ -16,7 +15,7 @@ const nextConfig = withPWA({
     return [
       {
         source: '/sliders',
-        destination: 'http://127.0.0.1:8000/api/sliders?format=json',
+        destination: 'https://backend.gappy.ir/api/sliders?format=json',
       },
     ];
   },
@@ -52,6 +51,12 @@ const nextConfig = withPWA({
         hostname: 'backend.gappy.ir',
         port: '',
         pathname: '/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'backend.gappy.ir',
+        port: '',
+        pathname: '//media/**',
       },
     ],
   },

@@ -9,6 +9,11 @@ import { setHobbyModalState } from "@/lib/features/hobbyModalSlice"
 import { setJobModalState } from "@/lib/features/jobModalSlice"
 import { setMGenreModalState } from "@/lib/features/mgenreModalSlice"
 import InfoContentWrapper from "@/layouts/InfoContentWrapper"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: 'گپی - پروفایل کاربر',
+}
 
 const Personality = () => {
 
