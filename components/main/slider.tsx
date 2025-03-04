@@ -46,7 +46,7 @@ const CafeCard = ({id, name, about, pictures}:cafeCardType) => {
                                     
                                 </div>
                                 <div className="w-full absolute top-[-15px] flex justify-center rounded-3xl z-10">
-                                    <div className="bg-green-400 w-5/6 rounded-3xl shadow text-center after:w-2 after:h-2 after:content-[''] after:rotate-45 after:absolute after:bottom-[-4px] after:right-6 after:bg-green-400">
+                                    <div className="bg-brown-dark w-5/6 rounded-3xl shadow text-center after:w-2 after:h-2 after:content-[''] after:rotate-45 after:absolute after:bottom-[-4px] after:right-6 after:bg-brown-dark">
                                         <span className="text-xs text-white brown-normal">
                                             {name}
                                         </span>

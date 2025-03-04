@@ -13,13 +13,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brown-dark' : '#472C1B ',
-        'brown-normal': '#7D451B',
-        'brown-light':'#EDC79B',
+        'brown-dark' : '#293241',
+        'brown-normal': '#98c1d9',
+        'brown-light':'#e0fbfc',
         'pink-melo': '#DB6B7B',
-        'yellow-very-melo': '#fffff5',
-        'greenny':'#7CFFC4',
-        'greenny-dark':'#63A475',
+        'yellow-very-melo': '#ee6c4d',
+        'greenny':'#ee6c4d',
+        'greenny-dark':'#3d5a80',
       }
     },
     container: {

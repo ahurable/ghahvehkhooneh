@@ -19,7 +19,7 @@ export const CityPicker = () => {
         <>
             <div className="p-4">
                 <span className="w-4 h-4 rounded-full bg-red-400 p-1 me-4"></span>
-                <span className="text-brown-normal">کافه های محدوده شما</span>
+                <span className="text-brown-dark">کافه های محدوده شما</span>
                 <button onClick={() => dispatch(setSelectCity(true))} className="mx-4 p-2 rounded-full bg-green-500 text-white">
                     در شهر { currentCity.name == "default" ? "پیش فرض" : currentCity.name }
                 </button>

@@ -52,7 +52,7 @@ const Page = () => {
                 <div className="bg-greenny-dark text-center py-10 rounded-3xl p-4">
                     <span className="text-yellow-very-melo text-[2rem] font-black">برای استفاده از خدمات سایت حساب ایجاد کنید</span><br />
                     <span className="text-yellow-very-melo">ضمن اینکه ما در نسخه آزمایشی به سر میبریم و داریم روی خودمون کار میکنیم تا بتونیم سرویس های بیشتر و بهتری ارائه بدیم</span>
-                    <a href="/login" className="bg-white p-4 text-brown-dark block mt-4 font-bold">ایجاد یا ورود به حساب</a>
+                    <a href="/login" className="bg-white p-4 text-brown-dark block mt-4 rounded-xl font-bold">ایجاد یا ورود به حساب</a>
                 </div>
             </div>
 
