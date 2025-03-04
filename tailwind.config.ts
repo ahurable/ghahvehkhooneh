@@ -17,7 +17,7 @@ const config: Config = {
         'brown-normal': '#98c1d9',
         'brown-light':'#e0fbfc',
         'pink-melo': '#DB6B7B',
-        'yellow-very-melo': '#ee6c4d',
+        'yellow-very-melo': '#e0fbfc',
         'greenny':'#ee6c4d',
         'greenny-dark':'#3d5a80',
       }
