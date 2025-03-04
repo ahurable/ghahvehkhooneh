@@ -16,7 +16,7 @@ const QrCodeWrapper = ({cafeid}:{cafeid:string}) => {
                 <div className="w-full">
                     <div className="flex justify-center">
                         <div className="p-4 w-full">
-                            <QRCode  value={`http://app.gappy.ir/cafe/${encodedCafeId}`} />
+                            <QRCode  value={`https://app.gappy.ir/cafe/${encodedCafeId}`} />
                         </div>
                     </div>
                 </div>
