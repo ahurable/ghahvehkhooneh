@@ -37,7 +37,7 @@ const ChangeAvatarModal = () => {
             //     selectedFile.name
             // )
             const token = access
-            const response = await fetch(LOCALHOST + "api/auth/update-avatar/"+id+"/", {
+            const response = await fetch(LOCALHOST + "api/auth/update-avatar/", {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${token}`,
