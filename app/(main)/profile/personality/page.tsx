@@ -9,11 +9,6 @@ import { setHobbyModalState } from "@/lib/features/hobbyModalSlice"
 import { setJobModalState } from "@/lib/features/jobModalSlice"
 import { setMGenreModalState } from "@/lib/features/mgenreModalSlice"
 import InfoContentWrapper from "@/layouts/InfoContentWrapper"
-import type { Metadata } from "next"
-
-export const metadata: Metadata = {
-    title: 'گپی - پروفایل کاربر',
-}
 
 const Personality = () => {
 
@@ -31,7 +26,6 @@ const Personality = () => {
                             <h1 className="text-brown-dark">علاقه مندی های خودتون رو وارد کنید تا باشگاه ها و افراد شبیه به شما رو بهتون معرفی کنیم.</h1>
                         </div>
                             <TrimedIconCard iconName={faGamepad} altText="افزودن سرگرمی مورد علاقه" onClick={() => {dispatch(setHobbyModalState(true))}}/>
-                            <TrimedIconCard iconName={faMusic} altText="افزودن موسیقی مورد علاقه" onClick={() => {dispatch(setMGenreModalState(true))}} />
                             
                             <HobbyModal/>
                             <MusicModal/>
