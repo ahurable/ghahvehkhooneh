@@ -44,42 +44,46 @@ const Footer = () => {
             <div className="container z-[1000] left-1/2 transform -translate-x-1/2  border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
                     <div className="col-span-4 p-3 ">
+
+                    <Link href='/profile'>
                         <div className="w-full text-center">
-                            <span className="text-brown-dark">
+                            <span className="text-brown-light">
                                 {
                                     user != null ? <Image className="rounded-full w-8 h-8 inline-table" alt="" src={IMAGE_HOST + user.avatar} width={50} height={50} /> :<FontAwesomeIcon icon={faUserCircle}/>
                                 }
                                 
                             </span>
                             <br />
-                            <Link href='/profile' className="text-xs">
+                            <span className="text-xs" >
                                 پروفایل
-                            </Link>
+                            </span>
                         </div>
+                        </Link>
                     </div>
                     <div className="col-span-4 p-3 ">
                         <a href="/">
                             <div className="w-full text-center">
-                                <span className="text-brown-dark">
+                                <span className="text-brown-light">
                                     <FontAwesomeIcon icon={faHome}/>
                                 </span>
                                 <br />
-                                <span className="text-xs text-brown-dark">
+                                <span className="text-xs text-brown-light">
                                     خانه
                                 </span>
                             </div>
                         </a>
                     </div>
                     <div className="col-span-4 p-3 ">
+
+                    <Link href='/cafe' className=" text-brown-light">
                         <div className="w-full text-center">
-                            <span className="text-brown-dark">
+                            <span className="text-brown-light">
                                 <FontAwesomeIcon icon={faCoffee}/>
                             </span>
                             <br />
-                            <Link href='/cafe' className="text-xs text-brown-dark">
-                                کافه ها
-                            </Link>
+                               <span className="text-xs">کافه ها</span> 
                         </div>
+                        </Link>
                     </div>
                 </div>
             </div>

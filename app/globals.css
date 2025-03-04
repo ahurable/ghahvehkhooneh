@@ -6,6 +6,10 @@
   outline: none !important
 }
 
+span, p, h1, h2, h3, h4 {
+  @apply text-brown-light
+}
+
 @layer base {
     body {
         @apply bg-yellow-very-melo;
@@ -110,7 +114,7 @@
     }
 
     .btn-brown {
-      @apply text-brown-normal bg-yellow-very-melo border border-brown-dark transition font-bold text-md w-full rounded-3xl border-b-4 border-b-brown-dark ;
+      @apply text-brown-light bg-yellow-very-melo border border-brown-light transition font-bold text-md w-full rounded-3xl border-b-4 border-b-brown-light ;
     }
 
     .btn-red {
