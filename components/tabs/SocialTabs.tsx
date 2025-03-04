@@ -37,13 +37,14 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
                 true,
                 'لطفا برای داشتن دسترسی به این صفحه وارد حساب کاربری خود شوید'
             )
-            return router.push('/')
+        } else {
+            try {
+                setClient(jwtDecode(accessToken))
+            } catch {
+                // router.push('/login')
+            }
         }
-        try {
-            setClient(jwtDecode(accessToken))
-        } catch {
-            router.push('/login')
-        }
+        
         const fetchUsers = async () => {
             const _users = await fetchAllUsersInArea()
             setUsers(_users)
@@ -73,7 +74,7 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
                             <div key={idx} className="md:col-span-6 lg:col-span-4 col-span-12 px-4 py-1 ">
                                 <div className="w-full flex items-center">
                                     <div className="py-4 w-3/12" onClick={()=> router.push('/profile/'+user.username)}>
-                                        <Image src={LOCALHOST + user.profile.avatar} className="w-14 h-14 rounded-full object-cover" alt="" />
+                                        <Image src={LOCALHOST + user.profile.avatar} width={60} height={60} className="w-14 h-14 rounded-full object-cover" alt="" />
                                     </div>
                                     <div className="py-4 pe-4 w-6/12" onClick={()=> router.push('/profile/'+user.username)}>
                                         <span className="text-lg">
@@ -165,7 +166,7 @@ const ClubsWrapper = () => {
                         <div className='w-full rounded-3xl md:flex md:items-center shadow p-3'>
                             <div className="p-4 w-full flex flex-wrap items-center">
                                 <div className="img-container block">
-                                    <Image src={ club.club_avatar} className='rounded-full w-20 h-20 object-cover block' alt="" />
+                                    <Image src={ club.club_avatar} width={60} height={60} className='rounded-full w-20 h-20 object-cover block' alt="" />
                                 </div>
                                 <div className="ps-4">
                                     <span className="text-lg">{club.name}</span>

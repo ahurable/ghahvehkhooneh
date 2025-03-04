@@ -9,7 +9,7 @@ const initialState: {
 }
 
 const hobbyModalSlice = createSlice({
-    name: "hobbymodalstate" ,
+    name: "hobbymodal" ,
     initialState,
     reducers: {
         setHobbyModalState: (state, action: PayloadAction<boolean>) => {

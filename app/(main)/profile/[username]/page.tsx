@@ -1,7 +1,7 @@
 "use client"
 import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
 import { useAppDispatch } from "@/lib/hook"
-import { jwtDecode } from "jwt-decode"
+import { jwtDecode, JwtPayload } from "jwt-decode"
 import React, { useEffect, useState } from "react"
 import ProfileModal from '@/components/ProfileModal'
 import { redirect } from "next/navigation"
@@ -14,6 +14,10 @@ import Image, { StaticImageData } from "next/image"
 import Loader from "@/components/Loader"
 import { useAuth } from "@/lib/Context/AuthContext"
 import { useRouter } from "next/navigation"
+import NotificationComponent from "@/layouts/Modals/MessageModals"
+import { useNotification } from "@/lib/Context/NotificationContext"
+import { sendFollowReq } from "@/lib/fetchs"
+import { access } from "fs"
 
 
 
@@ -30,9 +34,17 @@ interface profileType {
 const Profile = ({params}:{params:{username:string}}) => {
     const [profile, setProfile] = useState<profileType>()
     const [loading, setLoading] = useState<boolean>(true)
+    const { user, accessToken } = useAuth()
+    const { showNotification } = useNotification()
     const dispatch = useAppDispatch()
     const router = useRouter()
+    const [userId, setUserId] = useState<number|null>(null)
+    
     useEffect(() => {
+        // if (accessToken){
+        //     const uId = jwtDecode<JwtPayload & {id:number}>(accessToken)
+        //     setUserId(uId.id)
+        // }
         try{
             const handleAsync = async () => {
                 const res = await fetch(LOCALHOST + 'api/users/profile/'+params.username+'/', {
@@ -40,6 +52,7 @@ const Profile = ({params}:{params:{username:string}}) => {
                 })
                 const data = await res.json()
                 console.log(data)
+                setUserId(data.user.id)
                 setProfile(data.user.profile)
                 setLoading(false)
             }
@@ -66,6 +79,7 @@ const Profile = ({params}:{params:{username:string}}) => {
         </>
         :
         <>
+        <NotificationComponent/>
             <div className="w-full">
                 <div className="p-4">
                     <div className="container mt-4">
@@ -74,7 +88,7 @@ const Profile = ({params}:{params:{username:string}}) => {
                                 
                                 
                                 <button className="col-span-12 md:col-span-3 justify-center border-none" onClick={() => {dispatch(setAvatarModalState(true))}}>
-                                    <Image className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} alt="" />
+                                    <Image className="rounded-full object-cover w-40 h-40 mx-auto mb-4 bg-brown-dark" src={LOCALHOST + profile.avatar} width={100} height={100} alt="" />
                                 </button>
                                 <div className="md:col-span-9 col-span-12">
                                     <div className="ms-4 text-center md:text-right ">
@@ -87,7 +101,20 @@ const Profile = ({params}:{params:{username:string}}) => {
                                     </div>
                                 </div>
                                 <div className="col-span-12 p-4">
-                                    <button className="btn btn-brown" onClick={() => console.log()}>افزودن به لیست دوستان</button>
+                                    <button className="btn btn-brown" onClick={async () => {
+                                        if (!user && !accessToken) {
+                                            showNotification(
+                                                "خطا",
+                                                "error",
+                                                true,
+                                                "برای دنبال کردن کاربران لازم است وارد حساب خود شوید"
+                                            )
+                                        }
+                                        else {
+                                            if (userId && accessToken)
+                                                await sendFollowReq(userId, accessToken, showNotification)
+                                        }
+                                    }}>افزودن به لیست دوستان</button>
                                 </div>
                             </div>
                             

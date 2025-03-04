@@ -64,7 +64,11 @@ export const InputWithLiveFetch = ({
     });
 
     if (res.ok) {
-      setSuccess(true);
+      setTimeout(
+        () => setSuccess(true)
+        , 1000
+      )
+      setSuccess(false);
     }
   };
 

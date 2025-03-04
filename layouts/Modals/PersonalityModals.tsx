@@ -1,5 +1,4 @@
 "use client"
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react";
 import { useAppDispatch, useAppSelector } from "@/lib/hook";
 import { setHobbyModalState } from "@/lib/features/hobbyModalSlice";
 import { InputWithLiveFetch } from "@/components/Inputs";
@@ -7,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setJobModalState } from "@/lib/features/jobModalSlice";
 import { setMGenreModalState } from "@/lib/features/mgenreModalSlice";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@/components/modals/modals";
 
 
 interface personalitiesInterface {
@@ -34,9 +34,9 @@ export const PersonalitiesModal = ({label, inputName, placeholder, liveFetchAddr
 
         <>
         
-            <Modal  show={modalState} onClose={() => dispatch(closeFunction)}>
-                <ModalHeader>
-                    <h1 className="text-lg">{label}</h1>
+            <Modal  show={modalState} >
+                <ModalHeader onClose={() => dispatch(closeFunction)}>
+                    <span className="text-lg">{label}</span>
                 </ModalHeader>
                 <ModalBody>
                     <InputWithLiveFetch inputName={inputName} label={label} liveFetchAddress={liveFetchAddress} placeholder={placeholder} fetchAddress={fetchAddress}/>
