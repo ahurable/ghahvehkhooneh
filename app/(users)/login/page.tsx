@@ -7,12 +7,8 @@ import { LOCALHOST } from "@/lib/variebles"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAppDispatch } from "@/lib/hook"
 import { useAuth } from "@/lib/Context/AuthContext"
-import type { Metadata } from "next"
 
-export const metadata: Metadata = {
-    title: 'گپی - ورود به حساب',
-    description: 'وارد حساب خود شوید.'
-}
+
 
 const LoginPage = () => {
     const dispatch = useAppDispatch()
@@ -43,6 +39,7 @@ const LoginPage = () => {
  
     return (
         <main className="w-full h-full  bg-[url(/cafe-pattern.jpg)] absolute">
+            
             <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
             <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto absolute right-0 left-0 h-full">
                 <h1 className="text-center relative text-[34px] pt-10 text-white font-bold z-20">قهوه خونه</h1>

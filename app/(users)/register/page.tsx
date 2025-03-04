@@ -5,12 +5,7 @@ import { FormEvent } from "react"
 import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
-import type { Metadata } from "next"
 
-export const metadata: Metadata = {
-    title: 'گپی - ایجاد حساب',
-    description: 'با ایجاد حساب در وب اپلیکیشن گپی شما میتوانید از امکانات ما استفاده کنید.'
-}
 
 const Register = () => {
 

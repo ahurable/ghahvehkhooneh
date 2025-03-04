@@ -4,7 +4,7 @@ import '../globals.css'
 import StoreProvider from "@/lib/StoreProvider";
 import { AuthProvider } from "@/lib/Context/AuthContext";
 import { NotificationProvider } from "@/lib/Context/NotificationContext";
-
+import type { Metadata } from "next";
 
 
   
@@ -60,6 +60,10 @@ const yekanbakh = localFont({
 
 // layout declaration
 
+
+export const metadata: Metadata =  {
+    title: 'گپی به صرف قهوه - احراز'
+}
 
 export default function RootLayout({
     children
