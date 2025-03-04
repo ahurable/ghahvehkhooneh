@@ -121,6 +121,20 @@ if 'ENGINE' not in DATABASES['default']:
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+CSRF_TRUSTED_ORIGINS = [
+    "https://gappy.darkube.app",  # ✅ Add your frontend domain
+    "https://backend.gappy.ir",   # ✅ Add your backend domain
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://gappy.darkube.app",  # ✅ Allow frontend to make requests
+]
+
+# Allow cookies to be sent with cross-origin requests
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only sent over HTTPS
+CSRF_COOKIE_SAMESITE = "None"  # Required for cross-origin cookies
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
