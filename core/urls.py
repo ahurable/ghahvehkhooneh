@@ -35,7 +35,7 @@ urlpatterns = [
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='refresh_url'),
     path('api/auth/update-profile-info/', SetUpdateFirstNameLastNameBioView.as_view(), name="update-profile-url"),
     path('api/auth/profile/', ProfileInformation.as_view(), name="profile-url"),
-    path('api/auth/update-avatar/<int:pk>/', UpdateAvatarView.as_view(), name="update-avatar-url"),
+    path('api/auth/update-avatar/', UpdateAvatarView.as_view(), name="update-avatar-url"),
     # users
     path('api/users/all-in-area/', GetAllUsers.as_view(), name='get-all-users-area-url'),
     path('api/users/follow/<int:id>/', FollowRequestView.as_view(), name='follow-request-url'),

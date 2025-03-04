@@ -55,7 +55,10 @@ class SetUpdateFirstNameLastNameBioView(APIView):
 class UpdateAvatarView(UpdateAPIView):
     serializer_class = AvatarSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Profile.objects.all()
+
+    def get_object(self):
+        """Ensure the profile being updated belongs to the authenticated user."""
+        return get_object_or_404(Profile, user=self.request.user)
 
 
 class ProfileInformation(APIView):
