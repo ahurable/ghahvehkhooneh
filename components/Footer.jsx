@@ -41,7 +41,7 @@ const Footer = () => {
                 :
                 <AddButton url={"/add"} show={false} />
             }
-            <div className="container z-[1000] left-1/2 transform -translate-x-1/2  border-t fixed bottom-0 border transition-all bg-[#FFFFF5]" ref={footerRef}>
+            <div className="container z-[1000] left-1/2 transform -translate-x-1/2  border-t fixed bottom-0 border transition-all bg-yellow-very-melo" ref={footerRef}>
                 <div className="w-full grid grid-cols-12 items-center">
                     <div className="col-span-4 p-3 ">
 

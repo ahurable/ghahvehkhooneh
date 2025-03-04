@@ -7,6 +7,7 @@ import { LOCALHOST } from "@/lib/variebles"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAppDispatch } from "@/lib/hook"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { ThreeDot } from 'react-loading-indicators'
 
 
 
@@ -16,8 +17,10 @@ const LoginPage = () => {
     const [errorState, setErrorState] = useState(false)
     const [error, setError] = useState<string>("")
     const { login } = useAuth()
+    const [ fetchLoading, setFetchLoading ] = useState<boolean>(false)
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setFetchLoading(true)
         const formData = new FormData(e.currentTarget)
         const response = await fetch(LOCALHOST + 'api/auth/token/', {
             method: 'POST',
@@ -27,9 +30,11 @@ const LoginPage = () => {
         // window.alert(data)
         if (response.status == 200) {
             setSuccess(true)
+            setFetchLoading(false)
             login(data.access, data.refresh)
         } else if (response.status == 401) {
             setError("حسابی با مشخصات وارد شده یافت نشد.")
+            setFetchLoading(false)
             setErrorState(true)
         } else {
             window.alert("خطایی در سرور رخ داده")
@@ -62,7 +67,10 @@ const LoginPage = () => {
                                     </div>
                                     
                                     <div className="mt-10 text-center ">
-                                        <button id="register" type="submit" className="btn btn-green">ورود به سیستم</button>
+                                        <button id="register" type="submit" disabled={fetchLoading} className="btn btn-green">
+                                            { fetchLoading == false ? "ورود به سیستم"
+                                           : <ThreeDot size="medium" color={'#DBF3FE'} /> }
+                                        </button>
                                     </div>
                                 </div>
                             </div>

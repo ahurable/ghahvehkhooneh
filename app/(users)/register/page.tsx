@@ -5,6 +5,7 @@ import { FormEvent } from "react"
 import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
+import { ThreeDot } from "react-loading-indicators"
 
 
 const Register = () => {
@@ -13,6 +14,7 @@ const Register = () => {
     const [successState, setSuccessState] = useState(false)
     const [errorState, setErrorState] = useState(false)
     const [errorDesc, setErrorDesc] = useState('')
+    const [ loading, setLoading ] = useState<boolean>(false)
     const nextStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setStep(2)
@@ -25,6 +27,7 @@ const Register = () => {
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setLoading(true)
         const formData = new FormData(e.currentTarget)
         
        try {
@@ -35,13 +38,16 @@ const Register = () => {
         const data = await response.json()
         console.log("username : " + data.username)
         if(response.status == 201){
+            setLoading(false)
             setSuccessState(true)
         }
-        if(response.status == 500) {
+        else if(response.status == 500) {
+            setLoading(false)
             setErrorDesc('خطایی هنگام پردازش اطلاعات رخ داد')
             setErrorState(true)
         }
-        if (data.username == "user with this username already exists."){
+        else if (data.username == "user with this username already exists."){
+            setLoading(false)
             setErrorDesc('حساب کاربری با این نام کاربری قبلا وجود دارد')
             setErrorState(true)
             setTimeout(() => {
@@ -58,8 +64,7 @@ const Register = () => {
             }, 1000)
         }
        } catch {
-            setErrorDesc('کاربری با شماره تلفن همراه وارد شده وجود دارد')
-            setErrorState(true)
+            setLoading(false)
             setTimeout(() => {
                 setErrorDesc('')
                 setErrorState(false)
@@ -111,7 +116,13 @@ const Register = () => {
                                     
                                     <div className={step == 2 ? "mt-10 text-center " : "mt-10 text-center hidden"}>
                                         <button id="back" onClick={prevStep} className="btn btn-blue">قبلی</button>
-                                        <button id="register" type="submit" className="btn btn-green mt-4">ثبت نام</button>
+                                        <button id="register" disabled={loading} type="submit" className="btn btn-green mt-4">
+                                            { loading ? 
+                                                <ThreeDot size="medium" color={'#DBF3FE'} />
+                                            :
+                                            "ثبت نام"
+                                            }
+                                        </button>
                                     </div>
                                 </div>
                             </div>

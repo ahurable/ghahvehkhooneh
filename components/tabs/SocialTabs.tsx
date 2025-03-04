@@ -29,13 +29,14 @@ const UsersWrapper = ({accessToken}:{accessToken:string|null}) => {
     const [followed, setFollowed] = useState(false)
     const router = useRouter()
     useEffect(() => {
-        setTimeout(() => null, 10000)
         if ( accessToken === null){
+
+            setTimeout(() => null, 10000)
             showNotification(
-                'خطا',
-                'error',
+                'اعلان',
+                'success',
                 true,
-                'لطفا برای داشتن دسترسی به این صفحه وارد حساب کاربری خود شوید'
+                'لطفا برای استفاده از امکانات وبسایت مطمئن شوید به حساب کاربری خود وارد شده اید'
             )
         } else {
             try {
@@ -204,10 +205,10 @@ export const SocialTabsWrapper = () => {
         switch (buttonName) {
             case 'users':
                 // users.current.classList.add('bg-white')
-                users.current.classList.add('shadow')
+                users.current.classList.add('bg-[#99B8C7]')
 
                 // clubs.current.classList.remove('bg-white')
-                clubs.current.classList.remove('shadow')
+                clubs.current.classList.remove('bg-[#99B8C7]')
 
                 setTab('users')
 
@@ -216,10 +217,10 @@ export const SocialTabsWrapper = () => {
 
             case 'clubs':
                 // users.current.classList.remove('bg-white')
-                users.current.classList.remove('shadow')
+                users.current.classList.remove('bg-[#99B8C7]')
 
                 // clubs.current.classList.add('bg-white')
-                clubs.current.classList.add('shadow')
+                clubs.current.classList.add('bg-[#99B8C7]')
 
                 setTab('clubs')
 
@@ -232,7 +233,7 @@ export const SocialTabsWrapper = () => {
         <>
             <div className="w-full grid grid-cols-12 border-b">
                 <div className="col-span-6 p-4">
-                    <button ref={users} className="w-full block p-3 rounded-2xl shadow" onClick={() => toggleTabs('users')}>کاربران</button>
+                    <button ref={users} className="w-full block p-3 rounded-2xl bg-[#99B8C7]" onClick={() => toggleTabs('users')}>کاربران</button>
                 </div>
                 <div  className="col-span-6 p-4">
                     <button ref={clubs} className="w-full block p-3 rounded-2xl" onClick={() => toggleTabs('clubs')}>پاتوق ها</button>

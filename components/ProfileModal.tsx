@@ -3,10 +3,13 @@ import { Modal, ModalFooter } from "@/components/modals/modals"
 import { ModalHeader, ModalBody } from "@/components/modals/modals"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { setEditProfileModalState } from "@/lib/features/profileModalSlice"
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
 import { LOCALHOST } from "@/lib/variebles"
 import { useAuth } from "@/lib/Context/AuthContext"
 import { useRouter } from "next/navigation"
+import { ThreeDot } from "react-loading-indicators"
+import { useNotification } from "@/lib/Context/NotificationContext"
+import NotificationComponent from "@/layouts/Modals/MessageModals"
 
 type props = {
     firstName: string,
@@ -20,8 +23,11 @@ const ProfileModal = ({ profile } : { profile: props }) => {
     const dispatch = useAppDispatch()
     const { accessToken } = useAuth()
     const router = useRouter()
+    const [loading, setLoading] = useState<boolean>(false)
+    const { showNotification } = useNotification()
     const profileSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setLoading(true)
         console.log(e.currentTarget)
         let formData = new FormData(e.currentTarget)
         console.log(formData)
@@ -35,15 +41,28 @@ const ProfileModal = ({ profile } : { profile: props }) => {
         })
         const data = await response.json()
         if (response.status == 200) {
-            alert("اطلاعات شما با موفقیت بروزرسانی شد.")
+            setLoading(false)
+            showNotification(
+                "عملیات موفق",
+                "success",
+                true,
+                "اطلاعات شما با موفقیت بروز شد"
+            )
             router.refresh()
         } else if(response.status == 400) {
-            alert("فرمت اطلاعات وارد شده درست نمی باشد")
+            setLoading(false)
+            showNotification(
+                "خطا",
+                "error",
+                true,
+                "عملیات بروزرسانی اطلاعات شما با خطا مواجه شد"
+            )
         }
     }
 
     return (
         <Modal show={isOpenState} >
+            <NotificationComponent />
                 <ModalHeader onClose={() => dispatch(setEditProfileModalState(false))}>
                     <h1>ویرایش اطلاعات پروفایل</h1>
                 </ModalHeader>
@@ -64,7 +83,14 @@ const ProfileModal = ({ profile } : { profile: props }) => {
                 </ModalBody>
                 <ModalFooter>
                     <button className="btn btn-red m-2" onClick={() => dispatch(setEditProfileModalState(false))}>انصراف</button>
-                    <button type="submit" className="btn btn-blue m-2">ثبت تغییرات </button>
+                    <button type="submit" disabled={loading} className="btn btn-blue m-2">
+                        {
+                            loading ?
+                            <ThreeDot size="medium" color={'#DBF3FE'} />
+                            :
+                            "ثبت تغییرات"    
+                        }
+                    </button>
                 </ModalFooter>
                 </form>
             </Modal>

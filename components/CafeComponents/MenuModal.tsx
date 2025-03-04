@@ -29,13 +29,13 @@ export const MenuModal = () => {
         <div className="mt-4 space-y-2">
           {selectedCategory.items.length > 0 ? (
             selectedCategory.items.map((item, index) => (
-              <div key={index} className="p-2 bg-gray-100 rounded-lg flex items-center relative">
+              <div key={index} className="p-2 bg-gray-100 flex items-center relative">
                     <span className="block w-20 h-20 me-2"> 
                       {
                         item.picture != null || item.picture ?
                         <Image src={IMAGE_HOST + item.picture} alt="" width={100} height={100} className="rounded-xl w-full h-full object-cover" />
                         : 
-                        <Image src={'/logo72x72.png'} alt="" width={100} height={100} className="rounded-xl w-full h-full object-cover" />
+                        <Image src={'/logo-bottom.png'} alt="" width={70} height={70} className="rounded-xl w-full h-[70px] object-contain" />
                       }
                     </span>
                     <span className="block w-40">

@@ -40,7 +40,7 @@ const EventWrapper = () => {
                     <div className="flex flex-wrap">
                         {events?.map(event => [
                             <div key={event.id} onClick={() => router.push('/events/'+event.id)} className="w-full md:w-1/2 p-4">
-                                <div className="w-full rounded-3xl shadow p-4 flex">
+                                <div className="w-full rounded-3xl bg-[#99B8C7] shadow p-4 flex">
                                     <div className="w-1/4 flex justify-center items-center">
                                         <Image src={ event.club.club_avatar} width={50} height={50} className="w-20 h-20 rounded-full" alt="" />
                                     </div>

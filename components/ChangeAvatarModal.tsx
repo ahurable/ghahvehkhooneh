@@ -8,22 +8,26 @@ import React, { FormEvent, useState } from "react"
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "./modals/modals"
 import { useAuth } from "@/lib/Context/AuthContext"
 import { useRouter } from "next/navigation"
+import { ThreeDot } from "react-loading-indicators"
+import { useNotification } from "@/lib/Context/NotificationContext"
 
 const ChangeAvatarModal = () => {
 
     const dispatch = useAppDispatch()
     const isOpenState = useAppSelector(state => state.avatarmodal.isOpen)
     const [selectedFile, setFile] = useState({})
+
+    const [loading, setLoading] = useState<boolean>(false)
     const { refreshAccessToken, accessToken } = useAuth()
     const router = useRouter()
     const access = accessToken
     // const onChangeFile = (e) => {
     //     setFile(e.currentTarget.files[0])
     // }
-
+    const { showNotification } = useNotification()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(selectedFile)
+        setLoading(true)
         
         if (!access || access.length ==0 || typeof(access) != 'string' || access==null)
             router.push('/')
@@ -47,15 +51,29 @@ const ChangeAvatarModal = () => {
 
             })
             if (response.status == 200) {
-                alert('تصویر پروفایل شما با موفقیت ثبت شد')
+                setLoading(false)
+                showNotification(
+                    "تغییر پروفایل شما تغییر کرد",
+                    'success',
+                    true,
+                    '',
+                    '/profile'
+                )
                 refreshAccessToken()
                 router.refresh()
             } else {
+                setLoading(false)
                 alert("مشکلی در بروزرسانی پروفایل شما رخ داد")
             }
         }
         else{
-            alert("ابتدا فایلی را انتخاب کنید")
+            setLoading(false)
+            showNotification(
+                'لطفا یک عکس انتخاب کنید',
+                'error',
+                true,
+                '',
+            )
             return
         }
         
@@ -72,10 +90,18 @@ const ChangeAvatarModal = () => {
                 </ModalHeader>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <ModalBody>
-                    <input type="file" name="avatar"/>
+                    <input type="file" accept="image/*" name="avatar"/>
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn btn-blue" type="submit">ثبت تصویر جدید</button>
+                    <button className="btn btn-blue" disabled={loading} type="submit">
+                        {
+                            loading ? 
+                            <ThreeDot size="medium" color={'#DBF3FE'} />
+                            :
+                            "ثبت تصویر جدید"
+                        }
+                        
+                    </button>
                 </ModalFooter>
                 </form>
             </Modal>
