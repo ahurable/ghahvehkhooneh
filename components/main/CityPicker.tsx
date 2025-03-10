@@ -1,6 +1,5 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
-import { CafeCardListSliderWrapper } from "./slider"
 import { setCity, setSelectCity } from "@/lib/features/profileModalSlice"
 import { Modal, ModalBody, ModalHeader } from "../modals/modals"
 import { useEffect, useState } from "react"
@@ -14,14 +13,19 @@ import NotificationComponent from "@/layouts/Modals/MessageModals"
 export const CityPicker = () => {
 
     const dispatch = useAppDispatch()
-    const currentCity = useAppSelector(s => s.profilemodal.city)
+    // const currentCity = useAppSelector(s => s.profilemodal.city)
+    const city: { id: number; name: string } | null = localStorage.getItem('city')
+    ? JSON.parse(localStorage.getItem('city') as string)
+    : null;
+
+
     return (
         <>
             <div className="p-4">
                 <span className="w-4 h-4 rounded-full bg-red-400 p-1 me-4"></span>
                 <span className="text-greenny-dark">کافه های محدوده شما</span>
                 <button onClick={() => dispatch(setSelectCity(true))} className="mx-4 p-2 rounded-full bg-green-500 text-white">
-                    در شهر { currentCity.name == "default" ? "پیش فرض" : currentCity.name }
+                    در شهر { !city || city && city.name == "default" ? "پیش فرض" : city.name }
                 </button>
             </div>
 

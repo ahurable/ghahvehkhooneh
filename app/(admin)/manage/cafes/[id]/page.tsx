@@ -77,7 +77,7 @@ const Page = ({params}: {params: {id:number}}) => {
                             {
                                 cafe.club && <div className="w-full md:w-3/4 flex pt-4">
                                 <div className="w-40 h-40">
-                                    <Image src={LOCALHOST + cafe?.club.club_avatar} width={100} height={100} className="rounded-2xl" alt="" />
+                                    <Image src={IMAGE_HOST + cafe?.club.club_avatar} width={100} height={100} className="rounded-2xl" alt="" />
                                 </div>
                                 <div className="ps-4">
                                     <h1 className="text-xl font-bold">

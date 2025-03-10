@@ -28,6 +28,7 @@ export const profileModalSlice = createSlice({
             state.isCityModal = action.payload;
         },
         setCity: (state, action: PayloadAction<{id:number,name:string}>) => {
+            localStorage.setItem('city', JSON.stringify(action.payload));
             state.city = action.payload
         },
         setPhoneValidationModal: (state, action:PayloadAction<boolean>) => {
