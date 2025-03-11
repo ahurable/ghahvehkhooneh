@@ -19,7 +19,8 @@ const initialState: {
     editClubMembers: boolean,
     showAddCategory: boolean,
     updateItem: boolean,
-    refAdd: number
+    refAdd: number,
+    location: boolean
 } = {
     showEditBanner: false,
     editDescription: false,
@@ -38,6 +39,7 @@ const initialState: {
     showAddCategory: false,
     updateItem: false,
     refAdd: 0,
+    location: false,
 }
 
 const adminSlice = createSlice({
@@ -78,7 +80,10 @@ const adminSlice = createSlice({
         },
         refreshAddItem: (state, action: PayloadAction) => {
             state.refAdd += 1
-        }
+        },
+        setLocationModalState: (state, action: PayloadAction<boolean>) => {
+            state.location = action.payload
+        },
     }
 })
 
@@ -93,6 +98,7 @@ export const { setShowAddCategory } = adminSlice.actions
 export const { setEditCategoryState } = adminSlice.actions
 export const { setUpdateItem } = adminSlice.actions 
 export const { refreshAddItem } = adminSlice.actions 
+export const { setLocationModalState } = adminSlice.actions
 
 
 export const adminReducer = adminSlice.reducer

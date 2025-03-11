@@ -6,6 +6,7 @@ import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
 import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useState } from "react"
+import { ThreeDot } from "react-loading-indicators"
 import { useDispatch } from "react-redux"
 
 const UpdateMenuItem = () => {
@@ -15,11 +16,13 @@ const UpdateMenuItem = () => {
     const [success, setSuccess] = useState(false)
     const { accessToken } = useAuth()
     const router = useRouter()
+    const [loading, setLoading] = useState<boolean>(false)
     useEffect(() => {
         console.log(state)
     })
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setLoading(true)
         const formData = new FormData(e.currentTarget)
         formData.append('id', item.id.toString())
         let token
@@ -34,6 +37,7 @@ const UpdateMenuItem = () => {
             })
             if (res.ok) {
                 setSuccess(true)
+                setLoading(false)
                 router.refresh()
             }
         }
@@ -58,7 +62,9 @@ const UpdateMenuItem = () => {
                     <input type="text" name="price" defaultValue={item.price || ""} className="form-control w-full my-4" />
     
                     <br />
-                    <input type="submit" value="ثبت تغییر" className="btn-red p-4 w-full" />
+                    <button type="submit" disabled={loading} className="btn-red p-4 w-full" >
+                        {loading? <ThreeDot color={'#ffffff'}/>:"ثبت تغییرات"}
+                    </button>
                 </form>
             </ModalBody>
         </Modal>

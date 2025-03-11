@@ -3,9 +3,10 @@ import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { categoryFood } from "@/lib/types"
 import { LOCALHOST } from "@/lib/variebles"
 import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 import { refreshAddItem, setAddItemModalState, setEditCategoryState } from "@/lib/features/adminModalSlice"
 import { useAuth } from "@/lib/Context/AuthContext"
+import { ThreeDot } from "react-loading-indicators"
 
 const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
 
@@ -15,7 +16,9 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
     const dispatch = useAppDispatch()
     const [ ok, setOk ] = useState(false)
     const [errorState, setErrorState] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [cats, setCats] = useState<categoryFood[]>()
+    const formRef = useRef<HTMLFormElement>(null); // Reference for the form
 
     useEffect(
         () => {
@@ -43,6 +46,8 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
     const { accessToken } = useAuth()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        setLoading(true)
         const formData = new FormData(e.currentTarget)
         const token = accessToken
         const res = await fetch(LOCALHOST + 'api/admin/add/menu/' + cafeid + '/' + categoryId + '/', {
@@ -56,8 +61,10 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
             setOk(true)
             setTimeout(()=> {
                 setOk(false)
-
+                setLoading(false)
                 dispatch(refreshAddItem())
+                if ( formRef.current )
+                    formRef.current.reset()
             },1000)
         }
         
@@ -73,7 +80,7 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
                     <h1>افزودن آیتم جدید</h1>
                 </ModalHeader>
                 <ModalBody>
-                    <form onSubmit={handleSubmit}>
+                    <form ref={formRef} onSubmit={handleSubmit}>
                         <div className="w-full p-4">
                             <label htmlFor="itemId">نام آیتم</label>
                             <input type="text" className="form-control w-full" name="item" id="itemId" />
@@ -91,7 +98,9 @@ const AddItemWrapper = ({cafeid}:{cafeid:number}) => {
                             <input type="file" className="form-control w-full" name="picture" id="pictureId" />
                         </div>
                         <div className="w-full p-4">
-                            <button className="btn btn-green w-full p-4">افزودن</button>
+                            <button disabled={loading} className="btn btn-green w-full p-4">
+                                {loading ? <ThreeDot color={'#ffffff'}/> : "افزودن"}
+                            </button>
                         </div>
                     </form>
                 </ModalBody>

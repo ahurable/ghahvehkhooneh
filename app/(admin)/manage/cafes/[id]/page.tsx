@@ -2,7 +2,7 @@
 
 // import { cafeInformation } from "@/components/CafeComponents"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
-import { setAddClubState, setAddItemModalState, setEditBannerState, setEditClubMembers, setEditDescription, setEditItem, setQrCodeState } from "@/lib/features/adminModalSlice"
+import { setAddClubState, setAddItemModalState, setEditBannerState, setEditClubMembers, setEditDescription, setEditItem, setLocationModalState, setQrCodeState } from "@/lib/features/adminModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { cafeDetailedType, categoryFood, userWithAnyProfileType } from "@/lib/types"
 import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
@@ -17,6 +17,7 @@ import { AddCategory, AddClub, AddItemWrapper, ChangeBanner, ClubMembersWrapper,
 import Category from "./Cateogry/Category"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import AddLocationWrapper from "./modals/AddLocation"
 
 
 const Page = ({params}: {params: {id:number}}) => {
@@ -93,6 +94,9 @@ const Page = ({params}: {params: {id:number}}) => {
                                 <button className="btn btn-blue w-full mt-2 p-4 text-center items-center flex gap-2 justify-center" onClick={() => dispatch(setQrCodeState(true))}>
                                     <FontAwesomeIcon icon={faQrcode} /> نمایش QR
                                 </button>
+                                <button className="btn btn-blue w-full mt-2 p-4 text-center items-center flex gap-2 justify-center" onClick={() => dispatch(setLocationModalState(true))}>
+                                    <FontAwesomeIcon icon={faQrcode} /> افزودن لوکیشن کافه
+                                </button>
                                 {
                                     cafe.club == null ?
                                     <>
@@ -122,6 +126,7 @@ const Page = ({params}: {params: {id:number}}) => {
                             <UpdateDescription cafeid={cafe.id} />
                             <AddCategory cafeId={cafe.id} />
                             <UpdateMenuItem />
+                            <AddLocationWrapper cafeid={cafe.id} />
                         </>
                     }
                     </>
