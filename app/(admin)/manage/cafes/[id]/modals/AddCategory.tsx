@@ -5,6 +5,7 @@ import { setShowAddCategory } from "@/lib/features/adminModalSlice"
 import { useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
 import { FormEvent, useState } from "react"
+import { ThreeDot } from "react-loading-indicators"
 import { useDispatch } from "react-redux"
 
 
@@ -14,8 +15,10 @@ const AddCategory = ({cafeId}: {cafeId: number}) => {
     const dispatch = useDispatch()
     const { accessToken } = useAuth()
     const [ ok, setOk] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     async function handleSubmit (e:FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setLoading(true)
         const token = accessToken
         const formData = new FormData(e.currentTarget)
         if (token && token.length > 0) {
@@ -31,6 +34,7 @@ const AddCategory = ({cafeId}: {cafeId: number}) => {
             )
             if (res.status == 201){
                 setOk(true)
+                setLoading(false)
                 setTimeout(() => setOk(false), 1000)
             }
         }
@@ -44,7 +48,9 @@ const AddCategory = ({cafeId}: {cafeId: number}) => {
             <ModalBody>
                 <form onSubmit={handleSubmit}>
                     <input className="form-control w-full" name="name" placeholder="نام دسته بندی خود را وارد کنید" />
-                    <button className="btn-blue p-4 mt-4" type="submit">افزودن دسته بندی</button>
+                    <button className="btn-blue p-4 mt-4" type="submit">
+                        {loading? <ThreeDot color={'#ffffff'} />: "افزودن دسته بندی"}
+                    </button>
                 </form>
             </ModalBody>
         </Modal>
