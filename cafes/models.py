@@ -3,6 +3,8 @@ from users.models import CustomUser as User
 import os
 import random
 from users.models import City
+import datetime
+from datetime import timedelta
 from django.utils.text import slugify
 
 # Create your models here.
@@ -45,7 +47,7 @@ def category_image_upload(instance, file):
 
 class Cafe(models.Model):
     name = models.CharField(max_length=200)
-    location = models.CharField(max_length=100, blank=True, null=True)
+    location = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=200)
     about = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True, null=True, allow_unicode=True)
@@ -55,6 +57,19 @@ class Cafe(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
     number= models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    activated_until = models.DateTimeField(null=True, blank=True)  # تاریخ اعتبار
+
+    def is_active(self):
+        """ بررسی فعال بودن کافه """
+        return self.activated_until and self.activated_until > datetime.now()
+
+    def extend_activation(self, months=6):
+        """ تمدید اعتبار کافه برای ۶ ماه """
+        if self.activated_until and self.activated_until > datetime.now():
+            self.activated_until += timedelta(days=months * 30)  # تمدید به مدت ۶ ماه
+        else:
+            self.activated_until = datetime.now() + timedelta(days=months * 30)
+        self.save()
 
     def generate_unique_slug(self):
         base_slug = slugify(self.name, allow_unicode=True)  # Generate initial slug
@@ -115,6 +130,16 @@ class MenuItem(models.Model) :
         return self.item
     
     
+class Payment(models.Model):
+    cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE)
+    amount = models.IntegerField()  # مبلغ پرداختی
+    transaction_id = models.CharField(max_length=100, unique=True)  # شناسه تراکنش
+    paid_at = models.DateTimeField(auto_now_add=True)  # زمان پرداخت
+
+    def save(self, *args, **kwargs):
+        """ هنگام ذخیره پرداخت، اعتبار کافه را تمدید کن """
+        super().save(*args, **kwargs)
+        self.cafe.extend_activation(6)  # تمدید به مدت ۶ ماه
 
 
     

@@ -10,6 +10,68 @@ import datetime
 from .serializers import *
 from .models import *
 # Create your views here.
+import requests
+from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.utils.timezone import now
+from django.conf import settings
+from .models import Payment, Cafe
+
+ZARINPAL_MERCHANT_ID = "YOUR_MERCHANT_ID"
+ZARINPAL_REQUEST_URL = "https://api.zarinpal.com/pg/v4/payment/request.json"
+ZARINPAL_VERIFY_URL = "https://api.zarinpal.com/pg/v4/payment/verify.json"
+CALLBACK_URL = "http://yourwebsite.com/payment/verify/"  # آدرس بازگشت بعد از پرداخت
+
+def payment_request(request, cafe_id):
+    """ درخواست پرداخت برای تمدید کافه """
+    cafe = Cafe.objects.get(id=cafe_id, owner=request.user)
+    amount = 100000  # مبلغ پرداختی
+    description = f"تمدید اشتراک کافه {cafe.name} برای ۶ ماه"
+
+    data = {
+        "merchant_id": ZARINPAL_MERCHANT_ID,
+        "amount": amount,
+        "callback_url": CALLBACK_URL + f"?cafe_id={cafe.id}",
+        "description": description
+    }
+
+    response = requests.post(ZARINPAL_REQUEST_URL, json=data)
+    response_data = response.json()
+
+    if response_data.get("data"):
+        authority = response_data["data"]["authority"]
+        return redirect(f"https://www.zarinpal.com/pg/StartPay/{authority}")
+    else:
+        return JsonResponse({"error": response_data.get("errors", "خطای نامشخص")}, status=400)
+
+def payment_verify(request):
+    """ بررسی وضعیت پرداخت """
+    authority = request.GET.get("Authority")
+    status = request.GET.get("Status")
+    cafe_id = request.GET.get("cafe_id")
+
+    if status == "OK":
+        cafe = Cafe.objects.get(id=cafe_id, owner=request.user)
+        data = {
+            "merchant_id": ZARINPAL_MERCHANT_ID,
+            "amount": 100000,
+            "authority": authority
+        }
+
+        response = requests.post(ZARINPAL_VERIFY_URL, json=data)
+        response_data = response.json()
+
+        if response_data.get("data"):
+            Payment.objects.create(
+                cafe=cafe,
+                amount=100000,
+                transaction_id=response_data["data"]["ref_id"]
+            )
+            return JsonResponse({"message": "پرداخت موفق! اعتبار کافه تمدید شد."})
+        else:
+            return JsonResponse({"error": response_data.get("errors", "خطای پرداخت")}, status=400)
+    else:
+        return JsonResponse({"error": "پرداخت ناموفق بود!"}, status=400)
 
 
 class CafeListView(APIView): 

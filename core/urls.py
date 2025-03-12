@@ -69,7 +69,8 @@ urlpatterns = [
     path('api/admin/club/members/<int:cafeid>/', AdminMembersClub.as_view()),
     path('api/admin/cafe/update/banner/<int:id>/', AddCafePicturesView.as_view()),
     path('api/admin/cafe/update/description/<int:id>/', UpdateCafeDescription.as_view()),
-    path('api/admin/cafe/update/menu/item/<int:id>/', UpdateItem.as_view()),
+    path('api/admin/cafe/update/menu/item/<int:pk>/', UpdateItem.as_view()),
+    path('api/admin/cafe/<int:cafeid>/location/', SetLocationCafe.as_view()),
     # hooks
     path('hook/users/get-profile/<int:id>/', GetAnyProfileInformation.as_view(), name="get-profile-hook"),
     path('hook/offer-hobby/', offerHobbyHook, name='offer-hobby-hook'),

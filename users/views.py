@@ -11,11 +11,13 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
+from django.core.exceptions import ObjectDoesNotExist   
 from cafes.serializers import *
 from cafes.models import *
 from .models import Profile, CustomUser as User
 from .permissions import IsAdminOfCafe
 from .utls import generate_otp
+import requests
 # Create your views here.
 
 
@@ -411,10 +413,15 @@ class UpdateItem(UpdateAPIView):
             model = MenuItem
             fields = ['item', 'description', 'price']
 
-    permission_classes = [IsAuthenticated, IsAdminOfCafe]
-    lookup_field = 'id'
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
     serializer_class = Serializer
     queryset = MenuItem.objects.all()
+
+    
+
+
+
 
 class CreateCategoryView(APIView):
     class Serializer(ModelSerializer):
@@ -431,6 +438,37 @@ class CreateCategoryView(APIView):
             cat.save()
             return Response({'name': serializer.data['name']}, status=201)
         
+import re
+
+class SetLocationCafe(APIView):
+    permission_classes = [IsAuthenticated, IsAdminOfCafe]
+    class Serializer(serializers.ModelSerializer):
+        class Meta:
+            model = Cafe
+            fields = ['location']
+        def validate_location(self, value):
+            """
+            Validate that the input is a valid Google Maps location format.
+            Example: "37.7749,-122.4194" (latitude,longitude)
+            """
+            google_location_pattern = r'^https?://maps\.app\.goo\.gl/[A-Za-z0-9]+$'
+            if not re.match(google_location_pattern, value):
+                raise serializers.ValidationError("Invalid Google Maps location format.")
+            return value
+    def post( self, request, cafeid ):
+        try:
+            cafe = Cafe.objects.get(id=cafeid)  # Fetch the cafe by ID
+        except ObjectDoesNotExist:
+            return Response({"error": "Cafe not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.Serializer(data=request.data)
+        if serializer.is_valid():
+            cafe.location = serializer.validated_data['location']
+            cafe.save()
+            return Response({"message": "Location updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class GetCategoryView(APIView):
     permission_classes = [IsAuthenticated, IsAdminOfCafe]
@@ -459,12 +497,35 @@ class RequestOTPView(APIView):
         serializer = OTPRequestSerializer(data=request.data)
         if serializer.is_valid():
             phone_number = serializer.validated_data["phone_number"]
+            # print(phone_number)
             user = CustomUser.objects.get(phone_number=phone_number)
-            
-            # Send OTP via SMS (Placeholder - Use Twilio, Firebase, etc.)
-            print(f"OTP for {phone_number}: {user.otp_code}")
+            verification_code = user.otp_code
 
-            return Response({"message": "OTP sent successfully."}, status=status.HTTP_200_OK)
+            if phone_number.startswith("+98"):
+                phone_number = "0" + phone_number[3:] 
+            print(phone_number)
+            # Send OTP via SMS (Placeholder - Use Twilio, Firebase, etc.)
+            print(f"OTP for {phone_number}: {verification_code}")
+            url = "https://api.mediana.ir/sms/v1/send/otp"
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {os.getenv('MEDIANA_KEY')}",
+            }
+            data = {
+                "type": "Informational",
+                "recipient": phone_number,
+                "otpCode": f"{verification_code}",
+            }
+
+            response = requests.post(url, json=data, headers=headers)
+            print(response)
+            print(response.status_code)
+            print(response.json())
+            if response.status_code == 200:
+                return Response({"message": "کد تأیید ارسال شد.", "code": verification_code}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "ارسال پیامک ناموفق بود.", "details": response.text}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # return Response({"message": "OTP sent successfully."}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

@@ -67,7 +67,7 @@ class CafeListSerializer(ModelSerializer):
 class CafeNameSerializer(ModelSerializer):
     class Meta:
         model = Cafe
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'slug']
 
 
 class ClubSerializer(ModelSerializer):
@@ -106,7 +106,7 @@ class CafeSerializer(ModelSerializer):
 
     class Meta: 
         model = Cafe
-        fields = ['id', 'name', 'slug', 'address', 'about', 'pictures', 'ratings', 'categories', 'club']
+        fields = ['id', 'name', 'slug', 'location', 'address', 'about', 'pictures', 'ratings', 'categories', 'club']
 
 
 
