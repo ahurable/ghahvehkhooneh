@@ -1,13 +1,15 @@
 import { BackButton, MenuWrapper, TabsWrapper } from "@/components/CafeComponents"
 import type { cafeInformation } from '@/components/CafeComponents/types'
 import { IMAGE_HOST, LOCALHOST } from "@/lib/variebles"
-import { faArrowLeft, faBackspace, faBackward, faCoffee } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faBackspace, faBackward, faCoffee, faUserGroup } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Tabs } from "flowbite-react"
 import Slider from "./Slider"
 import Head from "next/head"
 import Image from "next/image"
 import type { Metadata } from "next"
+import { faMap } from "@fortawesome/free-regular-svg-icons"
+import JoinClubBtn from "./JoinClubBtn"
 
 export const metadata: Metadata = {
     title: 'گپی - قهوه به صرف دوست',
@@ -27,6 +29,10 @@ async function fetchData (id:number):Promise<cafeInformation> {
     const _data = res.json()
     console.log(_data)
     return _data
+}
+
+const joinClub = () => {
+
 }
 
 const Page = async ({params}: {params: {id:number}}) => {
@@ -54,13 +60,15 @@ const Page = async ({params}: {params: {id:number}}) => {
                                 <p>{cafe.about}</p>
                             </div>
                             <div className="container w-full p-4">
-                                <button className="btn btn-brown w-full items-center">
-                                    دعوت دوستان <FontAwesomeIcon icon={faCoffee}/>
-                                </button>
+                                {
+                                    typeof(cafe.location) == 'string' && cafe.location.length > 0 &&
+                                    <a href={cafe.location} className="btn btn-brown block text-center w-full items-center">
+                                        مشاهده روی نقشه <FontAwesomeIcon icon={faMap}/>
+                                    </a>
+                                }
                             </div>
                             { cafe.club != null && 
                                 <div className="container w-full p-4 bg-brown-dark ">
-                                    <h1 className="text-lg text-white">باشگاه مشتریان</h1>
                                     <div className="py-4 w-full flex flex-wrap justify-center gap-2 items-center">
                                         <div className="img-container">
                                             <Image src={ IMAGE_HOST + cafe.club.club_avatar } width={100} height={100} className='rounded-full w-20 h-20 object-cover' alt="" />
@@ -68,9 +76,10 @@ const Page = async ({params}: {params: {id:number}}) => {
                                         <div className="ps-4">
                                             <span className="text-xl font-black text-white">{cafe.club.name}</span>
                                             <br />
-                                            <span className="text-lg font-normal text-white">{cafe.club.description}</span>
+                                            <span className="text-lg font-normal text-white text-justify">{cafe.club.description}</span>
                                             <br />
                                             <span className="text-white">باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
+                                            <JoinClubBtn clubId={cafe.club.id} />
                                         </div>
                                     </div>
                                 </div>
