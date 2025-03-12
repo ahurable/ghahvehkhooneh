@@ -141,7 +141,7 @@ const Page = ({params}:{params:{id:number}}) => {
                             <span className="text-md">
                                 این رویداد در کافه {data?.cafe.name} برگزار میشود
                             </span>
-                            <a href={`/cafe/${data?.cafe.id}`} className="block btn-blue mt-4 text-center p-4 w-full">
+                            <a href={`/cafe/${data?.cafe.slug}`} className="block btn-blue mt-4 text-center p-4 w-full">
                                 مشاهده کافه
                             </a>
                         </div>

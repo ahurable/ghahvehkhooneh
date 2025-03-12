@@ -62,7 +62,8 @@ export interface cafeCardType {
 
 export interface cafeIdNameType {
     id: number,
-    name: string
+    name: string,
+    slug: string,
 }
 
 export interface smallClubType {
