@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             });
 
             if (response.ok) {
+                logout()
                 const data = await response.json();
                 console.log(data)
                 login(data.access, data.refresh)

@@ -12,8 +12,8 @@ export const MenuModal = () => {
   if (!isMenuOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg lg:w-[960px] lg:h-max w-[100vw] h-[100vh] p-4 rtl text-right">
+    <div className="fixed inset-0 bg-black bg-opacity-50 overflow-auto flex justify-center items-center z-50">
+      <div className={selectedCategory.items.length > 7 ? "bg-white rounded-lg shadow-lg lg:w-[960px] h-max w-[100vw] p-4 rtl text-right pt-48" : "bg-white rounded-lg shadow-lg lg:w-[960px] h-max w-[100vw] p-4 rtl text-right"}>
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-2">
           <h2 className="text-lg font-semibold">{selectedCategory.name}</h2>

@@ -24,6 +24,7 @@ export interface cafeInformation {
         name: string,
         address: string,
         about: string,
+        location: string,
         pictures: {
             picture:string,
             is_featured:boolean

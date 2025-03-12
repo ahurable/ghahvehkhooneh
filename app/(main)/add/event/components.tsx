@@ -165,7 +165,7 @@ export const SelectClubs = () => {
                     }} className="col-span-6 md:col-span-4 lg:col-span-3 p-2">
                         <div className="rounded-lg shadow p-3">
                             <div className="w-full flex justify-center">
-                                <Image src={LOCALHOST + club.club_avatar} alt="" className="rounded-full w-20 h-20 object-cover" />
+                                <Image src={LOCALHOST + club.club_avatar} alt="" width={200} height={200} className="rounded-full w-20 h-20 object-cover" />
                             </div>
                             <div className="w-full text-center pt-3">
                                 <span>{club.name}</span>

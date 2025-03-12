@@ -30,7 +30,7 @@ export const SuccessModal = ({title, description, state, redirectPath}:{title:st
 
     return (
 
-        <div className={show ? 'w-full p-4 absolute duration-150 transition-all opacity-100' : 'w-full p-4 absolute duration-150 transition-all opacity-0'} style={ show ? {top:'1rem', zIndex: 100} : {top:'-100px'}}>
+        <div className={show ? 'w-full p-4 absolute duration-150 right-0 transition-all opacity-100' : 'w-full p-4 absolute duration-150 transition-all opacity-0'} style={ show ? {top:'1rem', zIndex: 100} : {top:'-100px'}}>
             <div className="relative rounded-3xl bg-green-400 text-white p-4">
                 { title != null && title.length > 0 && <h1 className="text-md text-white">{title}</h1> }
                 { description != null && description.length > 0 && <span className="text-white text-sm">{description}</span> }
