@@ -14,10 +14,16 @@ export const CityPicker = () => {
 
     const dispatch = useAppDispatch()
     // const currentCity = useAppSelector(s => s.profilemodal.city)
-    const city: { id: number; name: string } | null = localStorage.getItem('city')
-    ? JSON.parse(localStorage.getItem('city') as string)
-    : null;
+    const [city, setCity] = useState<{ id: number; name: string } | null>(null);
 
+    useEffect(() => {
+        if (typeof window !== "undefined") { // Ensure it's running in the browser
+        const storedCity = window.localStorage.getItem("city");
+        if (storedCity) {
+            setCity(JSON.parse(storedCity));
+        }
+        }
+    }, []);
 
     return (
         <>
