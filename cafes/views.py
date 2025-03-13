@@ -78,7 +78,7 @@ class CafeListView(APIView):
     permission_classes = (AllowAny, )
     def get(self, request):
         
-        serializer = CafeListSerializer(Cafe.objects.all().order_by('-id').filter(is_approved=True, is_invisible=False), many=True)
+        serializer = CafeListSerializer(Cafe.objects.all().order_by('-id').filter(is_approved=True, invisible=False), many=True)
         return Response(serializer.data, status=200)
     
 
@@ -121,7 +121,7 @@ class AllCafeCardListView(ListAPIView):
             fields = ['id', 'name', 'about', 'slug', 'pictures']
 
     serializer_class = Serializer
-    queryset = Cafe.objects.all().filter(is_approved=True, is_invisible=False)
+    queryset = Cafe.objects.all().filter(is_approved=True, invisible=False)
 
 
 
