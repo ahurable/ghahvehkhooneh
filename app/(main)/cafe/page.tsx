@@ -10,21 +10,6 @@ export const metadata: Metadata = {
 }
 
 
-async function getData():Promise<CafeCardProps[]>  {
-    const res = await fetch(LOCALHOST + 'api/cafes/list/', {
-        method: 'GET',
-        headers: {
-            'Content-Type':'application/json'
-        }
-    })
-
-    if (!res.ok) {
-        throw new Error("Failed to fetch data")
-    }
-
-    return res.json()
-} 
-
 
 
 
@@ -32,9 +17,7 @@ async function getData():Promise<CafeCardProps[]>  {
 
 export default async function Page() {
     
-    const data = await getData();
     
-    console.log(data)
     
     return (
 
