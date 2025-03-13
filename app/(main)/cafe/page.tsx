@@ -1,6 +1,4 @@
 import React from 'react'
-import { LOCALHOST } from '@/lib/variebles'
-import { CafeCard, type CafeCardProps } from '@/components/CafeComponents'
 import type { Metadata } from "next"
 import CafeList from './CafeList'
 
