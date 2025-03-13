@@ -38,7 +38,7 @@ const CafeList = () => {
                     <CafeCard cafe={cafe}/>
                 </div>
             ]) :
-                <div className="w-full text-center">
+                <div className="w-full text-center pt-16">
                     <span className="text-lg font-bold text-brown-dark">درحال بارگیری</span>
                     <br />
                     <ThreeDot color={'#033B55'} />

@@ -166,7 +166,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
             })
             const data = await response.json()
             
-            if(response.ok){
+            if(response.ok || response.status == 201){
                 setSuccessState(true)
                 setLoading(false)
                 if (props.redirectPath && props.redirectPath.length > 0)
@@ -279,7 +279,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                             step.isLastStep == true && <>
                                                 <div className={ "mt-10 text-center " }>
                                                     <button id="back" onClick={prevStep} className="btn btn-blue">قبلی</button>
-                                                    <button id="register" type="submit" disabled={!isStepValid(wstep)} className="btn btn-green mt-4">
+                                                    <button id="register" type="submit" disabled={!isStepValid(wstep) && loading} className="btn btn-green mt-4">
                                                         { loading ? <ThreeDot color={'#ffffff'} /> : "ثبت"}
                                                     </button>
                                                 </div>
