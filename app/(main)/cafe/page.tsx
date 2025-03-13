@@ -2,6 +2,7 @@ import React from 'react'
 import { LOCALHOST } from '@/lib/variebles'
 import { CafeCard, type CafeCardProps } from '@/components/CafeComponents'
 import type { Metadata } from "next"
+import CafeList from './CafeList'
 
 export const metadata: Metadata = {
     title: 'گپی - لیست کافه ها',
@@ -55,12 +56,7 @@ export default async function Page() {
 
                 
                 <div className="w-full md:grid grid-cols-12 relative">
-                {  data.map((cafe) => [
-                        <div key={cafe.id} className="md:col-span-6 p-3">
-                            <CafeCard cafe={cafe}/>
-                        </div>
-                    ])
-                }
+                    <CafeList />
                 </div>
             </div>
         

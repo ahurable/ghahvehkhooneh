@@ -52,6 +52,7 @@ export interface allFieldClub {
 export interface cafeCardType {
     id: number,
     name: string,
+    slug: string,
     about: string,
     pictures: {
         picture: StaticImageData | string,

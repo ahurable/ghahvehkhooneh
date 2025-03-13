@@ -9,6 +9,7 @@ import { StaticImageData } from "next/image";
 
 import Image from "next/image";
 import { ThreeDot } from "react-loading-indicators";
+import { useRouter } from "next/navigation";
 
 type flickityOptionsType = {
     freeScroll: boolean,
@@ -27,19 +28,19 @@ const flickityOptions: flickityOptionsType = {
 }
 
 
-const CafeCard = ({id, name, about, pictures}:cafeCardType) => {
+const CafeCard = ({id, name, slug, about, pictures}:cafeCardType) => {
 
-    useEffect(()=>{
-        console.log(pictures?.filter(picture => picture.is_featured))
-    })
-
+    // useEffect(()=>{
+    //     console.log(pictures?.filter(picture => picture.is_featured))
+    // })
+    const router = useRouter()
     if (pictures!=undefined)
         if (pictures.length < 1)
             return null
         else {
             return (
                 <>
-                    <div className="w-28 h-32">
+                    <div className="w-28 h-32" onClick={() => router.push('https://gappy.ir/cafe/'+slug)}>
                         <div className="w-full h-full relative pt-6 p-2">
                             <div className="w-full h-full relative shadow rounded-3xl ">
                                 <div className="w-full h-full absolute rounded-3xl z-10">
@@ -89,7 +90,7 @@ export const CafeCardListSliderWrapper = () => {
                 <Flickity options={flickityOptions} className={"carousel"} elementType={"div"}>
                     {
                         cafes?.map(cafe => [
-                            <CafeCard key={cafe.id} id={cafe.id} name={cafe.name} about={cafe.about} pictures={cafe.pictures} />
+                            <CafeCard key={cafe.id} id={cafe.id} name={cafe.name} slug={cafe.slug} about={cafe.about} pictures={cafe.pictures} />
                         ])
                     }
                 </Flickity>
