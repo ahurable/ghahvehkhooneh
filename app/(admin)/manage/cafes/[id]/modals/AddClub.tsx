@@ -6,6 +6,7 @@ import { Modal, ModalBody, ModalHeader } from "@/components/modals/modals"
 import { FormEvent, useState } from "react"
 import { useAuth } from "@/lib/Context/AuthContext"
 import { useRouter } from "next/navigation"
+import { ThreeDot } from "react-loading-indicators"
 
 const AddClub = ({id}:{id:number}) => {
 
@@ -13,9 +14,11 @@ const AddClub = ({id}:{id:number}) => {
     const dispatch = useAppDispatch()
     const { accessToken } = useAuth()
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const router = useRouter()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setLoading(true)
         const token = accessToken
         const formData = new FormData(e.currentTarget)
         formData.append('cafe', id.toString())
@@ -28,6 +31,7 @@ const AddClub = ({id}:{id:number}) => {
         })
         if (res.status == 201) {
             setSuccess(true)
+            setLoading(false)
             router.refresh()
         }
         const data = await res.json()
@@ -61,7 +65,9 @@ const AddClub = ({id}:{id:number}) => {
                                 <input type="file" placeholder="نام باشگاه مشتریان شما" className="form-control w-full" name="club_avatar" />
                             </div>
                             <div className="w-full">
-                                <button type="submit" className="btn btn-green mt-2">ایجاد باشگاه</button>
+                                <button type="submit" className="btn btn-green mt-2">
+                                    {loading? <ThreeDot color={'#ffffff'} /> : "ایجاد باشگاه"}
+                                </button>
                             </div>
                         </form>
                     </div>

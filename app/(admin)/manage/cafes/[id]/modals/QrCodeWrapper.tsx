@@ -14,9 +14,13 @@ const QrCodeWrapper = ({cafeid}:{cafeid:string}) => {
             </ModalHeader>
             <ModalBody>
                 <div className="w-full">
-                    <div className="flex justify-center">
-                        <div className="p-4 w-full">
+                    <div className="flex justify-center flex-wrap">
+                        <div className="pt-24 w-max">
                             <QRCode  value={`https://gappy.ir/cafe/${encodedCafeId}`} />
+                        </div>
+
+                        <div className="pt-8 p-4 text-center">
+                            <span>با اسکن QR کاربر به صفحه کافه شما منتقل میشود. شما میتوانید خودتان آن را پرینت بگیرید یا از وبسایت گپی سفارش منو بدهید.</span>
                         </div>
                     </div>
                 </div>

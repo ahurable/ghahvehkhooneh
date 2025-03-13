@@ -7,7 +7,7 @@ import { refreshAddItem, setLocationModalState } from "@/lib/features/adminModal
 import { useAuth } from "@/lib/Context/AuthContext"
 import { ThreeDot } from "react-loading-indicators"
 
-const AddLocationWrapper = ({cafeid}:{cafeid:number}) => {
+const AddLocationWrapper = ({cafeid, location}:{cafeid:number, location?:string}) => {
 
     const state = useAppSelector(s=>s.admin.location)
     const dispatch = useAppDispatch()
@@ -17,6 +17,12 @@ const AddLocationWrapper = ({cafeid}:{cafeid:number}) => {
     const formRef = useRef<HTMLFormElement>(null); // Reference for the form
 
     const { accessToken } = useAuth()
+
+    useEffect(() => {
+        if (location && location.length > 0)
+            console.log(location)
+    })
+
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -54,17 +60,27 @@ const AddLocationWrapper = ({cafeid}:{cafeid:number}) => {
                 </ModalHeader>
                 <ModalBody>
                     <form ref={formRef} onSubmit={handleSubmit}>
+                        { location!=undefined && location.length > 0 ?
+
+                        <>
+                            <span>لوکیشن شما قبلا ثبت شده است در صورت نیاز برای تغییر موقعیت مکانی خودتان به واتسپ 09903392645 پیام دهید.</span>
+                        </>
                         
+                        :
+                        <>
                         <div className="w-full p-4">
                             <label htmlFor="location">لوکیشن گوگل:</label>
                             <p>لینک وکیشن کافه خود را از برنامه گوگل مپ کپی کنید و اینجا قرار دهید</p>
                             <textarea className="form-control w-full" name="location" id="location" ></textarea>
                         </div>
+
                         <div className="w-full p-4">
                             <button disabled={loading} className="btn btn-green w-full p-4">
                                 {loading ? <ThreeDot color={'#ffffff'}/> : "افزودن"}
                             </button>
                         </div>
+                        </>
+                        }
                     </form>
                 </ModalBody>
             </Modal>

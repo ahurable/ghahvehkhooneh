@@ -115,6 +115,7 @@ export interface cafeDetailedType {
     id: number,
     name: string,
     slug: string,
+    location?: string,
     address: string,
     about: string,
     pictures: Picture[],

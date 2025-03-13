@@ -39,6 +39,7 @@ const Page = ({params}: {params: {id:number}}) => {
                 router.push('/manage')
             }
             const data = await res.json()
+            console.log(data)
             setCafe(data)
             setLoading(false)
         }
@@ -126,7 +127,7 @@ const Page = ({params}: {params: {id:number}}) => {
                             <UpdateDescription cafeid={cafe.id} />
                             <AddCategory cafeId={cafe.id} />
                             <UpdateMenuItem />
-                            <AddLocationWrapper cafeid={cafe.id} />
+                            <AddLocationWrapper cafeid={cafe.id} location={cafe.location} />
                         </>
                     }
                     </>

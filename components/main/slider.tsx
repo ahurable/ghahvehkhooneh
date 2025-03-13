@@ -8,6 +8,7 @@ import { LOCALHOST } from "@/lib/variebles";
 import { StaticImageData } from "next/image";
 
 import Image from "next/image";
+import { ThreeDot } from "react-loading-indicators";
 
 type flickityOptionsType = {
     freeScroll: boolean,
@@ -80,7 +81,10 @@ export const CafeCardListSliderWrapper = () => {
         <>
             { loading ? 
                 <div className="py-10 text-center">
-                    <span className="text-brown-normal">درحال بارگیری...</span>
+                    <span className="text-brown-normal">درحال بارگیری...
+                        <br />
+                        <ThreeDot color={'#033B55'} />
+                    </span>
                 </div> :
                 <Flickity options={flickityOptions} className={"carousel"} elementType={"div"}>
                     {
