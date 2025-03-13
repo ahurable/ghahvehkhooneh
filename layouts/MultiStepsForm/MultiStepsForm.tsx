@@ -8,6 +8,7 @@ import persian_fa from "react-date-object/locales/persian_fa"
 import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { useAuth } from "@/lib/Context/AuthContext"
 import { useRouter } from "next/navigation"
+import { ThreeDot } from "react-loading-indicators"
 
 
 type MultiStepsFormProps = {
@@ -65,6 +66,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
     const [pictures, setPictures] = useState<File[]>([])
     const [errorState, setErrorState] = useState(false)
     const [date, setDate] = useState<number | undefined>()
+    const [loading, setLoading] = useState<boolean>(false)
     const [time, setTime] = useState<number | undefined>()
     const nextStep = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -128,6 +130,7 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
         e.preventDefault()
         // const formData = new FormData(e.currentTarget)
         // console.log(formData)
+        setLoading(true)
         try {
             
             const formData = new FormData(e.currentTarget)
@@ -165,12 +168,15 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
             
             if(response.ok){
                 setSuccessState(true)
+                setLoading(false)
                 if (props.redirectPath && props.redirectPath.length > 0)
                     router.push(props.redirectPath)
             } else {
+                setLoading(false)
                 setErrorState(true)
             }
         } catch {
+            setLoading(false)
             setErrorState(true)
         }
         
@@ -273,7 +279,9 @@ export const MultiStepsForm = ({props}:{props:MultiStepsFormProps}) => {
                                             step.isLastStep == true && <>
                                                 <div className={ "mt-10 text-center " }>
                                                     <button id="back" onClick={prevStep} className="btn btn-blue">قبلی</button>
-                                                    <button id="register" type="submit" disabled={!isStepValid(wstep)} className="btn btn-green mt-4">ثبت</button>
+                                                    <button id="register" type="submit" disabled={!isStepValid(wstep)} className="btn btn-green mt-4">
+                                                        { loading ? <ThreeDot color={'#ffffff'} /> : "ثبت"}
+                                                    </button>
                                                 </div>
                                             </>
                                         }

@@ -95,7 +95,7 @@ export const CreateEventForm = () => {
                 pageTitle: "ثبت رویداد",
                 steps: steps,
                 errorMessage: "مشکلی در ثبت کافه شما به وجود آمده است",
-                successMessage: "کافه شما با موفقیت ثبت شد",
+                successMessage: "رویداد شما با موفقیت ثبت شد",
                 fetchUrl: `${LOCALHOST}api/events/create/`,
                 redirectPath: "",
                 club:clubId
