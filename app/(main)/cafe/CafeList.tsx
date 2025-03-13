@@ -27,7 +27,7 @@ const CafeList = () => {
             setCafes(data)
         }
         handleAsync()
-    })
+    },[])
 
     return (
         <>
