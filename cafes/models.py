@@ -44,6 +44,11 @@ def category_image_upload(instance, file):
     return new_path
 
 
+class Theme(models.Model):
+    name = models.CharField(max_length=250)
+    image = models.ImageField(null=True, blank=True)
+    def __str__(self):
+        return self.name
 
 class Cafe(models.Model):
     name = models.CharField(max_length=200)
@@ -51,10 +56,11 @@ class Cafe(models.Model):
     address = models.CharField(max_length=200)
     about = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True, null=True, allow_unicode=True)
+    theme = models.ForeignKey(Theme, on_delete=models.PROTECT, null=True)
     is_approved = models.BooleanField(default=False)
     invisible = models.BooleanField(default=True)
     admin = models.ManyToManyField(User, related_name='cafes')
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='cafes', null=True, blank=True)
+    city = models.ForeignKey(City, on_delete=models.PROTECT, related_name='cafes', null=True, blank=True)
     number= models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     activated_until = models.DateTimeField(null=True, blank=True)  # تاریخ اعتبار
