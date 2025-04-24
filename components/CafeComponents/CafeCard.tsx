@@ -1,4 +1,4 @@
-import Slider from "@/app/(main)/cafe/[id]/Slider"
+import Slider from "@/app/(cafe)/cafe/[id]/Slider"
 
 
 export type CafeCardProps = {

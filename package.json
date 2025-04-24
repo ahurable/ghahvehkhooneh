@@ -21,6 +21,7 @@
     "flickity": "^2.3.0",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.8.0",
+    "gsap": "^3.12.7",
     "jalaali-js": "^1.2.7",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",

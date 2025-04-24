@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from '../../components/Footer'
 import localFont from "next/font/local";
 import '../globals.css'
@@ -9,6 +9,7 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthProvider, useAuth } from "@/lib/Context/AuthContext";
 import { NotificationProvider } from "@/lib/Context/NotificationContext";
 import { MainLayout } from "@/layouts/layout";
+import { usePathname } from "next/navigation";
 // font declaration
 
 
@@ -17,8 +18,8 @@ import { MainLayout } from "@/layouts/layout";
 // layout declaration
 
 
-export default function RootLayout({children}:{children:React.ReactNode}) {
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+   
     return (
 
         <StoreProvider>

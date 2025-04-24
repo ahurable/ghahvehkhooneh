@@ -39,8 +39,8 @@ const EventWrapper = () => {
                     </div> :
                     <div className="flex flex-wrap">
                         {events?.map(event => [
-                            <div key={event.id} onClick={() => router.push('/events/'+event.id)} className="w-full md:w-1/2 p-4">
-                                <div className="w-full rounded-3xl bg-[#99B8C7] shadow p-4 flex">
+                            <div key={event.id} onClick={() => router.push('/events/'+event.id)} className="w-full md:w-1/2 p-4 py-2">
+                                <div className="w-full rounded-xl border p-4 flex items-center">
                                     <div className="w-1/4 flex justify-center items-center">
                                         <Image src={ event.club.club_avatar} width={50} height={50} className="w-20 h-20 rounded-full" alt="" />
                                     </div>
@@ -48,8 +48,6 @@ const EventWrapper = () => {
                                         <span className=" text-brown-normal m-0 font-bold">{event.name}</span>
                                         <br />
                                         <span className="text-brown-normal text-sm">میزبان: {event.cafe.name}</span>
-                                        <br />
-                                        <span className="text-brown-normal text-sm">{event.description}</span>
                                     </div>
                                 </div>
                             </div>

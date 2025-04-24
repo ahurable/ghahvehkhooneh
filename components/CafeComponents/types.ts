@@ -1,4 +1,5 @@
 import { categoryFood, eventDetail, userWithAnyProfileType } from "@/lib/types"
+import { StaticImageData } from "next/image"
 
 export interface cafeCard {
     id: number,
@@ -22,6 +23,10 @@ export interface cafeInformation {
     cafe: {
         id: number,
         name: string,
+        theme: {
+            name:string|"default",
+            image: string|StaticImageData
+        },
         address: string,
         about: string,
         location: string,

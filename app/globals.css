@@ -114,7 +114,7 @@ span, p, h1, h2, h3, h4 {
     }
 
     .btn-brown {
-      @apply text-brown-light bg-yellow-very-melo border border-brown-light transition font-bold text-md w-full rounded-3xl border-b-4 border-b-brown-light ;
+      @apply text-brown-light border border-brown-light transition font-bold text-md w-full rounded-3xl border-b-4 border-b-brown-light ;
     }
     .btn-white {
       @apply text-white bg-none border border-white transition font-bold text-md w-full rounded-3xl border-b-4 border-b-white ;

@@ -1,4 +1,4 @@
-"usec client"
+"use client"
 
 import Footer from "@/components/Footer"
 import { useAuth } from "@/lib/Context/AuthContext"
@@ -87,10 +87,10 @@ const MainLayout = ({children}:{children:React.ReactNode}) => {
         return (
                     <html lang="fa" dir="rtl">
                         <body className={yekanbakh.className}>
-                            <div className="w-full relative bg-[url(/cafe-pattern.jpg)] z-[100]">
+                            <div className="w-full relative z-[100]">
                                 <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
 
-                                <div className="lg:container bg-yellow-very-melo relative z-[30]">
+                                <div className="lg:container bg-white relative z-[30]">
                                     {children}
                                 </div>
                             </div>
