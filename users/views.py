@@ -22,10 +22,138 @@ import requests
 
 
 
-class UserCreateView(CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes =  (AllowAny,)
-    serializer_class = CreateUserSerializer
+class SendOTPView(APIView):
+    """
+    ارسال کد OTP به شماره موبایل کاربر
+    """
+    def post(self, request):
+        phone_number = request.data.get('phone_number')
+
+        if not phone_number:
+            return Response(
+                {'error': 'شماره موبایل الزامی است'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+
+        if phone_number.startswith('0'):
+            phone = [x for x in phone_number]
+            phone.pop(0)
+            phone = ''.join(phone)
+            phone_number = phone
+
+
+        if phone_number.startswith('+98') == False:
+            phone_number = "+98"+phone_number
+        
+        
+        try:
+            # First try to get existing user
+            user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            try:
+                # If doesn't exist, create new user
+                user = CustomUser.objects.create_user(phone_number=phone_number)
+            except IntegrityError:
+                # Handle race condition if user was created by another request
+                user = CustomUser.objects.get(phone_number=phone_number)
+        
+        # تولید و ذخیره کد OTP
+        otp_code = user.generate_otp()
+        
+        # ارسال کد به کاربر (در محیط واقعی این خط باید فعال شود)
+        # send_otp_sms(user.phone_number, otp_code)
+        print(f"کد OTP برای {phone_number}: {otp_code}")  # فقط برای تست
+        
+        return Response(
+            {'message': 'کد تأیید ارسال شد', 'phone_number': phone_number},
+            status=status.HTTP_200_OK
+        )
+
+
+class VerifyOTPLoginView(APIView):
+    """
+    تأیید کد OTP و انجام عملیات ثبت‌نام/لاگین
+    """
+    def post(self, request):
+        phone_number = request.data.get('phone_number')
+        otp_code = request.data.get('otp_code')
+        if not phone_number:
+            return Response(
+                {'error': 'شماره موبایل الزامی است'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+
+        if phone_number.startswith('0'):
+            phone = [x for x in phone_number]
+            phone.pop(0)
+            phone = ''.join(phone)
+            phone_number = phone
+
+
+        if phone_number.startswith('+98') == False:
+            phone_number = "+98"+phone_number
+        
+        
+        if not phone_number or not otp_code:
+            return Response(
+                {'error': 'شماره موبایل و کد تأیید الزامی هستند'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {'error': 'کاربری با این شماره موبایل یافت نشد'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+
+        # بررسی اعتبار کد OTP
+        if not user.is_otp_valid(otp_code):
+            return Response(
+                {'error': 'کد تأیید نامعتبر یا منقضی شده است'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # تایید کاربر
+        user.verify_user()
+        
+        # اگر کاربر نیاز به تنظیم رمز عبور دارد (اختیاری)
+        # if not user.has_usable_password():
+        #     return Response(
+        #         {
+        #             'message': 'لطفا رمز عبور خود را تنظیم کنید',
+        #             'phone_number': phone_number,
+        #             'set_password': True
+        #         },
+        #         status=status.HTTP_200_OK
+        #     )
+
+        # تولید توکن JWT (اگر از djangorestframework-simplejwt استفاده می‌کنید)
+        from rest_framework_simplejwt.tokens import RefreshToken
+        
+        refresh = RefreshToken.for_user(user)
+        
+        return Response(
+            {
+                'message': 'ورود با موفقیت انجام شد',
+                'phone_number': phone_number,
+                'is_verified': user.is_verified,
+                'tokens': {
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+# class UserCreateView(CreateAPIView):
+#     queryset = User.objects.all()
+#     permission_classes =  (AllowAny,)
+#     serializer_class = CreateUserSerializer
 
 
 
@@ -44,7 +172,8 @@ class SetUpdateFirstNameLastNameBioView(APIView):
         serializer = self.Serializer(data=request.data)
         if serializer.is_valid():
             print(serializer)
-            instance = Profile.objects.get(user__username=request.user.username)
+            print(request.user)
+            instance = Profile.objects.get(user__phone_number=request.user.phone_number)
             instance.first_name = serializer.data['first_name']
             instance.last_name = serializer.data['last_name']
             instance.bio = serializer.data['bio']
@@ -74,9 +203,9 @@ class ProfileInformation(APIView):
 
     def get(self, request):
         
-            
-        profile = Profile.objects.get(user__username=request.user.username)
-        personality = Personality.objects.get(user__username=request.user.username)
+        # print(request.user)
+        profile = Profile.objects.get(user__phone_number=request.user.phone_number)
+        personality = Personality.objects.get(user__phone_number=request.user.phone_number)
         personality_serializer = PersonalitySerializer(personality)
         profile_serializer = self.ProfileSerializer(profile)
         return Response({'profile':profile_serializer.data, 'personality': personality_serializer.data}, status=200)

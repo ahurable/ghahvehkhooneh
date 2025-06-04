@@ -29,13 +29,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/sliders/', SlidersList.as_view(), name='slider_lists'),
     path('api/posts/', PostsList.as_view(), name="posts-list-url"),
-    path('api/users/create/', UserCreateView.as_view(), name="user-create-url"),
+    # path('api/users/create/', UserCreateView.as_view(), name="user-create-url"),
     # auth urls
     path('api/auth/token/', TokenObtainPairView.as_view(), name="token_pair"),
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='refresh_url'),
     path('api/auth/update-profile-info/', SetUpdateFirstNameLastNameBioView.as_view(), name="update-profile-url"),
     path('api/auth/profile/', ProfileInformation.as_view(), name="profile-url"),
     path('api/auth/update-avatar/', UpdateAvatarView.as_view(), name="update-avatar-url"),
+    path('api/auth/send-otp/', SendOTPView.as_view(), name='send_otp'),
+    path('api/auth/verify-otp/', VerifyOTPLoginView.as_view(), name='verify_otp_login'),
     # users
     path('api/users/all-in-area/', GetAllUsers.as_view(), name='get-all-users-area-url'),
     path('api/users/follow/<int:id>/', FollowRequestView.as_view(), name='follow-request-url'),
