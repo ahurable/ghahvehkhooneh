@@ -37,18 +37,18 @@ const DefaultTemplate = ({cafe, categories}:cafeInformation) => {
                                 }
                             </div>
                             { cafe.club != null && 
-                                <div className="container w-full p-4 bg-brown-dark ">
+                                <div className="container w-full p-4 bg-baby-blue-light ">
                                     <div className="py-4 w-full flex flex-wrap justify-center gap-2 items-center">
                                         <div className="img-container">
                                             <Image src={ IMAGE_HOST + cafe.club.club_avatar } width={100} height={100} className='rounded-full w-20 h-20 object-cover' alt="" />
                                         </div>
                                         <div className="ps-4">
-                                            <span className="text-xl font-black text-white">{cafe.club.name}</span>
+                                            <span className="text-xl font-black text-brown-normal">{cafe.club.name}</span>
                                             <br />
-                                            <span className="text-lg font-normal text-white text-justify">{cafe.club.description}</span>
+                                            <span className="text-lg font-normal text-brown-normal">{cafe.club.description}</span>
                                             <br />
-                                            <span className="text-white">باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
-                                            <JoinClubBtn clubId={cafe.club.id} />
+                                            <span className="text-brown-normal">باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
+                                            <JoinClubBtn clubId={cafe.club.id} btnMode="dark" />
                                         </div>
                                     </div>
                                 </div>

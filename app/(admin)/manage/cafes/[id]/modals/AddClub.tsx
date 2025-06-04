@@ -1,4 +1,4 @@
-import { SuccessModal } from "@/layouts/Modals/MessageModals"
+import NotificationComponent, { SuccessModal } from "@/layouts/Modals/MessageModals"
 import { setAddClubState } from "@/lib/features/adminModalSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hook"
 import { LOCALHOST } from "@/lib/variebles"
@@ -7,6 +7,7 @@ import { FormEvent, useState } from "react"
 import { useAuth } from "@/lib/Context/AuthContext"
 import { useRouter } from "next/navigation"
 import { ThreeDot } from "react-loading-indicators"
+import { useNotification } from "@/lib/Context/NotificationContext"
 
 const AddClub = ({id}:{id:number}) => {
 
@@ -16,6 +17,7 @@ const AddClub = ({id}:{id:number}) => {
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState<boolean>(false)
     const router = useRouter()
+    const { showNotification } = useNotification()
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
@@ -33,6 +35,13 @@ const AddClub = ({id}:{id:number}) => {
             setSuccess(true)
             setLoading(false)
             router.refresh()
+        } else {
+            showNotification(
+                "خطا",
+                "error",
+                true,
+                "مطمئن شوید اطلاعات را به درستی وارد کرده اید"
+            )
         }
         const data = await res.json()
     }
@@ -41,6 +50,7 @@ const AddClub = ({id}:{id:number}) => {
     return (
         <>
         <Modal show={state}>
+            <NotificationComponent/>
             <SuccessModal title="موفق" description="عملیات موفق" state={success}/>
             <ModalHeader onClose={() => dispatch(setAddClubState(false))}>
                 <h1>افزودن باشگاه</h1>

@@ -6,9 +6,8 @@ import { Star, MapPin, Send, Heart, Share2 } from "lucide-react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
-import { cafeInformation } from "@/components/CafeComponents/types"
+import type { cafeInformation } from "@/components/CafeComponents/types"
 import { IMAGE_HOST } from "@/lib/variebles"
-import Slider from "./Slider"
 import JoinClubBtn from "./JoinClubBtn"
 
 // Register GSAP plugins
@@ -16,8 +15,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-
-export default function CafeProfile({cafe, categories}:cafeInformation ) {
+export default function DarkGreenTheme({ cafe, categories }: cafeInformation) {
   const [selectedCategory, setSelectedCategory] = useState<number>(1)
   const [newReview, setNewReview] = useState({ rating: 5, comment: "", name: "" })
   const [showAllPictures, setShowAllPictures] = useState(false)
@@ -125,39 +123,33 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
     setNewReview({ rating: 5, comment: "", name: "" })
   }
 
-  // const averageRating =
-  //   data.cafe.ratings.length > 0
-  //     ? data.cafe.ratings.reduce((sum, rating) => sum + rating.rating, 0) / data.cafe.ratings.length
-  //     : 0
-
   const featuredPictures = cafe.pictures.filter((pic) => pic.is_featured)
   const displayPictures = showAllPictures ? cafe.pictures : featuredPictures.slice(0, 4)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-emerald-900 to-green-900" dir="rtl">
       {/* Header Section */}
       <div ref={headerRef} className="relative h-96 overflow-hidden">
-        <Image src={IMAGE_HOST + cafe.pictures[0].picture} alt={cafe.name} fill className="object-cover" />
-        {/* <Slider pictures={cafe.pictures} /> */}
-        <div className="absolute inset-0 bg-black/60" />
+        <Image
+          src={IMAGE_HOST + cafe.pictures[0].picture || "/placeholder.svg"}
+          alt={cafe.name}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/70" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white space-y-4 px-4">
-            <h1 className="lg:text-5xl text-3xl font-bold mb-2 text-white">{cafe.name}</h1>
+            <h1 className="lg:text-5xl text-3xl font-bold mb-2 text-white drop-shadow-lg">{cafe.name}</h1>
             <div className="flex items-center justify-center gap-2 text-lg flex-row-reverse">
-              <MapPin className="w-5 h-5" />
-              <span className="text-white">{cafe.address}</span>
+              <MapPin className="w-5 h-5 text-emerald-300" />
+              <span className="text-gray-100">{cafe.address}</span>
             </div>
             <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
-              {/* <div className="flex items-center gap-1">
-                <Star className="w-5 h-5 fill-purple-400 text-purple-400" />
-                <span className="font-semibold">{averageRating.toFixed(1)}</span>
-                <span className="text-sm">({data.cafe.ratings.length} نظر)</span>
-              </div> */}
-              <button className="px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-purple-600/20 border border-purple-400/30 text-purple-100 hover:bg-purple-500/30 btn-purple flex items-center gap-2">
+              <button className="px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-emerald-600/20 border border-emerald-400/30 text-emerald-100 hover:bg-emerald-500/30 btn-green flex items-center gap-2">
                 <Heart className="w-4 h-4" />
                 علاقه‌مندی
               </button>
-              <button className="px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-purple-600/20 border border-purple-400/30 text-purple-100 hover:bg-purple-500/30 btn-purple flex items-center gap-2">
+              <button className="px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-emerald-600/20 border border-emerald-400/30 text-emerald-100 hover:bg-emerald-500/30 btn-green flex items-center gap-2">
                 <Share2 className="w-4 h-4" />
                 اشتراک‌گذاری
               </button>
@@ -170,23 +162,23 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
         {/* About Section */}
         <div
           ref={aboutRef}
-          className="bg-gray-800/90 border border-purple-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover"
+          className="bg-gray-800/95 border border-emerald-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover-green"
         >
           <div className="p-6 pb-4">
-            <h2 className="text-2xl font-semibold text-purple-100 text-right">درباره کافه</h2>
+            <h2 className="text-2xl font-semibold text-emerald-100 text-right">درباره کافه</h2>
           </div>
           <div className="p-6 pt-0">
-            <p className="text-purple-100 leading-relaxed text-right">{cafe.about}</p>
+            <p className="text-gray-100 leading-relaxed text-right">{cafe.about}</p>
           </div>
         </div>
 
         {/* Gallery Section */}
         <div
           ref={galleryRef}
-          className="bg-gray-800/90 border border-purple-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover"
+          className="bg-gray-800/95 border border-emerald-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover-green"
         >
           <div className="p-6 pb-4">
-            <h2 className="text-2xl font-semibold text-purple-100 text-right">گالری تصاویر</h2>
+            <h2 className="text-2xl font-semibold text-emerald-100 text-right">گالری تصاویر</h2>
           </div>
           <div className="p-6 pt-0">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -199,7 +191,7 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
                     className="object-cover hover:scale-110 transition-transform duration-300"
                   />
                   {picture.is_featured && (
-                    <span className="absolute top-2 right-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-500 text-white">
+                    <span className="absolute top-2 right-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-500 text-white shadow-lg">
                       ویژه
                     </span>
                   )}
@@ -208,7 +200,7 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
             </div>
             {cafe.pictures.length > 4 && (
               <button
-                className="mt-4 w-full px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-gray-700 border border-purple-500/30 text-purple-200 hover:bg-purple-600/20"
+                className="mt-4 w-full px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-gray-700/80 border border-emerald-500/30 text-emerald-200 hover:bg-emerald-600/20 hover:border-emerald-400/50"
                 onClick={() => setShowAllPictures(!showAllPictures)}
               >
                 {showAllPictures ? "نمایش کمتر" : `نمایش همه تصاویر (${cafe.pictures.length})`}
@@ -217,39 +209,40 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
           </div>
         </div>
 
+        {/* Club Section */}
         {cafe.club != null && (
-                  <div className="container w-full p-4 bg-purple-900/30 border-y rounded-lg border-purple-500/20">
-                    <div className="py-4 w-full flex flex-wrap justify-center gap-2 items-center">
-                      <div className="img-container">
-                        <div className="relative w-20 h-20">
-                          <Image
-                            src={IMAGE_HOST + cafe.club.club_avatar}
-                            width={100}
-                            height={100}
-                            className="rounded-full w-20 h-20 object-cover"
-                            alt={cafe.club.name || "Club avatar"}
-                          />
-                        </div>
-                      </div>
-                      <div className="ps-4">
-                        <span className="text-xl font-black text-purple-100">{cafe.club.name}</span>
-                        <br />
-                        <span className="text-lg font-normal text-purple-200">{cafe.club.description}</span>
-                        <br />
-                        <span className="text-purple-300">باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
-                        <JoinClubBtn clubId={cafe.club.id} btnMode="light"/>
-                      </div>
-                    </div>
-                  </div>
-                )}
+          <div className="container w-full p-4 bg-emerald-900/40 border border-emerald-500/20 rounded-lg shadow-lg card-hover-green">
+            <div className="py-4 w-full flex flex-wrap justify-center gap-2 items-center">
+              <div className="img-container">
+                <div className="relative w-20 h-20">
+                  <Image
+                    src={IMAGE_HOST + cafe.club.club_avatar || "/placeholder.svg"}
+                    width={100}
+                    height={100}
+                    className="rounded-full w-20 h-20 object-cover border-2 border-emerald-400/30"
+                    alt={cafe.club.name || "Club avatar"}
+                  />
+                </div>
+              </div>
+              <div className="ps-4">
+                <span className="text-xl font-black text-emerald-100">{cafe.club.name}</span>
+                <br />
+                <span className="text-lg font-normal text-emerald-200">{cafe.club.description}</span>
+                <br />
+                <span className="text-emerald-300">باشگاه مشتریان ما {cafe.club.members.length} عضو دارد.</span>
+                <JoinClubBtn clubId={cafe.club.id} btnMode="light" />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Menu Section */}
         <div
           ref={menuRef}
-          className="bg-gray-800/90 border border-purple-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover"
+          className="bg-gray-800/95 border border-emerald-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover-green"
         >
           <div className="p-6 pb-4">
-            <h2 className="text-2xl font-semibold text-purple-100 text-right mb-4">منوی کافه</h2>
+            <h2 className="text-2xl font-semibold text-emerald-100 text-right mb-4">منوی کافه</h2>
             <div className="flex gap-2 flex-wrap justify-end">
               {categories.map((category) => (
                 <button
@@ -257,8 +250,8 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
                   onClick={() => setSelectedCategory(category.id)}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                     selectedCategory === category.id
-                      ? "bg-purple-600 hover:bg-purple-700 text-white btn-purple"
-                      : "bg-gray-700 border border-purple-500/30 text-purple-200 hover:bg-purple-600/20"
+                      ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg btn-green-active"
+                      : "bg-gray-700/80 border border-emerald-500/30 text-emerald-200 hover:bg-emerald-600/20 hover:border-emerald-400/50"
                   }`}
                 >
                   {category.name}
@@ -272,18 +265,24 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
                 .find((cat) => cat.id === selectedCategory)
                 ?.items.map((item) => (
                   <div key={item.id} className="menu-item">
-                    <div className="h-full bg-gray-700/50 border border-purple-500/20 rounded-lg shadow-lg card-hover overflow-hidden">
+                    <div className="h-full bg-gray-700/60 border border-emerald-500/20 rounded-lg shadow-lg card-hover-green overflow-hidden">
                       <div className="relative h-48 overflow-hidden">
-                        <Image src={IMAGE_HOST + item.picture || "/placeholder.svg"} alt={item.item} fill className="object-cover" />
+                        <Image
+                          src={IMAGE_HOST + item.picture || "/placeholder.svg"}
+                          alt={item.item}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                       </div>
                       <div className="p-4">
                         <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-semibold text-lg text-purple-100">{item.item}</h3>
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-lg font-bold bg-purple-600 text-white">
+                          <h3 className="font-semibold text-lg text-emerald-100">{item.item}</h3>
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-lg font-bold bg-emerald-600 text-white shadow-md">
                             {item.price} تومان
                           </span>
                         </div>
-                        <p className="text-purple-200 text-sm text-right">{item.description}</p>
+                        <p className="text-gray-200 text-sm text-right leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                   </div>
@@ -295,47 +294,47 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
         {/* Reviews Section */}
         <div
           ref={reviewsRef}
-          className="bg-gray-800/90 border border-purple-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover"
+          className="bg-gray-800/95 border border-emerald-500/20 backdrop-blur-sm rounded-lg shadow-lg card-hover-green"
         >
           <div className="p-6 pb-4">
-            <h2 className="text-2xl font-semibold text-purple-100 text-right">نظرات مشتریان</h2>
+            <h2 className="text-2xl font-semibold text-emerald-100 text-right">نظرات مشتریان</h2>
           </div>
           <div className="p-6 pt-0 space-y-6">
             {/* Existing Reviews */}
-            <div className="space-y-4">
-              
-            </div>
+            <div className="space-y-4">{/* Reviews will be populated here */}</div>
 
-            <hr className="border-purple-500/20 my-6" />
+            <hr className="border-emerald-500/20 my-6" />
 
             {/* New Review Form */}
             <div>
-              <h3 className="text-xl font-semibold mb-4 text-right text-purple-100">نظر خود را بنویسید</h3>
+              <h3 className="text-xl font-semibold mb-4 text-right text-emerald-100">نظر خود را بنویسید</h3>
               <form onSubmit={handleReviewSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-right text-purple-200">نام شما</label>
+                  <label className="block text-sm font-medium mb-2 text-right text-emerald-200">نام شما</label>
                   <input
                     value={newReview.name}
                     onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
                     placeholder="نام خود را وارد کنید"
-                    className="w-full px-3 py-2 bg-gray-700/50 border border-purple-500/30 text-purple-100 placeholder:text-purple-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 rounded-lg text-right"
+                    className="w-full px-3 py-2 bg-gray-700/60 border border-emerald-500/30 text-emerald-100 placeholder:text-emerald-300/70 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-lg text-right transition-all duration-200"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-right text-purple-200">امتیاز</label>
+                  <label className="block text-sm font-medium mb-2 text-right text-emerald-200">امتیاز</label>
                   <div className="flex gap-1 justify-end">
                     {[...Array(5)].map((_, i) => (
                       <button
                         key={i}
                         type="button"
                         onClick={() => setNewReview({ ...newReview, rating: i + 1 })}
-                        className="p-1"
+                        className="p-1 transition-transform duration-200 hover:scale-110"
                       >
                         <Star
-                          className={`w-6 h-6 ${
-                            i < newReview.rating ? "fill-purple-400 text-purple-400" : "text-gray-300"
+                          className={`w-6 h-6 transition-colors duration-200 ${
+                            i < newReview.rating
+                              ? "fill-emerald-400 text-emerald-400"
+                              : "text-gray-400 hover:text-emerald-300"
                           }`}
                         />
                       </button>
@@ -344,12 +343,12 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-right text-purple-200">نظر شما</label>
+                  <label className="block text-sm font-medium mb-2 text-right text-emerald-200">نظر شما</label>
                   <textarea
                     value={newReview.comment}
                     onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
                     placeholder="نظر خود را در مورد این کافه بنویسید..."
-                    className="w-full px-3 py-2 bg-gray-700/50 border border-purple-500/30 text-purple-100 placeholder:text-purple-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 rounded-lg text-right resize-none"
+                    className="w-full px-3 py-2 bg-gray-700/60 border border-emerald-500/30 text-emerald-100 placeholder:text-emerald-300/70 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-lg text-right resize-none transition-all duration-200"
                     rows={4}
                     required
                   />
@@ -357,7 +356,7 @@ export default function CafeProfile({cafe, categories}:cafeInformation ) {
 
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center gap-2"
+                  className="w-full px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-500/25 hover:shadow-xl"
                 >
                   <Send className="w-4 h-4" />
                   ارسال نظر

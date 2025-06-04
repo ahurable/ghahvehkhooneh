@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react"
 import { FormEvent } from "react"
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
 import NotificationComponent, { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
 import { ThreeDot } from "react-loading-indicators"
 import { useNotification } from "@/lib/Context/NotificationContext"
+import { useAuth } from "@/lib/Context/AuthContext"
 
 
 const Login = () => {
@@ -24,6 +25,8 @@ const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
     const [otpCode, setOtpCode] = useState('')
     const { showNotification } = useNotification()
+    const { login } = useAuth()
+    const router = useRouter()
     const sendOtpCode = () => {
         const handleAsyncFetch = async () => {
             const res = await fetch(`${LOCALHOST}api/auth/send-otp/`, {
@@ -61,6 +64,7 @@ const Login = () => {
                     otp_code: otpCode
                 })
             })
+            const data = await res.json()
             if (res.status === 200) {
                 
                 showNotification(
@@ -69,8 +73,10 @@ const Login = () => {
                     true
                 )
 
+                login(data.tokens.access, data.tokens.refresh)
+                router.push('/profile')
             }
-            console.log(res.json())
+            
         }
         handleAsyncFetch()
     }

@@ -1,12 +1,10 @@
 "use client"
 import localFont from 'next/font/local'
-import Header from '@/components/Header'
 import '../globals.css'
 import StoreProvider from '@/lib/StoreProvider'
-import { useEffect } from 'react'
 import { AuthProvider, useAuth } from '@/lib/Context/AuthContext'
-import { jwtDecode, JwtPayload } from 'jwt-decode'
 import { NormalLayout } from '@/layouts/layout/Layout'
+import { NotificationProvider } from '@/lib/Context/NotificationContext'
 // import { ManagedUserContext } from '@/lib/context/user'
 // font declaration
 
@@ -69,9 +67,11 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <AuthProvider>
-        <NormalLayout>
-          {children}
-        </NormalLayout>
+        <NotificationProvider>
+          <NormalLayout>
+            {children}
+          </NormalLayout>
+        </NotificationProvider>
       </AuthProvider>
     </StoreProvider>
   )

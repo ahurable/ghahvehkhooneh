@@ -49,7 +49,7 @@ const Footer = () => {
                         <div className="w-full text-center">
                             <span className="text-brown-light">
                                 {
-                                    user != null ? <Image className="rounded-full w-8 h-8 inline-table" alt="" src={IMAGE_HOST + user.avatar} width={50} height={50} /> :<FontAwesomeIcon icon={faUserCircle}/>
+                                    // user != null ? <Image className="rounded-full w-8 h-8 inline-table" alt="" src={IMAGE_HOST + user.avatar} width={50} height={50} /> :<FontAwesomeIcon icon={faUserCircle}/>
                                 }
                                 
                             </span>

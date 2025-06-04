@@ -10,7 +10,7 @@ import { useEffect, useState } from "react"
 import { ThreeDot } from "react-loading-indicators"
 
 
-const JoinClubBtn = ({clubId}:{clubId:number}) => {
+const JoinClubBtn = ({clubId, btnMode}:{clubId:number, btnMode:"dark"|"light"}) => {
     const { user, accessToken } = useAuth()
     const { showNotification } = useNotification()
     const [loading, setLoading] = useState<boolean>(false)
@@ -82,10 +82,20 @@ const JoinClubBtn = ({clubId}:{clubId:number}) => {
     return (
         <>
         <NotificationComponent />
-        <button disabled={loading} onClick={handleJoinClub} className="btn btn-white block text-center w-full items-center mt-4">
-           { isMember ?  <>شما عضوی از باشگاه مشتریان هستید <FontAwesomeIcon icon={faUserGroup}/></>  :
-            loading ? <ThreeDot color={'#ffffff'}/> : <>عضویت در باشگاه مشتریان <FontAwesomeIcon icon={faUserGroup}/></> }
-        </button>
+        {
+            btnMode == "dark" &&
+            <button disabled={loading} onClick={handleJoinClub} className="btn btn-brown block text-center w-full items-center mt-4">
+            { isMember ?  <>شما عضوی از باشگاه مشتریان هستید <FontAwesomeIcon icon={faUserGroup}/></>  :
+                loading ? <ThreeDot color={'#033B55'}/> : <>عضویت در باشگاه مشتریان <FontAwesomeIcon icon={faUserGroup}/></> }
+            </button>
+        }
+         {
+            btnMode == "light" &&
+            <button disabled={loading} onClick={handleJoinClub} className="btn btn-white block text-center w-full items-center mt-4">
+            { isMember ?  <>شما عضوی از باشگاه مشتریان هستید <FontAwesomeIcon icon={faUserGroup}/></>  :
+                loading ? <ThreeDot color={'#033B55'}/> : <>عضویت در باشگاه مشتریان <FontAwesomeIcon icon={faUserGroup}/></> }
+            </button>
+        }
 
         </>
 

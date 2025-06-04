@@ -20,6 +20,7 @@ const config: Config = {
         'yellow-very-melo': '#f6fff3',
         'greenny':'#FB8FA3',
         'greenny-dark':'#59707A',
+        'baby-blue-light':'#E2ECF0'
       }
     },
     container: {
