@@ -1,87 +1,142 @@
-
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FormEvent } from "react"
+import { redirect } from "next/navigation"
 import { LOCALHOST } from "@/lib/variebles"
-import { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
-import { useAppDispatch } from "@/lib/hook"
-import { useAuth } from "@/lib/Context/AuthContext"
-import { ThreeDot } from 'react-loading-indicators'
+import NotificationComponent, { ErrorModal, SuccessModal } from "@/layouts/Modals/MessageModals"
+import { ThreeDot } from "react-loading-indicators"
+import { useNotification } from "@/lib/Context/NotificationContext"
 
 
+const Login = () => {
 
-const LoginPage = () => {
-    const dispatch = useAppDispatch()
-    const [success, setSuccess] = useState(false)
+    const [step, setStep] = useState(1)
+    const [successState, setSuccessState] = useState(false)
     const [errorState, setErrorState] = useState(false)
-    const [error, setError] = useState<string>("")
-    const { login } = useAuth()
-    const [ fetchLoading, setFetchLoading ] = useState<boolean>(false)
-    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setFetchLoading(true)
-        const formData = new FormData(e.currentTarget)
-        const response = await fetch(LOCALHOST + 'api/auth/token/', {
-            method: 'POST',
-            body: formData
-        })
-        const data = await response.json()
-        // window.alert(data)
-        if (response.status == 200) {
-            setSuccess(true)
-            setFetchLoading(false)
-            login(data.access, data.refresh)
-        } else if (response.status == 401) {
-            setError("حسابی با مشخصات وارد شده یافت نشد.")
-            setFetchLoading(false)
-            setErrorState(true)
-        } else {
-            window.alert("خطایی در سرور رخ داده")
+    const [errorDesc, setErrorDesc] = useState('')
+    const [ loading, setLoading ] = useState<boolean>(false)
+    // const nextStep = (e:React.MouseEvent<HTMLButtonElement>) => {
+    //     e.preventDefault()
+    //     setStep(2)
+    // }
+
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [otpCode, setOtpCode] = useState('')
+    const { showNotification } = useNotification()
+    const sendOtpCode = () => {
+        const handleAsyncFetch = async () => {
+            const res = await fetch(`${LOCALHOST}api/auth/send-otp/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phone_number: phoneNumber
+                })
+            })
+            if (res.status === 200) {
+                setStep(2)
+                // showNotification(
+                //     'کد یکبار مصرف ارسال شد',
+                //     'success',
+                //     true
+                // )
+            } else {
+                
+            }
         }
+        handleAsyncFetch()
     }
 
- 
+    const verifyOtpCode = () => {
+        const handleAsyncFetch = async () => {
+            const res = await fetch(`${LOCALHOST}api/auth/verify-otp/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phone_number: phoneNumber,
+                    otp_code: otpCode
+                })
+            })
+            if (res.status === 200) {
+                
+                showNotification(
+                    'با موفقیت وارد شدید',
+                    'success',
+                    true
+                )
+
+            }
+            console.log(res.json())
+        }
+        handleAsyncFetch()
+    }
+
+    const prevStep = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        setStep(1)
+    }
+
+    // const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        
+    // }
+
     return (
-        <main className="w-full h-full  bg-[url(/cafe-pattern.jpg)] absolute">
-            
+        <main className="w-full h-full fixed overflow-auto top-0 bg-[url(/cafe-pattern.jpg)]">
             <div className="absolute w-full h-full z-10 bg-brown-normal bg-opacity-60 top-0 right-0"></div>
-            <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto absolute right-0 left-0 h-full">
-                <h1 className="text-center relative text-[34px] pt-10 text-white font-bold z-20">قهوه خونه</h1>
-                <h1 className="text-center relative text-[50px] pb-10 font-black text-white z-20">ورود به حساب</h1>
-                <div className="form-wrapper z-20 h-mx lg:pb-20">
+            <NotificationComponent />
+            <div className="md:w-[720px] lg:w-[1000px] w-11/12 mx-auto relative h-full">
+                <h1 className="text-center text-[34px] pt-10 text-white font-bold relative z-20">قهوه خونه</h1>
+                <h1 className="text-center text-[50px] pb-10 font-black text-white relative z-20">ورود یا ایجاد حساب</h1>
+                <div className="form-wrapper z-20 h-mx pb-20 mt-4">
                     <div className="flex justify-center">
-                        <form onSubmit={onSubmit}>
-                            <div className="py-10">
+                            <div className={step == 1 ? "step-1 lg:py-10" : "step-1 hidden"}>
                                 
-                                <span className="font-light text-md">با ورود به حساب خود از امکانات برنامه استفاده کنید.</span><br />
-                                <span className="font-light text-md">اگر حساب کاربری ندارید <a className="text-blue-400" href="/register">یکی ایجاد کنید.</a></span>
+                                <span className="font-normal text-md"></span>
                                 <div className="md:w-[620px] mx-auto">
                                     <div className="md:w-[620px] mt-5 text-start">
-                                        <label htmlFor="phone_number" className="text-md my-4">نام کاربری: </label>
-                                        <input type="text" id="username" name="username" className="form-control md:w-[620px] w-full" placeholder="شماره تماس همراه موبایل خود  را وارد کنید" />
-                                    </div>
-                                    <div className="md:w-[620px] mt-5 text-start">
-                                        <label htmlFor="password" className="text-md my-4">رمز عبور: </label>
-                                        <input type="password" id="password" name="password" className="form-control md:w-[620px] w-full" placeholder="رمز عبور خود را وارد کنید" />
+                                        <label htmlFor="phoneNumber" className="text-md my-4">شماره همراه: </label>
+                                        <input type="text" id="phoneNumber" name="phone_number" onChange={(e) => setPhoneNumber(e.target.value)} className="form-control md:w-[620px] w-full" placeholder="شماره موبایل خود را وارد نمایید" />
                                     </div>
                                     
-                                    <div className="mt-10 text-center ">
-                                        <button id="register" type="submit" disabled={fetchLoading} className="btn btn-green">
-                                            { fetchLoading == false ? "ورود به سیستم"
-                                           : <ThreeDot size="medium" color={'#DBF3FE'} /> }
+                                    <div className={step == 1 ? "mt-10 text-center" : "mt-10 text-center lg:w-[620px] hidden"}>
+                                        <button disabled={phoneNumber.length < 11} className="btn btn-blue font-normal" id="continue" onClick={sendOtpCode}>
+                                            {loading ? 
+                                            <ThreeDot size="medium" color={'#DBF3FE'} />
+                                            :
+                                            "ورود به حساب کاربری"
+                                            }
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                            <div className={step == 2 ? "step-2 lg:py-10" : "step-2 hidden"}>
+                                <span className="font-light text-md">رمز یکبار مصرف ارسال شده به شماره همراه خود را وارید نمایید</span>
+                                <div className="md:w-[620px] mx-auto">
+                                    <div className="md:w-[620px] lg:mt-5 text-start">
+                                        <label htmlFor="otpCode" className="text-md my-4">رمز یکبار مصرف: </label>
+                                        <input type="text" id="otpCode" name="otp_code" className="form-control md:w-[620px] w-full" onChange={(e) => setOtpCode(e.target.value)} placeholder="نام کاربری خود  را بنویسید" />
+                                    </div>
+                                    
+                                    <div className={step == 2 ? "mt-10 text-center " : "mt-10 text-center hidden"}>
+                                        <button id="register" onClick={verifyOtpCode} disabled={loading} className="btn btn-green mt-4">
+                                            { loading ? 
+                                                <ThreeDot size="medium" color={'#DBF3FE'} />
+                                            :
+                                            "تایید رمز یکبار مصرف"
+                                            }
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
-            <SuccessModal title="موفق" description="شما با موفقیت وارد حساب کاربری خود شدید" redirectPath={'/'} state={success} />
-            <ErrorModal title="خطا" description={error} state={errorState} redirectPath={'/'} />
         </main>
         )
     }
 
-export default LoginPage
+export default Login
